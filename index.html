@@ -123,7 +123,7 @@
       </div>
     </section>
 
-    <!-- 7. خريطة السكون -->
+    <!-- 7. خريطة السكون مع تنفّس بصري -->
     <section class="sleep-screen" id="screen-map">
       <div class="card">
         <h2 class="step-title">خريطة السكون العالمية</h2>
@@ -133,6 +133,12 @@
 
         <div class="map-box" id="map-box">
           <div class="map-sky" id="map-sky"></div>
+
+          <div class="breath-layer">
+            <div class="breath-circle"></div>
+            <p class="breath-text">تنفّس ببطء: شهيق ٤ ثوانٍ – حبس ٤ – زفير ٦</p>
+          </div>
+
           <p class="map-count">النائمون الآن: <span id="sleepers-count">0</span> شخصًا</p>
           <p class="current-room" id="current-room-text">—</p>
         </div>
@@ -172,6 +178,10 @@
       </div>
     </section>
   </div>
+
+  <!-- صوت الغرفة (هدوء خفيف) -->
+  <!-- ضع ملفات الصوت في مجلد sounds/ بأسماء توافق ما في main.js -->
+  <audio id="room-audio" loop></audio>
 
   <script src="main.js"></script>
 </body>
