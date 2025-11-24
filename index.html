@@ -6,9 +6,12 @@
   <title>SleepShare | العالم يهدأ معًا</title>
 
   <link href="styles.css" rel="stylesheet" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap"
+    rel="stylesheet"
+  />
 </head>
 
 <body>
@@ -33,7 +36,12 @@
         <h2 class="step-title">تسجيل الدخول الهادئ</h2>
         <p class="step-text">يمكنك إدخال اسم مستعار (اختياري) أو المتابعة مباشرة دون اسم.</p>
 
-        <input type="text" id="input-name" class="text-input" placeholder="اكتب اسمًا مستعارًا (اختياري)" />
+        <input
+          type="text"
+          id="input-name"
+          class="text-input"
+          placeholder="اكتب اسمًا مستعارًا (اختياري)"
+        />
 
         <div class="step-actions">
           <button class="secondary-btn" id="btn-auth-skip">تخطي</button>
@@ -101,7 +109,12 @@
         <p class="step-text">
           اكتب جملة قصيرة لشخص مجهول سيقرؤها عندما يستيقظ غدًا…
         </p>
-        <textarea id="tomorrow-message" class="text-area" rows="4" placeholder="اكتب رسالة لطيفة أو مشاعر…"></textarea>
+        <textarea
+          id="tomorrow-message"
+          class="text-area"
+          rows="4"
+          placeholder="اكتب رسالة لطيفة أو مشاعر…"
+        ></textarea>
 
         <div class="step-actions">
           <button class="secondary-btn" id="btn-skip-message">تخطي الرسالة</button>
@@ -118,9 +131,10 @@
           أنت الآن جزء من خريطة ليلية صامتة. النقاط المتوهجة تمثل أشخاصًا ينامون الآن.
         </p>
 
-        <div class="map-box">
+        <div class="map-box" id="map-box">
           <div class="map-sky" id="map-sky"></div>
           <p class="map-count">النائمون الآن: <span id="sleepers-count">0</span> شخصًا</p>
+          <p class="current-room" id="current-room-text">—</p>
         </div>
 
         <button class="primary-btn" id="btn-woke-up">أنا استيقظت الآن</button>
