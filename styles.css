@@ -317,3 +317,146 @@ footer {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+.flow-container {
+  max-width: 640px;
+  margin: 60px auto;
+  padding: 32px 24px 40px;
+  background: radial-gradient(circle at top, #15152b 0, #050510 60%, #000000 100%);
+  border-radius: 24px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+}
+
+.app-title {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 4px;
+}
+
+.app-subtitle {
+  text-align: center;
+  color: #a0aec0;
+  margin-bottom: 24px;
+}
+
+.sleep-screen {
+  display: none;
+}
+
+.step-title {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.step-text {
+  color: #cbd5f5;
+  margin-bottom: 16px;
+}
+
+.step-hint {
+  font-size: 13px;
+  color: #a0aec0;
+  margin-top: 12px;
+}
+
+.primary-btn,
+.secondary-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 22px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, #7c3aed, #22d3ee);
+  color: white;
+}
+
+.secondary-btn {
+  background: transparent;
+  border: 1px solid #4b5563;
+  color: #e5e7eb;
+}
+
+.step-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+.text-input,
+.text-area {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid #4b5563;
+  background: #020617;
+  color: white;
+  padding: 10px 12px;
+}
+
+.text-area {
+  resize: vertical;
+}
+
+.pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.pill {
+  border-radius: 999px;
+  border: 1px solid #4b5563;
+  padding: 6px 14px;
+  background: #020617;
+  color: #e5e7eb;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.pill-active {
+  border-color: #22d3ee;
+  background: rgba(34, 211, 238, 0.1);
+}
+
+.map-box {
+  margin-top: 16px;
+  border-radius: 20px;
+  padding: 24px 16px;
+  background: radial-gradient(circle at top, #1e293b 0, #020617 60%);
+  text-align: center;
+  position: relative;
+}
+
+.map-stars::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(#e5e7eb 1px, transparent 0);
+  background-size: 12px 12px;
+  opacity: 0.15;
+}
+
+.map-count {
+  position: relative;
+  z-index: 1;
+}
+
+.message-card {
+  margin-top: 16px;
+  padding: 16px 14px;
+  border-radius: 18px;
+  background: #020617;
+  border: 1px solid #4b5563;
+}
+
+.report-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+}
+
+.report-list li {
+  margin-bottom: 8px;
+}
