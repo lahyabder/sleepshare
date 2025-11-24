@@ -17,6 +17,8 @@ window.selectedMood = null;
 window.selectedRoom = null;
 window.tomorrowMessage = "— بدون رسالة —";
 
+const roomAudio = document.getElementById("room-audio");
+
 // ========== 1. شاشة الترحيب ==========
 document.getElementById("btn-start").addEventListener("click", () => {
   showScreen("screen-auth");
@@ -69,7 +71,7 @@ document.getElementById("btn-send-message").addEventListener("click", () => {
   showScreen("screen-map");
 });
 
-// إعداد خريطة السكون (حسب الغرفة المختارة)
+// إعداد خريطة السكون (حسب الغرفة المختارة + الصوت)
 function prepareSleepMap() {
   let sleepers = Math.floor(Math.random() * 3000) + 1500;
 
@@ -106,12 +108,41 @@ function prepareSleepMap() {
   if (roomText) {
     roomText.textContent = `أنت الآن في ${window.selectedRoom || "Global Room"}`;
   }
+
+  // ربط الصوت بكل غرفة (ضع ملفات الصوت في مجلد sounds/)
+  const roomSounds = {
+    "Global Room": "sounds/global.mp3",
+    "Tide Room": "sounds/tide.mp3",
+    "Hearth Room": "sounds/hearth.mp3",
+    "Cave Room": "sounds/cave.mp3",
+    "Nest Room": "sounds/nest.mp3",
+    "Nomad Room": "sounds/nomad.mp3",
+    "Aurora Room": "sounds/aurora.mp3",
+    "Friends Room": "sounds/friends.mp3",
+    "Silent Room": "sounds/silent.mp3",
+  };
+
+  if (roomAudio) {
+    const src = roomSounds[window.selectedRoom] || roomSounds["Global Room"];
+    roomAudio.src = src;
+    roomAudio.volume = 0.35;
+    roomAudio
+      .play()
+      .catch(() => {
+        // في حال منع المتصفح التشغيل التلقائي، نتجاهل الخطأ
+      });
+  }
 }
 
 // ========== 7. خريطة السكون ==========
 document.getElementById("btn-woke-up").addEventListener("click", () => {
   document.getElementById("received-message").textContent =
     window.tomorrowMessage;
+
+  if (roomAudio) {
+    roomAudio.pause();
+  }
+
   showScreen("screen-wake");
 });
 
@@ -170,5 +201,9 @@ document.getElementById("btn-show-report").addEventListener("click", () => {
 
 // ========== 9. العودة للبداية ==========
 document.getElementById("btn-reset-flow").addEventListener("click", () => {
+  if (roomAudio) {
+    roomAudio.pause();
+    roomAudio.currentTime = 0;
+  }
   showScreen("screen-welcome");
 });
