@@ -4,98 +4,142 @@
 
 // دالة مساعده لإظهار شاشة وإخفاء البقية
 function showScreen(id) {
-    document.querySelectorAll(".sleep-screen").forEach(s => s.classList.remove("is-active"));
-    document.getElementById(id).classList.add("is-active");
+  document.querySelectorAll(".sleep-screen").forEach((s) =>
+    s.classList.remove("is-active")
+  );
+  const target = document.getElementById(id);
+  if (target) target.classList.add("is-active");
 }
+
+// تخزين متغيرات بسيطة في الذاكرة العامة
+window.userName = "مستخدم مجهول";
+window.selectedMood = null;
+window.selectedRoom = null;
+window.tomorrowMessage = "— بدون رسالة —";
 
 // ========== 1. شاشة الترحيب ==========
 document.getElementById("btn-start").addEventListener("click", () => {
-    showScreen("screen-auth");
+  showScreen("screen-auth");
 });
 
 // ========== 2. شاشة تسجيل الدخول ==========
 document.getElementById("btn-auth-skip").addEventListener("click", () => {
-    window.userName = "مستخدم مجهول";
-    showScreen("screen-intention");
+  window.userName = "مستخدم مجهول";
+  showScreen("screen-intention");
 });
 
 document.getElementById("btn-auth-continue").addEventListener("click", () => {
-    const name = document.getElementById("input-name").value.trim();
-    window.userName = name === "" ? "مستخدم مجهول" : name;
-    showScreen("screen-intention");
+  const name = document.getElementById("input-name").value.trim();
+  window.userName = name === "" ? "مستخدم مجهول" : name;
+  showScreen("screen-intention");
 });
 
 // ========== 3. إعلان النية ==========
 document.getElementById("btn-going-to-sleep").addEventListener("click", () => {
-    showScreen("screen-mood");
+  showScreen("screen-mood");
 });
 
 // ========== 4. اختيار الحالة النفسية ==========
-document.querySelectorAll(".mood-option").forEach(btn => {
-    btn.addEventListener("click", () => {
-        window.selectedMood = btn.dataset.mood;
-        showScreen("screen-message");
-    });
+document.querySelectorAll(".mood-option").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    window.selectedMood = btn.dataset.mood; // حفظ الرمز (Wave, Stone…)
+    showScreen("screen-room"); // الانتقال إلى شاشة الغرفة الجديدة
+  });
 });
 
-// ========== 5. رسالة الغد ==========
+// ========== 5. اختيار الغرفة الجماعية ==========
+document.querySelectorAll(".room-option").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    window.selectedRoom = btn.dataset.room; // مثال: "Tide Room"
+    showScreen("screen-message");
+  });
+});
+
+// ========== 6. رسالة الغد ==========
 document.getElementById("btn-skip-message").addEventListener("click", () => {
-    window.tomorrowMessage = "— بدون رسالة —";
-    showScreen("screen-map");
+  window.tomorrowMessage = "— بدون رسالة —";
+  prepareSleepMap();
+  showScreen("screen-map");
 });
 
 document.getElementById("btn-send-message").addEventListener("click", () => {
-    const msg = document.getElementById("tomorrow-message").value.trim();
-    window.tomorrowMessage = msg === "" ? "— بدون رسالة —" : msg;
-    showScreen("screen-map");
+  const msg = document.getElementById("tomorrow-message").value.trim();
+  window.tomorrowMessage = msg === "" ? "— بدون رسالة —" : msg;
+  prepareSleepMap();
+  showScreen("screen-map");
 });
 
-// ========== 6. خريطة السكون ==========
-let sleepers = Math.floor(Math.random() * 3000) + 1500; // رقم رمزي للنائمين
-document.getElementById("sleepers-count").textContent = sleepers;
+// إعداد خريطة السكون (عدد النائمين الرمزي)
+function prepareSleepMap() {
+  let sleepers = Math.floor(Math.random() * 3000) + 1500; // رقم رمزي
+  const span = document.getElementById("sleepers-count");
+  if (span) {
+    span.textContent = sleepers.toString();
+  }
+}
 
+// ========== 7. خريطة السكون ==========
 document.getElementById("btn-woke-up").addEventListener("click", () => {
-    document.getElementById("received-message").textContent = window.tomorrowMessage;
-    showScreen("screen-wake");
+  document.getElementById("received-message").textContent =
+    window.tomorrowMessage;
+  showScreen("screen-wake");
 });
 
-// ========== 7. رسالة بعد الاستيقاظ ==========
+// ========== 8. رسالة بعد الاستيقاظ ==========
 document.getElementById("btn-show-report").addEventListener("click", () => {
-    // توليد بيانات رمزية للتقرير
-    const moods = {
-        Wave: "هدوء",
-        Stone: "تعب",
-        Cloud: "تشتّت",
-        Echo: "حنين",
-        Light: "تفاؤل",
-        Drift: "شرود",
-        Focus: "صفاء",
-        Ease: "راحة"
-    };
+  // قاموس الحالة
+  const moods = {
+    Wave: "هدوء",
+    Stone: "تعب",
+    Cloud: "تشتّت",
+    Echo: "حنين",
+    Light: "تفاؤل",
+    Drift: "شرود",
+    Focus: "صفاء",
+    Ease: "راحة",
+  };
 
-    const dreamCodes = ["Aurora", "Drift", "Echo", "Nomad", "Wave", "Cave"];
-    const dreamPick = dreamCodes[Math.floor(Math.random() * dreamCodes.length)];
+  // توليد بيانات رمزية للتقرير
+  const dreamCodes = ["Aurora", "Drift", "Echo", "Nomad", "Wave", "Cave"];
+  const dreamPick =
+    dreamCodes[Math.floor(Math.random() * dreamCodes.length)];
 
-    let randomMinutes = Math.floor(Math.random() * 50);
-    let randomSerenity = Math.floor(Math.random() * 30) + 70;
-    let dreamSignature = `${dreamPick}-${Math.floor(Math.random() * 99)}`;
+  let randomMinutes = Math.floor(Math.random() * 50) + 240; // من 4 إلى 4.8 ساعات تقريباً
+  let randomSerenity = Math.floor(Math.random() * 30) + 70;
+  let dreamSignature = `${dreamPick}-${Math.floor(Math.random() * 99)}`;
 
-    document.getElementById("report-mood").textContent =
-        moods[window.selectedMood] || "—";
+  // تعبئة التقرير
+  const moodSpan = document.getElementById("report-mood");
+  if (moodSpan) {
+    moodSpan.textContent = moods[window.selectedMood] || "—";
+  }
 
-    document.getElementById("report-duration").textContent =
-        (randomMinutes / 60).toFixed(1) + " ساعة (تقريبًا)";
+  const roomSpan = document.getElementById("report-room");
+  if (roomSpan) {
+    roomSpan.textContent = window.selectedRoom || "—";
+  }
 
-    document.getElementById("report-serenity").textContent =
-        randomSerenity + " / 100";
+  const durationSpan = document.getElementById("report-duration");
+  if (durationSpan) {
+    durationSpan.textContent =
+      (randomMinutes / 60).toFixed(1) + " ساعة (تقريبًا)";
+  }
 
-    document.getElementById("report-dream").textContent =
-        dreamSignature;
+  const serenitySpan = document.getElementById("report-serenity");
+  if (serenitySpan) {
+    serenitySpan.textContent = randomSerenity + " / 100";
+  }
 
-    showScreen("screen-report");
+  const dreamSpan = document.getElementById("report-dream");
+  if (dreamSpan) {
+    dreamSpan.textContent = dreamSignature;
+  }
+
+  showScreen("screen-report");
 });
 
-// ========== 8. العودة للبداية ==========
+// ========== 9. العودة للبداية ==========
 document.getElementById("btn-reset-flow").addEventListener("click", () => {
-    showScreen("screen-welcome");
+  // ممكن مستقبلاً إعادة تعيين المتغيرات، الآن يكفي العودة لأول شاشة
+  showScreen("screen-welcome");
 });
