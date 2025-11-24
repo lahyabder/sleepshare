@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>البنية التقنية – SleepShare</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">SleepShare</div>
+  <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="journey.html">تجربة النوم</a>
+    <a href="analytics.html">التحليل</a>
+    <a href="symbols.html">القاموس الرمزي</a>
+    <a href="tech.html" class="active">الهوية التقنية</a>
+    <a href="social.html">التفاعل الهادئ</a>
+  </nav>
+</header>
+
+<main>
+  <h1 class="page-title">البنية التقنية لتطبيق SleepShare</h1>
+  <p class="page-subtitle">
+    الهدف هو بناء تطبيق هادئ تقنيًا أيضًا: بنية خفيفة، حماية قوية للخصوصية،
+    ومرونة تسمح بتوسّع الشبكة دون أن تتحول إلى منصة جمع بيانات.
+  </p>
+
+  <section class="section">
+    <h2>1. تقنيات التنفيذ (Tech Stack)</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>التطبيق المحمول</h3>
+        <ul>
+          <li>Framework: <strong>Flutter</strong> (لغة Dart) لنسخة موحدة على iOS و Android.</li>
+          <li>تصميم يعتمد على <span class="accent">True OLED Black</span> لتقليل استهلاك البطارية.</li>
+          <li>Animations بسيطة (Fade / Scale) لتجنب إجهاد العين قبل النوم.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>الخادم (Backend)</h3>
+        <ul>
+          <li>Firebase Auth مع دعم تسجيل مجهول (Anonymous Login).</li>
+          <li>Firestore لتخزين الحالات والرسائل المجهولة.</li>
+          <li>Cloud Functions للفلاتر الذكية وتوزيع رسائل الغد بعد الاستيقاظ.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>2. الكيانات الجوهرية (Core Entities)</h2>
+    <div class="grid-3">
+      <div class="card">
+        <h3>User – المستخدم</h3>
+        <p>
+          هوية مؤقتة تتجدد يوميًا (Ephemeral ID) لتقليل إمكانية التتبع.
+          يتم تخزين: Mood_Symbol, Chosen_Room, TimeZone, Geo_Cell واسعة.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Session – الجلسة</h3>
+        <p>
+          الفترة بين «أنا ذاهب للنوم الآن» و«استيقظت».  
+          تحتوي: Start_Time, End_Time, Duration, Serenity_Index, Dream_Signature.
+        </p>
+      </div>
+      <div class="card">
+        <h3>TomorrowNote – رسالة الغد</h3>
+        <p>
+          رسالة مشفّرة طرفيًا تُخزّن مؤقتًا ثم تُرسل لشخص مجهول عند الاستيقاظ،
+          وتحذف فور قراءتها.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>3. تدفق المستخدم (User Workflow)</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Pre-Sleep</h3>
+        <ul>
+          <li>postUserIntentionToSleep()</li>
+          <li>selectMoodSymbol(Symbol_ID)</li>
+          <li>joinSleepRoom(Room_ID)</li>
+          <li>storeTomorrowNote(Encrypted_Text)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Post-Sleep</h3>
+        <ul>
+          <li>endSession()</li>
+          <li>fetchTomorrowNote()</li>
+          <li>calculateSleepMetrics()</li>
+          <li>compareLocalData()</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>4. الخصوصية والأمان</h2>
+    <ul>
+      <li>التحليل يتم محليًا قدر الإمكان (On-Device Processing).</li>
+      <li>استخدام Geo_Cell واسعة بدل GPS دقيق لتحقيق <span class="accent">k-Anonymity</span>.</li>
+      <li>أدوات واضحة للمستخدم: <strong>wipeWeeklyData()</strong> و<strong>اعزل بياناتي</strong>.</li>
+      <li>هوية يومية مؤقتة تقلل إمكانية ربط الجلسات ببعضها خارج الجهاز.</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  © SleepShare — بنية تقنية خفيفة تدعم سكون المستخدم ولا تراقبه.
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
