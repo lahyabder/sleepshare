@@ -103,6 +103,7 @@ body {
   background: transparent;
   color: white;
   margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
 .text-area {
@@ -114,6 +115,7 @@ body {
   background: transparent;
   color: white;
   min-height: 110px;
+  box-sizing: border-box;
 }
 
 /* ========== عناصر الاختيار (الأقراص) ========== */
@@ -135,6 +137,66 @@ body {
 
 .pill:hover {
   background: rgba(120, 100, 255, 0.3);
+}
+
+/* ========== Tabs المصادقة ========== */
+.auth-tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.auth-tab {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.auth-tab.active {
+  background: rgba(110, 80, 255, 0.6);
+}
+
+.auth-panel {
+  display: none;
+}
+
+.auth-panel.is-active {
+  display: block;
+}
+
+.divider {
+  margin: 25px 0 15px;
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+/* ===== الآفاتار ===== */
+.avatar-list {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.avatar-option {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.avatar-option.selected {
+  background: rgba(255,255,255,0.12);
+  box-shadow: 0 0 10px rgba(255,255,255,0.3);
 }
 
 /* ========== الخريطة + التنفّس البصري ========== */
@@ -203,15 +265,15 @@ body {
     opacity: 0.7;
   }
   20% {
-    transform: scale(1.05); /* شهيق */
+    transform: scale(1.05);
     opacity: 1;
   }
   50% {
-    transform: scale(1.05); /* حبس */
+    transform: scale(1.05);
     opacity: 1;
   }
   100% {
-    transform: scale(0.7); /* زفير طويل */
+    transform: scale(0.7);
     opacity: 0.65;
   }
 }
@@ -232,6 +294,30 @@ body {
   font-size: 14px;
   opacity: 0.8;
   text-align: left;
+}
+
+/* زر الصوت */
+.sound-btn {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: white;
+  font-size: 20px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.sound-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.sound-off {
+  opacity: 0.4;
 }
 
 /* ========== الرسالة ========== */
