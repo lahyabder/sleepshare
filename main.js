@@ -43,7 +43,7 @@ document.getElementById("btn-going-to-sleep").addEventListener("click", () => {
 document.querySelectorAll(".mood-option").forEach((btn) => {
   btn.addEventListener("click", () => {
     window.selectedMood = btn.dataset.mood; // حفظ الرمز (Wave, Stone…)
-    showScreen("screen-room"); // الانتقال إلى شاشة الغرفة الجديدة
+    showScreen("screen-room"); // الانتقال إلى شاشة الغرفة
   });
 });
 
@@ -69,12 +69,42 @@ document.getElementById("btn-send-message").addEventListener("click", () => {
   showScreen("screen-map");
 });
 
-// إعداد خريطة السكون (عدد النائمين الرمزي)
+// إعداد خريطة السكون (حسب الغرفة المختارة)
 function prepareSleepMap() {
-  let sleepers = Math.floor(Math.random() * 3000) + 1500; // رقم رمزي
+  let sleepers = Math.floor(Math.random() * 3000) + 1500;
+
   const span = document.getElementById("sleepers-count");
-  if (span) {
-    span.textContent = sleepers.toString();
+  if (span) span.textContent = sleepers.toString();
+
+  const box = document.getElementById("map-box");
+  const sky = document.getElementById("map-sky");
+  const roomText = document.getElementById("current-room-text");
+
+  // إعادة الكلاسات الأساسية
+  box.className = "map-box";
+  sky.className = "map-sky";
+
+  // ربط الغرف بالألوان
+  const roomStyles = {
+    "Global Room": "room-global",
+    "Tide Room": "room-tide",
+    "Hearth Room": "room-hearth",
+    "Cave Room": "room-cave",
+    "Nest Room": "room-nest",
+    "Nomad Room": "room-nomad",
+    "Aurora Room": "room-aurora",
+    "Friends Room": "room-friends",
+    "Silent Room": "room-silent",
+  };
+
+  const selectedClass = roomStyles[window.selectedRoom] || "room-global";
+
+  box.classList.add(selectedClass);
+  sky.classList.add(selectedClass);
+
+  // نص الغرفة تحت الخريطة
+  if (roomText) {
+    roomText.textContent = `أنت الآن في ${window.selectedRoom || "Global Room"}`;
   }
 }
 
@@ -140,6 +170,5 @@ document.getElementById("btn-show-report").addEventListener("click", () => {
 
 // ========== 9. العودة للبداية ==========
 document.getElementById("btn-reset-flow").addEventListener("click", () => {
-  // ممكن مستقبلاً إعادة تعيين المتغيرات، الآن يكفي العودة لأول شاشة
   showScreen("screen-welcome");
 });
