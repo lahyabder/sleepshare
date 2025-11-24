@@ -1,177 +1,101 @@
-const screens = [
-  "screen-welcome",
-  "screen-auth",
-  "screen-intention",
-  "screen-mood",
-  "screen-message",
-  "screen-map",
-  "screen-wake",
-  "screen-report",
-];
+// ============================
+//  SleepShare – تدفّق الشاشات
+// ============================
 
-let currentScreen = "screen-welcome";
-let sessionStartTime = null;
-let selectedMood = null;
-
-// إظهار شاشة معينة وإخفاء الباقي
+// دالة مساعده لإظهار شاشة وإخفاء البقية
 function showScreen(id) {
-  screens.forEach((s) => {
-    const el = document.getElementById(s);
-    if (!el) return;
-    if (s === id) {
-      el.classList.add("active-screen");
-    } else {
-      el.classList.remove("active-screen");
-    }
-  });
-  currentScreen = id;
+    document.querySelectorAll(".sleep-screen").forEach(s => s.classList.remove("is-active"));
+    document.getElementById(id).classList.add("is-active");
 }
 
-// رقم عشوائي بين min و max
-function randInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+// ========== 1. شاشة الترحيب ==========
+document.getElementById("btn-start").addEventListener("click", () => {
+    showScreen("screen-auth");
+});
 
-document.addEventListener("DOMContentLoaded", () => {
-  // تأكد أن البداية من شاشة الترحيب
-  showScreen("screen-welcome");
+// ========== 2. شاشة تسجيل الدخول ==========
+document.getElementById("btn-auth-skip").addEventListener("click", () => {
+    window.userName = "مستخدم مجهول";
+    showScreen("screen-intention");
+});
 
-  // 1) زر "ابدأ / تسجيل الدخول" -> شاشة الدخول
-  const btnStart = document.getElementById("btn-start");
-  if (btnStart) {
-    btnStart.addEventListener("click", () => {
-      showScreen("screen-auth");
-    });
-  }
+document.getElementById("btn-auth-continue").addEventListener("click", () => {
+    const name = document.getElementById("input-name").value.trim();
+    window.userName = name === "" ? "مستخدم مجهول" : name;
+    showScreen("screen-intention");
+});
 
-  // 2) شاشة الدخول: تخطي أو متابعة -> إعلان النية
-  const btnAuthSkip = document.getElementById("btn-auth-skip");
-  const btnAuthContinue = document.getElementById("btn-auth-continue");
-  [btnAuthSkip, btnAuthContinue].forEach((btn) => {
-    if (btn) {
-      btn.addEventListener("click", () => {
-        showScreen("screen-intention");
-      });
-    }
-  });
+// ========== 3. إعلان النية ==========
+document.getElementById("btn-going-to-sleep").addEventListener("click", () => {
+    showScreen("screen-mood");
+});
 
-  // 3) إعلان النية -> اختيار الحالة النفسية
-  const btnGoingToSleep = document.getElementById("btn-going-to-sleep");
-  if (btnGoingToSleep) {
-    btnGoingToSleep.addEventListener("click", () => {
-      showScreen("screen-mood");
-    });
-  }
-
-  // 4) اختيار الحالة النفسية -> رسالة الغد
-  document.querySelectorAll(".mood-option").forEach((btn) => {
+// ========== 4. اختيار الحالة النفسية ==========
+document.querySelectorAll(".mood-option").forEach(btn => {
     btn.addEventListener("click", () => {
-      selectedMood = btn.dataset.mood || btn.textContent.trim();
-      showScreen("screen-message");
+        window.selectedMood = btn.dataset.mood;
+        showScreen("screen-message");
     });
-  });
+});
 
-  // 5) رسالة الغد -> خريطة السكون
-  const btnSkipMessage = document.getElementById("btn-skip-message");
-  const btnSendMessage = document.getElementById("btn-send-message");
+// ========== 5. رسالة الغد ==========
+document.getElementById("btn-skip-message").addEventListener("click", () => {
+    window.tomorrowMessage = "— بدون رسالة —";
+    showScreen("screen-map");
+});
 
-  [btnSkipMessage, btnSendMessage].forEach((btn) => {
-    if (btn) {
-      btn.addEventListener("click", () => {
-        const msg = document.getElementById("tomorrow-message");
-        if (msg && btn === btnSendMessage) {
-          // الآن مجرد تسجيل في الكونسول – لاحقاً يمكن ربطه بقاعدة بيانات
-          console.log("Tomorrow note:", msg.value);
-        }
+document.getElementById("btn-send-message").addEventListener("click", () => {
+    const msg = document.getElementById("tomorrow-message").value.trim();
+    window.tomorrowMessage = msg === "" ? "— بدون رسالة —" : msg;
+    showScreen("screen-map");
+});
 
-        // عدد النائمين الآن (رمزي عشوائي)
-        const sleepersCount = document.getElementById("sleepers-count");
-        if (sleepersCount) {
-          sleepersCount.textContent = randInt(120, 8000);
-        }
+// ========== 6. خريطة السكون ==========
+let sleepers = Math.floor(Math.random() * 3000) + 1500; // رقم رمزي للنائمين
+document.getElementById("sleepers-count").textContent = sleepers;
 
-        // بداية جلسة النوم
-        sessionStartTime = Date.now();
-        showScreen("screen-map");
-      });
-    }
-  });
+document.getElementById("btn-woke-up").addEventListener("click", () => {
+    document.getElementById("received-message").textContent = window.tomorrowMessage;
+    showScreen("screen-wake");
+});
 
-  // 6) "أنا استيقظت الآن" -> رسالة مجهولة
-  const btnWokeUp = document.getElementById("btn-woke-up");
-  if (btnWokeUp) {
-    btnWokeUp.addEventListener("click", () => {
-      const received = document.getElementById("received-message");
-      if (received) {
-        const messages = [
-          "كل ليلة فرصة صغيرة لنعتني بقلبنا قبل أن ننام.",
-          "هناك من ينام الآن وهو ممتن لوجود أرواح هادئة مثلك في هذا العالم.",
-          "نم بسلام، فالعالم لا يزال يدور حتى وأنت تستريح.",
-          "أحيانًا يكفي أن نُغمض أعيننا لنقول لأنفسنا: لقد فعلت ما أستطيع اليوم.",
-        ];
-        received.textContent =
-          messages[randInt(0, messages.length - 1)];
-      }
-      showScreen("screen-wake");
-    });
-  }
+// ========== 7. رسالة بعد الاستيقاظ ==========
+document.getElementById("btn-show-report").addEventListener("click", () => {
+    // توليد بيانات رمزية للتقرير
+    const moods = {
+        Wave: "هدوء",
+        Stone: "تعب",
+        Cloud: "تشتّت",
+        Echo: "حنين",
+        Light: "تفاؤل",
+        Drift: "شرود",
+        Focus: "صفاء",
+        Ease: "راحة"
+    };
 
-  // 7) عرض تقرير النوم -> شاشة التقرير
-  const btnShowReport = document.getElementById("btn-show-report");
-  if (btnShowReport) {
-    btnShowReport.addEventListener("click", () => {
-      // الحالة عند النوم
-      const moodSpan = document.getElementById("report-mood");
-      if (moodSpan) {
-        moodSpan.textContent = selectedMood || "—";
-      }
+    const dreamCodes = ["Aurora", "Drift", "Echo", "Nomad", "Wave", "Cave"];
+    const dreamPick = dreamCodes[Math.floor(Math.random() * dreamCodes.length)];
 
-      // مدة الجلسة التقريبية
-      const durationSpan = document.getElementById("report-duration");
-      if (durationSpan) {
-        let durationText = "—";
-        if (sessionStartTime) {
-          const ms = Date.now() - sessionStartTime;
-          const hours = ms / (1000 * 60 * 60);
-          const rounded = Math.max(0.1, Math.round(hours * 10) / 10);
-          durationText = `${rounded} ساعة (تقريبًا)`;
-        }
-        durationSpan.textContent = durationText;
-      }
+    let randomMinutes = Math.floor(Math.random() * 50);
+    let randomSerenity = Math.floor(Math.random() * 30) + 70;
+    let dreamSignature = `${dreamPick}-${Math.floor(Math.random() * 99)}`;
 
-      // مؤشر السكينة
-      const serenitySpan = document.getElementById("report-serenity");
-      if (serenitySpan) {
-        serenitySpan.textContent = `${randInt(60, 99)} / 100`;
-      }
+    document.getElementById("report-mood").textContent =
+        moods[window.selectedMood] || "—";
 
-      // توقيع الحلم
-      const dreamSpan = document.getElementById("report-dream");
-      if (dreamSpan) {
-        const sigs = [
-          "Wave-Cloud-01",
-          "Light-Nest-07",
-          "Echo-Stone-03",
-          "Aurora-Drift-11",
-        ];
-        dreamSpan.textContent = sigs[randInt(0, sigs.length - 1)];
-      }
+    document.getElementById("report-duration").textContent =
+        (randomMinutes / 60).toFixed(1) + " ساعة (تقريبًا)";
 
-      showScreen("screen-report");
-    });
-  }
+    document.getElementById("report-serenity").textContent =
+        randomSerenity + " / 100";
 
-  // 8) إعادة البداية
-  const btnReset = document.getElementById("btn-reset-flow");
-  if (btnReset) {
-    btnReset.addEventListener("click", () => {
-      sessionStartTime = null;
-      selectedMood = null;
+    document.getElementById("report-dream").textContent =
+        dreamSignature;
 
-      const msg = document.getElementById("tomorrow-message");
-      if (msg) msg.value = "";
+    showScreen("screen-report");
+});
 
-      showScreen("screen-welcome");
-    });
-  }
+// ========== 8. العودة للبداية ==========
+document.getElementById("btn-reset-flow").addEventListener("click", () => {
+    showScreen("screen-welcome");
 });
