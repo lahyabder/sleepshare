@@ -72,7 +72,29 @@
       </div>
     </section>
 
-    <!-- 5. رسالة الغد -->
+    <!-- 5. اختيار الغرفة الجماعية -->
+    <section class="sleep-screen" id="screen-room">
+      <div class="card">
+        <h2 class="step-title">اختر غرفة السكون</h2>
+        <p class="step-text">
+          اختر الفضاء الذي تريد أن تنام ضمنه الليلة. كل غرفة تحمل طاقة مختلفة ورمزية خاصة.
+        </p>
+
+        <div class="pill-list">
+          <button class="pill room-option" data-room="Global Room">غرفة عالمية – Global</button>
+          <button class="pill room-option" data-room="Tide Room">Tide Room – غرفة الموج</button>
+          <button class="pill room-option" data-room="Hearth Room">Hearth Room – غرفة الدفء</button>
+          <button class="pill room-option" data-room="Cave Room">Cave Room – الكهف</button>
+          <button class="pill room-option" data-room="Nest Room">Nest Room – العشّ</button>
+          <button class="pill room-option" data-room="Nomad Room">Nomad Room – الرحلة</button>
+          <button class="pill room-option" data-room="Aurora Room">Aurora Room – الشفق</button>
+          <button class="pill room-option" data-room="Friends Room">Friends Room – غرفة الأصدقاء</button>
+          <button class="pill room-option" data-room="Silent Room">Silent Room – غرفة الصمت</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. رسالة الغد -->
     <section class="sleep-screen" id="screen-message">
       <div class="card">
         <h2 class="step-title">رسالة الغد (مجهولة)</h2>
@@ -88,7 +110,7 @@
       </div>
     </section>
 
-    <!-- 6. خريطة السكون -->
+    <!-- 7. خريطة السكون -->
     <section class="sleep-screen" id="screen-map">
       <div class="card">
         <h2 class="step-title">خريطة السكون العالمية</h2>
@@ -105,7 +127,7 @@
       </div>
     </section>
 
-    <!-- 7. رسالة بعد الاستيقاظ -->
+    <!-- 8. رسالة بعد الاستيقاظ -->
     <section class="sleep-screen" id="screen-wake">
       <div class="card">
         <h2 class="step-title">مرحبًا بعودتك</h2>
@@ -119,13 +141,14 @@
       </div>
     </section>
 
-    <!-- 8. تقرير النوم -->
+    <!-- 9. تقرير النوم -->
     <section class="sleep-screen" id="screen-report">
       <div class="card">
         <h2 class="step-title">تقرير نومك الليلي</h2>
 
         <ul class="report-list">
           <li>الحالة عند النوم: <span id="report-mood">—</span></li>
+          <li>الغرفة المختارة: <span id="report-room">—</span></li>
           <li>المدة التقريبية للجلسة: <span id="report-duration">—</span></li>
           <li>مؤشر السكينة: <span id="report-serenity">—</span></li>
           <li>التوقيع الحلمي: <span id="report-dream">—</span></li>
