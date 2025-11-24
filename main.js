@@ -11,37 +11,158 @@ function showScreen(id) {
   if (target) target.classList.add("is-active");
 }
 
-// تخزين متغيرات بسيطة في الذاكرة العامة
+// متغيرات المستخدم
 window.userName = "مستخدم مجهول";
+window.userEmail = null;
+window.userAvatar = "🌙";
 window.selectedMood = null;
 window.selectedRoom = null;
 window.tomorrowMessage = "— بدون رسالة —";
 
 const roomAudio = document.getElementById("room-audio");
+const soundToggleBtn = document.getElementById("sound-toggle");
+let soundEnabled = true;
+
+// قراءة المستخدم المخزن (إن وجد)
+function loadStoredUser() {
+  try {
+    const raw = localStorage.getItem("sleepShareUser");
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) {
+    return null;
+  }
+}
+
+function saveStoredUser(user) {
+  localStorage.setItem("sleepShareUser", JSON.stringify(user));
+}
+
+// ========== Tabs المصادقة ==========
+const authTabs = document.querySelectorAll(".auth-tab");
+const authPanels = {
+  register: document.getElementById("auth-register"),
+  login: document.getElementById("auth-login"),
+  reset: document.getElementById("auth-reset"),
+};
+
+authTabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    const mode = tab.dataset.mode;
+    authTabs.forEach((t) => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    Object.keys(authPanels).forEach((key) => {
+      authPanels[key].classList.remove("is-active");
+    });
+    authPanels[mode].classList.add("is-active");
+  });
+});
+
+// ========== اختيار الآفاتار ==========
+const avatarButtons = document.querySelectorAll(".avatar-option");
+avatarButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    avatarButtons.forEach((b) => b.classList.remove("selected"));
+    btn.classList.add("selected");
+    const avatarKey = btn.dataset.avatar;
+    const mapping = {
+      moon: "🌙",
+      wave: "🌊",
+      star: "⭐",
+      firefly: "✨",
+      cloud: "☁️",
+    };
+    window.userAvatar = mapping[avatarKey] || "🌙";
+  });
+});
 
 // ========== 1. شاشة الترحيب ==========
 document.getElementById("btn-start").addEventListener("click", () => {
+  const stored = loadStoredUser();
+  if (stored) {
+    // يمكن تعبئة الإيميل تلقائياً في شاشة الدخول
+    document.getElementById("login-email").value = stored.email || "";
+  }
   showScreen("screen-auth");
 });
 
-// ========== 2. شاشة تسجيل الدخول ==========
-document.getElementById("btn-auth-skip").addEventListener("click", () => {
-  window.userName = "مستخدم مجهول";
+// ========== 2. إنشاء حساب ==========
+document
+  .getElementById("btn-register-submit")
+  .addEventListener("click", () => {
+    const email = document.getElementById("reg-email").value.trim();
+    const password = document.getElementById("reg-password").value.trim();
+    const name = document.getElementById("reg-name").value.trim();
+
+    if (!email || !password) {
+      alert("يرجى إدخال البريد الإلكتروني وكلمة المرور.");
+      return;
+    }
+
+    const user = {
+      email,
+      password,
+      name: name || "مستخدم نائم",
+      avatar: window.userAvatar || "🌙",
+    };
+
+    saveStoredUser(user);
+
+    window.userEmail = email;
+    window.userName = user.name;
+    window.userAvatar = user.avatar;
+
+    showScreen("screen-intention");
+  });
+
+// ========== 3. تسجيل الدخول ==========
+document.getElementById("btn-login-submit").addEventListener("click", () => {
+  const email = document.getElementById("login-email").value.trim();
+  const password = document.getElementById("login-password").value.trim();
+
+  const stored = loadStoredUser();
+  if (!stored) {
+    alert("لا يوجد حساب مخزن على هذا الجهاز. أنشئ حسابًا أولاً.");
+    return;
+  }
+
+  if (stored.email === email && stored.password === password) {
+    window.userEmail = stored.email;
+    window.userName = stored.name || "مستخدم نائم";
+    window.userAvatar = stored.avatar || "🌙";
+    showScreen("screen-intention");
+  } else {
+    alert("بيانات الدخول غير صحيحة.");
+  }
+});
+
+// ========== 4. استرجاع كلمة المرور (تجريبي) ==========
+document.getElementById("btn-reset-submit").addEventListener("click", () => {
+  const email = document.getElementById("reset-email").value.trim();
+  if (!email) {
+    alert("يرجى إدخال البريد الإلكتروني.");
+    return;
+  }
+  alert(
+    "في النسخة الفعلية سيتم إرسال رابط استرجاع إلى بريدك.\nحاليًا هذا مجرد نموذج تجريبي."
+  );
+});
+
+// ========== 5. الدخول كضيف ==========
+document.getElementById("btn-auth-guest").addEventListener("click", () => {
+  window.userName = "ضيف SleepShare";
+  window.userEmail = null;
+  window.userAvatar = "🌙";
   showScreen("screen-intention");
 });
 
-document.getElementById("btn-auth-continue").addEventListener("click", () => {
-  const name = document.getElementById("input-name").value.trim();
-  window.userName = name === "" ? "مستخدم مجهول" : name;
-  showScreen("screen-intention");
-});
-
-// ========== 3. إعلان النية ==========
+// ========== 6. إعلان النية ==========
 document.getElementById("btn-going-to-sleep").addEventListener("click", () => {
   showScreen("screen-mood");
 });
 
-// ========== 4. اختيار الحالة النفسية ==========
+// ========== 7. اختيار الحالة النفسية ==========
 document.querySelectorAll(".mood-option").forEach((btn) => {
   btn.addEventListener("click", () => {
     window.selectedMood = btn.dataset.mood; // حفظ الرمز (Wave, Stone…)
@@ -49,7 +170,7 @@ document.querySelectorAll(".mood-option").forEach((btn) => {
   });
 });
 
-// ========== 5. اختيار الغرفة الجماعية ==========
+// ========== 8. اختيار الغرفة الجماعية ==========
 document.querySelectorAll(".room-option").forEach((btn) => {
   btn.addEventListener("click", () => {
     window.selectedRoom = btn.dataset.room; // مثال: "Tide Room"
@@ -57,7 +178,7 @@ document.querySelectorAll(".room-option").forEach((btn) => {
   });
 });
 
-// ========== 6. رسالة الغد ==========
+// ========== 9. رسالة الغد ==========
 document.getElementById("btn-skip-message").addEventListener("click", () => {
   window.tomorrowMessage = "— بدون رسالة —";
   prepareSleepMap();
@@ -71,7 +192,26 @@ document.getElementById("btn-send-message").addEventListener("click", () => {
   showScreen("screen-map");
 });
 
-// إعداد خريطة السكون (حسب الغرفة المختارة + الصوت)
+// زر تفعيل/إيقاف الصوت
+if (soundToggleBtn) {
+  soundToggleBtn.addEventListener("click", () => {
+    if (!roomAudio || !roomAudio.src) return;
+
+    if (soundEnabled) {
+      roomAudio.muted = true;
+      soundEnabled = false;
+      soundToggleBtn.textContent = "🔇";
+      soundToggleBtn.classList.add("sound-off");
+    } else {
+      roomAudio.muted = false;
+      soundEnabled = true;
+      soundToggleBtn.textContent = "🔊";
+      soundToggleBtn.classList.remove("sound-off");
+    }
+  });
+}
+
+// إعداد خريطة السكون + الصوت
 function prepareSleepMap() {
   let sleepers = Math.floor(Math.random() * 3000) + 1500;
 
@@ -82,11 +222,9 @@ function prepareSleepMap() {
   const sky = document.getElementById("map-sky");
   const roomText = document.getElementById("current-room-text");
 
-  // إعادة الكلاسات الأساسية
   box.className = "map-box";
   sky.className = "map-sky";
 
-  // ربط الغرف بالألوان
   const roomStyles = {
     "Global Room": "room-global",
     "Tide Room": "room-tide",
@@ -104,12 +242,10 @@ function prepareSleepMap() {
   box.classList.add(selectedClass);
   sky.classList.add(selectedClass);
 
-  // نص الغرفة تحت الخريطة
   if (roomText) {
     roomText.textContent = `أنت الآن في ${window.selectedRoom || "Global Room"}`;
   }
 
-  // ربط الصوت بكل غرفة (ضع ملفات الصوت في مجلد sounds/)
   const roomSounds = {
     "Global Room": "sounds/global.mp3",
     "Tide Room": "sounds/tide.mp3",
@@ -126,15 +262,15 @@ function prepareSleepMap() {
     const src = roomSounds[window.selectedRoom] || roomSounds["Global Room"];
     roomAudio.src = src;
     roomAudio.volume = 0.35;
-    roomAudio
-      .play()
-      .catch(() => {
-        // في حال منع المتصفح التشغيل التلقائي، نتجاهل الخطأ
-      });
+    roomAudio.muted = !soundEnabled;
+
+    roomAudio.play().catch(() => {
+      // إذا المتصفح منع التشغيل التلقائي، نتجاهل الخطأ
+    });
   }
 }
 
-// ========== 7. خريطة السكون ==========
+// ========== 10. خريطة السكون ==========
 document.getElementById("btn-woke-up").addEventListener("click", () => {
   document.getElementById("received-message").textContent =
     window.tomorrowMessage;
@@ -146,7 +282,7 @@ document.getElementById("btn-woke-up").addEventListener("click", () => {
   showScreen("screen-wake");
 });
 
-// ========== 8. رسالة بعد الاستيقاظ ==========
+// ========== 11. رسالة بعد الاستيقاظ ==========
 document.getElementById("btn-show-report").addEventListener("click", () => {
   // قاموس الحالة
   const moods = {
@@ -170,6 +306,16 @@ document.getElementById("btn-show-report").addEventListener("click", () => {
   let dreamSignature = `${dreamPick}-${Math.floor(Math.random() * 99)}`;
 
   // تعبئة التقرير
+  const nameSpan = document.getElementById("report-name");
+  if (nameSpan) {
+    nameSpan.textContent = window.userName || "—";
+  }
+
+  const avatarSpan = document.getElementById("report-avatar");
+  if (avatarSpan) {
+    avatarSpan.textContent = window.userAvatar || "—";
+  }
+
   const moodSpan = document.getElementById("report-mood");
   if (moodSpan) {
     moodSpan.textContent = moods[window.selectedMood] || "—";
@@ -199,7 +345,7 @@ document.getElementById("btn-show-report").addEventListener("click", () => {
   showScreen("screen-report");
 });
 
-// ========== 9. العودة للبداية ==========
+// ========== 12. العودة للبداية ==========
 document.getElementById("btn-reset-flow").addEventListener("click", () => {
   if (roomAudio) {
     roomAudio.pause();
