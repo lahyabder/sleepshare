@@ -1,116 +1,26 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>SleepShare | العالم يهدأ معًا</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepShare – العالم يهدأ معًا</title>
+    <link rel="stylesheet" href="styles.css">
+    </head>
 <body>
-
-<header>
-  <div class="logo">SleepShare</div>
-  <nav>
-    <a href="index.html">الرئيسية</a>
-    <a href="journey.html">تجربة النوم</a>
-    <a href="analytics.html">التحليل</a>
-    <a href="symbols.html">القاموس الرمزي</a>
-    <a href="tech.html">البنية التقنية</a>
-    <a href="social.html">التفاعل الهادئ</a>
-    <a href="community.html">الهوية والانتماء</a>
-  </nav>
-</header>
-
-<main>
-  <section class="hero-grid">
-    <div>
-      <h1 class="page-title">
-        SleepShare – <span class="accent">العالم يهدأ معًا.</span>
-      </h1>
-      <p class="page-subtitle">
-        المنصة العالمية للنوم الجماعي والوعي الهادئ. تطبيق رقمي يربط الناس لحظة النوم
-        في تجربة جماعية آمنة وهادئة، تُحوّل العزلة الليلية إلى انتماء صامت.  
-        الفكرة تقوم على جعل النوم لحظة اجتماعية روحية، فيشعر المستخدم أنه ينام مع العالم لا بمفرده.
-      </p>
-
-      <button class="hero-cta" onclick="window.location.href='journey.html'">
-        ابدأ رحلة النوم الهادئ
-      </button>
-
-      <div style="margin-top:18px;font-size:13px;color:#909090;line-height:1.9;">
-        الغاية هي خلق أول شبكة رقمية تجمع الناس عبر <span class="accent-2">السكون</span> لا عبر الكلام،
-        وتحويل هذا السكون إلى اقتصاد وتجربة جديدة تُسمّى:
-        <span class="accent">اقتصاد السكون المشترك – Shared Serenity Economy</span>.
-      </div>
+    <div class="header">
+        <h1>SleepShare</h1>
+        <p>المنصة العالمية للنوم الجماعي والوعي الهادئ.</p>
     </div>
 
-    <div class="hero-phone">
-      <div class="hero-phone-inner">
-        <div class="breath-dot"></div>
-        <div class="hero-phone-text">
-          أنت لست وحدك في هذا الليل؛  
-          هناك آلاف الأنفاس تهدأ معك الآن.
-        </div>
-      </div>
+    <button id="go-to-sleep-button">أنا ذاهب للنوم الآن</button>
+
+    <div id="sleepers-count">
+        <p>النائمون حالياً: <span id="active-sleepers">0</span></p>
     </div>
-  </section>
+    
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    
+    <script src="main.js"></script>
 
-  <section class="section">
-    <h2>ما الذي يقدمه SleepShare؟</h2>
-    <p>
-      يقدّم SleepShare ثلاث طبقات مترابطة:
-    </p>
-    <div class="grid-3">
-      <div class="card">
-        <span class="pill">الطبقة الأولى</span>
-        <h3>تجربة نوم رمزية</h3>
-        <p>
-          رحلة مكوّنة من ثلاث مراحل: ما قبل النوم، أثناء السكون، وبعد الاستيقاظ.
-          اللاعب الأساسي فيها هو نيتك، رمزك، ورسالة الغد التي ترسلها لشخص مجهول.
-        </p>
-      </div>
-
-      <div class="card">
-        <span class="pill">الطبقة الثانية</span>
-        <h3>محرك تحليل محلي</h3>
-        <p>
-          يتم جمع وقت النوم، الاستيقاظ، المزاج، والراحة بعد النوم لتوليد مؤشرات
-          مثل <span class="accent">Serenity Index</span> و<span class="accent">ChronoCode</span> و
-          <span class="accent">Dream Signature</span> مع معالجة تتم على جهازك.
-        </p>
-      </div>
-
-      <div class="card">
-        <span class="pill">الطبقة الثالثة</span>
-        <h3>شبكة تفاعل هادئة</h3>
-        <p>
-          همسات مجهولة، دوائر طمأنينة، وروابط هادئة مؤقتة تتيح للمستخدمين الشعور بانتماء
-          دون أن يضحّوا بخصوصيتهم أو يتحول السكون إلى ضجيج اجتماعي.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>خريطة الموقع</h2>
-    <p>يمكنك استكشاف كل طبقة من التطبيق عبر الصفحات التالية:</p>
-    <div class="badge-row">
-      <a class="badge" href="journey.html">رحلة المستخدم</a>
-      <a class="badge" href="analytics.html">التحليل والإحصاءات</a>
-      <a class="badge" href="symbols.html">القاموس الرمزي والألوان</a>
-      <a class="badge" href="tech.html">هيكل التطبيق والبنية التقنية</a>
-      <a class="badge" href="social.html">التفاعل الآمن الذكي</a>
-      <a class="badge" href="community.html">الهوية والانتماء والاقتصاد السكوني</a>
-    </div>
-  </section>
-</main>
-
-<footer>
-  SleepShare © 2025 – مشروع للاقتصاد السكوني المشترك.  
-  النسخة الحالية موقع تعريفي تفاعلي لفهم الفكرة قبل إطلاق التطبيق الفعلي.
-</footer>
-
-<script src="main.js"></script>
 </body>
 </html>
