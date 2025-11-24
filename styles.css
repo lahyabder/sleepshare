@@ -1,194 +1,257 @@
 /* ========== إعدادات عامة ========== */
 body {
-    margin: 0;
-    padding: 0;
-    background: #05050b;
-    font-family: "Tajawal", sans-serif;
-    color: #ffffff;
-    overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  background: #05050b;
+  font-family: "Tajawal", sans-serif;
+  color: #ffffff;
+  overflow-x: hidden;
 }
 
 /* حاوية التدفق العامة */
 .flow-container {
-    width: 100%;
-    max-width: 900px;
-    margin: auto;
-    text-align: center;
-    padding-bottom: 120px;
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+  padding-bottom: 120px;
 }
 
 .app-title {
-    font-size: 42px;
-    font-weight: 700;
-    margin-top: 40px;
-    letter-spacing: 3px;
+  font-size: 42px;
+  font-weight: 700;
+  margin-top: 40px;
+  letter-spacing: 3px;
 }
 
 .app-subtitle {
-    font-size: 18px;
-    opacity: 0.7;
-    margin-bottom: 30px;
+  font-size: 18px;
+  opacity: 0.7;
+  margin-bottom: 30px;
 }
 
 /* ========== الشاشات ========== */
 .sleep-screen {
-    display: none;
-    animation: fadeIn 0.6s ease-in-out;
+  display: none;
+  animation: fadeIn 0.6s ease-in-out;
 }
 
 .sleep-screen.is-active {
-    display: block;
+  display: block;
 }
 
 /* ========== البطاقة الأساسية ========== */
 .card {
-    background: rgba(10, 10, 20, 0.88);
-    border-radius: 30px;
-    padding: 50px 40px;
-    width: 85%;
-    margin: 40px auto;
-    box-shadow: 0px 0px 40px rgba(110, 80, 255, 0.25);
+  background: rgba(10, 10, 20, 0.88);
+  border-radius: 30px;
+  padding: 50px 40px;
+  width: 85%;
+  margin: 40px auto;
+  box-shadow: 0px 0px 40px rgba(110, 80, 255, 0.25);
 }
 
 /* ========== العناوين ========== */
 .step-title {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
 }
 
 .step-text {
-    font-size: 17px;
-    opacity: 0.8;
-    margin-bottom: 25px;
+  font-size: 17px;
+  opacity: 0.8;
+  margin-bottom: 25px;
 }
 
 /* ========== الأزرار ========== */
 .primary-btn {
-    background: linear-gradient(90deg, #8a4bff, #5c2dff);
-    padding: 14px 40px;
-    color: #fff;
-    border: none;
-    border-radius: 25px;
-    font-size: 17px;
-    cursor: pointer;
-    transition: 0.2s;
+  background: linear-gradient(90deg, #8a4bff, #5c2dff);
+  padding: 14px 40px;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .primary-btn:hover {
-    transform: scale(1.06);
+  transform: scale(1.06);
 }
 
 .secondary-btn {
-    background: transparent;
-    border: 1px solid #6d6af5;
-    padding: 13px 30px;
-    border-radius: 25px;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
+  background: transparent;
+  border: 1px solid #6d6af5;
+  padding: 13px 30px;
+  border-radius: 25px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .secondary-btn:hover {
-    background: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 /* ========== الإدخال ========== */
 .text-input {
-    width: 100%;
-    padding: 14px;
-    font-size: 16px;
-    border-radius: 15px;
-    border: 1px solid #6d6af5;
-    background: transparent;
-    color: white;
-    margin-bottom: 20px;
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 15px;
+  border: 1px solid #6d6af5;
+  background: transparent;
+  color: white;
+  margin-bottom: 20px;
 }
 
 .text-area {
-    width: 100%;
-    padding: 18px;
-    font-size: 17px;
-    border-radius: 20px;
-    border: 1px solid #6d6af5;
-    background: transparent;
-    color: white;
-    min-height: 110px;
+  width: 100%;
+  padding: 18px;
+  font-size: 17px;
+  border-radius: 20px;
+  border: 1px solid #6d6af5;
+  background: transparent;
+  color: white;
+  min-height: 110px;
 }
 
 /* ========== عناصر الاختيار (الأقراص) ========== */
 .pill-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
-    margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .pill {
-    padding: 10px 26px;
-    border: 1px solid #6d6af5;
-    border-radius: 20px;
-    cursor: pointer;
-    background: rgba(255,255,255,0.03);
+  padding: 10px 26px;
+  border: 1px solid #6d6af5;
+  border-radius: 20px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .pill:hover {
-    background: rgba(120,100,255,0.3);
+  background: rgba(120, 100, 255, 0.3);
 }
 
 /* ========== الخريطة ========== */
 .map-box {
-    width: 100%;
-    height: 260px;
-    border-radius: 20px;
-    background: #111;
-    margin-top: 20px;
-    position: relative;
-    overflow: hidden;
+  width: 100%;
+  height: 260px;
+  border-radius: 20px;
+  background: #111;
+  margin-top: 20px;
+  position: relative;
+  overflow: hidden;
+  padding: 10px 10px 36px;
+  box-sizing: border-box;
 }
 
 .map-sky {
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 40%, #445, #112);
-    opacity: 0.7;
-    animation: skyGlow 8s infinite alternate;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  background: radial-gradient(circle at 20% 40%, #445, #112);
+  opacity: 0.8;
+  animation: skyGlow 8s infinite alternate;
 }
 
 @keyframes skyGlow {
-    0% { filter: blur(2px); opacity: 0.6; }
-    100% { filter: blur(6px); opacity: 0.95; }
+  0% {
+    filter: blur(2px);
+    opacity: 0.6;
+  }
+  100% {
+    filter: blur(6px);
+    opacity: 0.95;
+  }
 }
 
 .map-count {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    font-size: 16px;
-    opacity: 0.8;
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  font-size: 15px;
+  opacity: 0.85;
+}
+
+/* ===== نص الغرفة تحت الخريطة ===== */
+.current-room {
+  position: absolute;
+  bottom: 8px;
+  left: 12px;
+  font-size: 14px;
+  opacity: 0.8;
+  text-align: left;
 }
 
 /* ========== الرسالة ========== */
 .message-card {
-    background: rgba(255,255,255,0.06);
-    padding: 25px;
-    border-radius: 20px;
-    margin: 20px 0;
-    font-size: 17px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 25px;
+  border-radius: 20px;
+  margin: 20px 0;
+  font-size: 17px;
 }
 
 /* ========== تقرير النوم ========== */
 .report-list {
-    list-style: none;
-    padding: 0;
-    text-align: right;
-    line-height: 2.3;
-    font-size: 17px;
+  list-style: none;
+  padding: 0;
+  text-align: right;
+  line-height: 2.3;
+  font-size: 17px;
 }
 
 /* ========== مؤثر الظهور ========== */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(25px); }
-    to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== خلفيات الغرف ===== */
+
+.room-tide {
+  background: radial-gradient(circle at 20% 30%, #004f7c, #001d33) !important;
+}
+
+.room-hearth {
+  background: radial-gradient(circle at 20% 30%, #8a3200, #2d0f00) !important;
+}
+
+.room-cave {
+  background: radial-gradient(circle at 50% 50%, #0b0b0d, #000000) !important;
+}
+
+.room-nest {
+  background: radial-gradient(circle at 20% 20%, #3d2e00, #0f0c00) !important;
+}
+
+.room-nomad {
+  background: radial-gradient(circle at 20% 20%, #8c6b2f, #3d2b0d) !important;
+}
+
+.room-aurora {
+  background: radial-gradient(circle at 50% 50%, #4b0088, #120021) !important;
+}
+
+.room-global {
+  background: radial-gradient(circle at 50% 50%, #003344, #000c11) !important;
+}
+
+.room-friends {
+  background: radial-gradient(circle at 50% 50%, #004466, #002233) !important;
+}
+
+.room-silent {
+  background: radial-gradient(circle at 50% 50%, #0d0d0d, #000000) !important;
 }
