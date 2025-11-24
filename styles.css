@@ -137,7 +137,7 @@ body {
   background: rgba(120, 100, 255, 0.3);
 }
 
-/* ========== الخريطة ========== */
+/* ========== الخريطة + التنفّس البصري ========== */
 .map-box {
   width: 100%;
   height: 260px;
@@ -151,12 +151,12 @@ body {
 }
 
 .map-sky {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 8px 8px 40px 8px;
   border-radius: 16px;
   background: radial-gradient(circle at 20% 40%, #445, #112);
-  opacity: 0.8;
-  animation: skyGlow 8s infinite alternate;
+  opacity: 0.9;
+  animation: skyGlow 12s infinite alternate;
 }
 
 @keyframes skyGlow {
@@ -166,7 +166,53 @@ body {
   }
   100% {
     filter: blur(6px);
-    opacity: 0.95;
+    opacity: 1;
+  }
+}
+
+/* طبقة التنفس */
+.breath-layer {
+  position: absolute;
+  inset: 8px 8px 40px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.breath-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+  animation: breathPulse 8s ease-in-out infinite;
+}
+
+.breath-text {
+  margin-top: 12px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* شهيق 4 – حبس 4 – زفير 6 تقريبًا ضمن 8 ثوانٍ */
+@keyframes breathPulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.7;
+  }
+  20% {
+    transform: scale(1.05); /* شهيق */
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05); /* حبس */
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.7); /* زفير طويل */
+    opacity: 0.65;
   }
 }
 
@@ -178,7 +224,7 @@ body {
   opacity: 0.85;
 }
 
-/* ===== نص الغرفة تحت الخريطة ===== */
+/* نص الغرفة تحت الخريطة */
 .current-room {
   position: absolute;
   bottom: 8px;
@@ -218,7 +264,7 @@ body {
   }
 }
 
-/* ===== خلفيات الغرف ===== */
+/* ===== خلفيات الغرف (ألوان مختلفة لكل غرفة) ===== */
 
 .room-tide {
   background: radial-gradient(circle at 20% 30%, #004f7c, #001d33) !important;
