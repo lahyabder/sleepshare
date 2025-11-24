@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>التحليل والإحصاءات – SleepShare</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">SleepShare</div>
+  <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="journey.html">تجربة النوم</a>
+    <a href="analytics.html" class="active">التحليل</a>
+    <a href="symbols.html">القاموس الرمزي</a>
+    <a href="tech.html">الهوية التقنية</a>
+    <a href="social.html">التفاعل الهادئ</a>
+  </nav>
+</header>
+
+<main>
+  <h1 class="page-title">التحليل والإحصاءات في SleepShare</h1>
+  <p class="page-subtitle">
+    لا يكتفي SleepShare بجمع أوقات النوم والاستيقاظ، بل يحول هذه البيانات إلى
+    مؤشرات رمزية تساعد المستخدم على فهم نمطه الهادئ دون انتهاك لخصوصيته.
+  </p>
+
+  <section class="section">
+    <h2>1. ما الذي يتم جمعه؟</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>بيانات الجلسة</h3>
+        <ul>
+          <li>وقت الضغط على «أنا ذاهب للنوم الآن».</li>
+          <li>وقت الاستيقاظ أو فتح التطبيق صباحًا.</li>
+          <li>مدة الجلسة الكاملة (وقت السكون).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>بيانات الشعور</h3>
+        <ul>
+          <li>الرمز الشعوري المختار قبل النوم (Wave, Stone, …).</li>
+          <li>المزاج بعد الاستيقاظ (راحة، تعب، قلق…).</li>
+          <li>الغرفة التي نام فيها المستخدم (Tide, Nest, Nomad…).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>2. المؤشرات التحليلية الأساسية</h2>
+    <div class="grid-3">
+      <div class="card">
+        <span class="pill">Serenity Index</span>
+        <h3>مؤشر السكينة</h3>
+        <p>
+          مقياس هادئ من 0 إلى 100 يدمج بين مدة النوم، انتظام أوقاته، وتقاربها مع
+          «النافذة المثالية» للنوم الشخصي. كلما زاد المؤشر زادت قدرة المستخدم على
+          الدخول في نوم عميق متكرر ومستقر.
+        </p>
+      </div>
+      <div class="card">
+        <span class="pill">ChronoCode</span>
+        <h3>رمز التوقيت الحيوي</h3>
+        <p>
+          رمز قصير يعبّر عن علاقة نوم المستخدم بدورة اليوم: هل هو نهاري،
+          ليلي، أم يتأرجح بينهما؟ يتم توليده من أوقات النوم المتراكمة بدون
+          كشف الساعات الدقيقة.
+        </p>
+      </div>
+      <div class="card">
+        <span class="pill">Dream Signature</span>
+        <h3>الرمز الكوني الأسبوعي</h3>
+        <p>
+          توقيع بصري أسبوعي يجمع لونًا، شكلًا، وإيقاعًا بسيطًا، يمثل مزاج
+          أسبوع النوم لدى المستخدم. يمكن مشاركته على الشبكات بدون أي بيانات
+          حساسة.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:20px;">
+      <div class="card">
+        <span class="pill">Harmony Level</span>
+        <h3>مستوى الانسجام</h3>
+        <p>
+          مقارنة محلية بين نمط المستخدم وأنماط أشخاص آخرين في نفس المنطقة
+          الزمنية، لكن بشكل مجهول. يجيب عن سؤال: «إلى أي حد أنام في إيقاع
+          منسجم مع محيطي؟».
+        </p>
+      </div>
+      <div class="card">
+        <span class="pill">Drift Variance &amp; Mirror Pattern</span>
+        <h3>تذبذب الانجراف والنمط العاكس</h3>
+        <p>
+          مدى تغيّر أوقات النوم من يوم لآخر، وما إذا كان هناك «نمط خفي» لتبدل
+          المزاج قبل النوم وبعده. هذه المؤشرات تساعد المستخدم على رؤية ما لا
+          ينتبه له في حياته اليومية.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>3. أين يتم التحليل؟</h2>
+    <p>
+      الفلسفة الأساسية في SleepShare هي <span class="accent">المعالجة المحلية</span>:
+    </p>
+    <ul>
+      <li>تتم حسابات Serenity Index و ChronoCode و Harmony Level على جهاز المستخدم نفسه.</li>
+      <li>البيانات الخام (الساعات الدقيقة، أنماط الحركة) لا تُرسل إلى الخادم، بل تُخزن في شكل ملخّصات.</li>
+      <li>أي مقارنة مع مستخدمين آخرين تعتمد على بيانات مجمّعة وليست فردية.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>4. التقرير الصباحي</h2>
+    <p>
+      عند الاستيقاظ، يحصل المستخدم على بطاقة صباحية يمكن مشاركتها:
+    </p>
+    <ul>
+      <li>مدة النوم، ونوع الغرفة التي نام فيها.</li>
+      <li>الرمز الشعوري قبل النوم وبعده.</li>
+      <li>Serenity Index و Dream Signature للأسبوع.</li>
+      <li>عبارة تأملية قصيرة مرتبطة بنتيجته، بدل أرقام جافة فقط.</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  © SleepShare — التحليل يتم بخفة، والبيانات تبقى قريبة من الوسادة لا من السحابة.
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
