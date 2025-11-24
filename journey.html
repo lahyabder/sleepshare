@@ -1,311 +1,153 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>خريطة تجربة المستخدم – SleepShare</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
 <body>
+  <div class="flow-container">
+    <h1 class="app-title">SleepShare</h1>
+    <p class="app-subtitle">رحلة النوم الجماعي والوعي الهادئ</p>
 
-<header>
-  <div class="logo">SleepShare</div>
-  <nav>
-    <a href="index.html">الرئيسية</a>
-    <a href="journey.html" class="active">تجربة النوم</a>
-    <a href="analytics.html">التحليل</a>
-    <a href="symbols.html">القاموس الرمزي</a>
-    <a href="tech.html">الهوية التقنية</a>
-    <a href="social.html">التفاعل الهادئ</a>
-  </nav>
-</header>
+    <!-- 1. صفحة الترحيب / الدخول -->
+    <section class="sleep-screen" id="screen-welcome">
+      <h2 class="step-title">أهلًا بك في SleepShare</h2>
+      <p class="step-text">
+        هنا تتحوّل لحظة النوم من عزلة فردية إلى انتماء صامت مع آلاف الأرواح حول العالم.
+      </p>
+      <button class="primary-btn" id="btn-start">
+        ابدأ / تسجيل الدخول
+      </button>
+    </section>
 
-<main>
-  <h1 class="page-title">خريطة شاشات SleepShare</h1>
-  <p class="page-subtitle">
-    هذه الصفحة تعرض رحلة المستخدم في SleepShare خطوة خطوة، من لحظة فتح التطبيق
-    وحتى تقرير النوم الصباحي، مع توضيح المدخلات والمخرجات والأوامر في كل شاشة.
-  </p>
+    <!-- 2. صفحة الدخول البسيط -->
+    <section class="sleep-screen" id="screen-auth">
+      <h2 class="step-title">تسجيل الدخول الهادئ</h2>
+      <p class="step-text">
+        يمكنك إدخال اسم مستعار (اختياري) أو المتابعة مباشرة دون اسم.
+      </p>
+      <input
+        type="text"
+        id="input-name"
+        class="text-input"
+        placeholder="اكتب اسمًا مستعارًا (اختياري)"
+      />
+      <div class="step-actions">
+        <button class="secondary-btn" id="btn-auth-skip">تخطي</button>
+        <button class="primary-btn" id="btn-auth-continue">متابعة</button>
+      </div>
+    </section>
 
-  <!-- أ. قبل النوم -->
-  <section class="section">
-    <h2>أولًا: مرحلة الإعداد قبل النوم (Pre-Sleep)</h2>
-    <table class="flow-table">
-      <thead>
-        <tr>
-          <th>اسم الصفحة</th>
-          <th>المحتوى الرئيسي</th>
-          <th>المعطيات (المدخلات/المخرجات)</th>
-          <th>الأوامر (إجراءات المستخدم)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1. شاشة الدخول الرئيسية</td>
-          <td>
-            • شعار التطبيق: <strong>SleepShare – العالم يهدأ معًا</strong><br>
-            • عبارة: <strong>المنصة العالمية للنوم الجماعي والوعي الهادئ</strong>
-          </td>
-          <td>لا يوجد (قد تظهر للمستخدمين الجدد فقط).</td>
-          <td>زر «ابدأ / تسجيل الدخول».</td>
-        </tr>
-        <tr>
-          <td>2. إعلان النية (قبل النوم)</td>
-          <td>• رسالة ترحيب للانضمام إلى «شبكة السكون».</td>
-          <td>لا يوجد (إشعار نية فقط).</td>
-          <td>زر «أنا ذاهب للنوم الآن».</td>
-        </tr>
-        <tr>
-          <td>3. اختيار الحالة النفسية (الرمز)</td>
-          <td>
-            • قائمة بالرموز: Wave, Stone, Cloud, Echo, Light, Drift, Focus, Ease.<br>
-            • شرح بسيط لكل رمز وحالته.
-          </td>
-          <td>حالة المستخدم النفسية (Mood Symbol) التي يختارها.</td>
-          <td>اختيار الرمز بالنقر عليه.</td>
-        </tr>
-        <tr>
-          <td>4. اختيار الغرفة الجماعية</td>
-          <td>
-            • قائمة «غرف النوم» المتاحة:<br>
-            عالمية، عاطفية، للأصدقاء، صامتة، Tide Room، Hearth Room، Cave Room،
-            Nest Room، Nomad Room، Aurora Room.
-          </td>
-          <td>الغرفة التي سيتم الانضمام إليها (Chosen Room).</td>
-          <td>اختيار الغرفة بالنقر على اسمها.</td>
-        </tr>
-        <tr>
-          <td>5. رسالة الغد المجهولة</td>
-          <td>
-            • حقل لكتابة رسالة قصيرة (اختياري).<br>
-            • تنبيه بأن الرسالة ستُرسل لشخص مجهول عند استيقاظه.
-          </td>
-          <td>نص «رسالة الغد» (TomorrowNote – إدخال نصي).</td>
-          <td>زر «إرسال الرسالة والذهاب للنوم».</td>
-        </tr>
-        <tr>
-          <td>6. صفحة بدء السكون</td>
-          <td>• مؤقت لمدة دقيقتين قبل إطفاء الشاشة.</td>
-          <td>لا يوجد (شاشة تحضير فقط).</td>
-          <td>لا يوجد؛ يتم الإطفاء تلقائيًا بعد انتهاء المؤقت.</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+    <!-- 3. إعلان النية -->
+    <section class="sleep-screen" id="screen-intention">
+      <h2 class="step-title">إعلان النية للنوم</h2>
+      <p class="step-text">
+        بضغطك على هذا الزر، تُعلن بهدوء أنك ذاهب للنوم الآن وتنضم إلى شبكة السكون العالمية.
+      </p>
+      <button class="primary-btn" id="btn-going-to-sleep">
+        أنا ذاهب للنوم الآن
+      </button>
+    </section>
 
-  <!-- ب. أثناء النوم -->
-  <section class="section">
-    <h2>ثانيًا: مرحلة السكون أثناء النوم (During Sleep)</h2>
-    <table class="flow-table">
-      <thead>
-        <tr>
-          <th>اسم الصفحة</th>
-          <th>المحتوى الرئيسي</th>
-          <th>المعطيات (المدخلات/المخرجات)</th>
-          <th>الأوامر (إجراءات المستخدم)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>7. خريطة السكون العالمية</td>
-          <td>
-            • خريطة تجريدية للعالم بإضاءة هادئة.<br>
-            • نقاط ضوء تمثّل النائمين (بلا هوية فردية).
-          </td>
-          <td>
-            • الموقع الجغرافي الواسع (Geo-Cell / منطقة زمنية).<br>
-            • عدد النائمين الحاليين.
-          </td>
-          <td>
-            • الانضمام إلى «تنفّس متزامن».<br>
-            • الانضمام إلى «صمت جماعي».
-          </td>
-        </tr>
-        <tr>
-          <td>8. شاشة التنفّس / الصمت الجماعي</td>
-          <td>• تمثيل بصري لحركة التنفس الجماعي أو عدّاد الصمت.</td>
-          <td>بيانات حركة / زمن تُعرض كمخرجات بصرية فقط.</td>
-          <td>لا يوجد؛ شاشة للتأمل البصري الهادئ.</td>
-        </tr>
-        <tr>
-          <td>9. وضع السكون التام</td>
-          <td>• شاشة سوداء تمامًا (True Black) للحفاظ على البطارية والعين.</td>
-          <td>مدة النوم؛ يبدأ هنا احتساب <strong>Duration</strong>.</td>
-          <td>لا يوجد؛ الشاشة مطفأة تلقائيًا.</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+    <!-- 4. اختيار الحالة النفسية -->
+    <section class="sleep-screen" id="screen-mood">
+      <h2 class="step-title">كيف تشعر الآن؟</h2>
+      <p class="step-text">اختر الرمز الأقرب لحالتك الحالية:</p>
 
-  <!-- ج. بعد الاستيقاظ -->
-  <section class="section">
-    <h2>ثالثًا: مرحلة الاستيقاظ وما بعدها (Post-Sleep)</h2>
-    <table class="flow-table">
-      <thead>
-        <tr>
-          <th>اسم الصفحة</th>
-          <th>المحتوى الرئيسي</th>
-          <th>المعطيات (المدخلات/المخرجات)</th>
-          <th>الأوامر (إجراءات المستخدم)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>10. شاشة الاستيقاظ</td>
-          <td>• عبارة تحفيزية: «العالم استيقظ معك».</td>
-          <td>لا يوجد (إشعار فقط).</td>
-          <td>زر «عرض التقرير الصباحي».</td>
-        </tr>
-        <tr>
-          <td>11. استقبال رسالة الغد</td>
-          <td>• عرض رسالة الغد القادمة من شخص مجهول.</td>
-          <td>نص «رسالة الغد» الواردة.</td>
-          <td>زر «انتقل إلى التحليل».</td>
-        </tr>
-        <tr>
-          <td>12. تقرير النوم والمزاج</td>
-          <td>
-            • تحليل وقت النوم والاستيقاظ والمزاج الأولي.<br>
-            • عرض Serenity Index، ChronoCode، Harmony Level، Dream Signature.
-          </td>
-          <td>
-            • مؤشر السكينة (Serenity Index).<br>
-            • الرمز الأسبوعي الثلاثي (Dream Signature) وبقية المؤشرات.
-          </td>
-          <td>
-            • زر «همس بلا هوية» (تفاعل).<br>
-            • زر «شهادة السكون الأسبوعية» (مشاركة).
-          </td>
-        </tr>
-        <tr>
-          <td>13. صفحة الخصوصية وإدارة البيانات</td>
-          <td>
-            • ملخص واضح لسياسة الخصوصية.<br>
-            • أدوات لحذف البيانات أو عزلها.
-          </td>
-          <td>لا يوجد (شاشة إعدادات فقط).</td>
-          <td>
-            • زر «احذف أسبوعي» (حذف فوري لبيانات أسبوع).<br>
-            • زر «اعزل بياناتي» (إيقاف مشاركة البيانات المجمّعة).
-          </td>
-        </tr>
-        <tr>
-          <td>14. صفحة التفاعلات الهادئة</td>
-          <td>
-            • نظام Whisper Exchange (همس متبادل).<br>
-            • دوائر الطمأنينة (مجموعات صغيرة).<br>
-            • الروابط الهادئة (Silent Links) وهدايا السكينة.
-          </td>
-          <td>
-            • رسائل الهمس المتبادلة (المرحلة 1).<br>
-            • رسائل المجموعات (المرحلة 2).<br>
-            • روابط هدوء وهدايا رمزية.
-          </td>
-          <td>
-            • إرسال «همس بلا هوية» (بعد أسبوع من الاستخدام).<br>
-            • إنشاء «رابط هدوء» بعد تفاعلات إيجابية.<br>
-            • منح «هدايا سكينة» (رموز هادئة).
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+      <div class="pill-list" id="mood-list">
+        <button class="pill mood-option" data-mood="Wave">Wave – هدوء</button>
+        <button class="pill mood-option" data-mood="Stone">Stone – تعب</button>
+        <button class="pill mood-option" data-mood="Cloud">Cloud – تشتّت</button>
+        <button class="pill mood-option" data-mood="Echo">Echo – حنين</button>
+        <button class="pill mood-option" data-mood="Light">Light – تفاؤل</button>
+        <button class="pill mood-option" data-mood="Drift">Drift – شرود</button>
+        <button class="pill mood-option" data-mood="Focus">Focus – صفاء</button>
+        <button class="pill mood-option" data-mood="Ease">Ease – راحة</button>
+      </div>
 
-  <!-- الكيانات الجوهرية -->
-  <section class="section">
-    <h2>الكيانات الجوهرية (Core Entities)</h2>
-    <table class="flow-table">
-      <thead>
-        <tr>
-          <th>الكيان</th>
-          <th>الوصف التقني</th>
-          <th>المعطيات الأساسية (Data Fields)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>المستخدم (User)</td>
-          <td>هوية مجهولة تتجدد يوميًا (Ephemeral ID) لضمان الخصوصية.</td>
-          <td>User_ID (يومي)، Mood_Symbol، Chosen_Room، Geo_Cell واسعة، TimeZone.</td>
-        </tr>
-        <tr>
-          <td>الجلسة (Session)</td>
-          <td>الفترة بين «أنا ذاهب للنوم الآن» و«الاستيقاظ».</td>
-          <td>Session_ID، Start_Time، End_Time، Duration، Serenity_Index، Dream_Signature.</td>
-        </tr>
-        <tr>
-          <td>رسالة الغد (TomorrowNote)</td>
-          <td>رسالة تُشفَّر طرفيًا، تُخزَّن حتى الصباح وتحذف بعد القراءة.</td>
-          <td>Note_Text، Sender_Session_ID، Receiver_Session_ID، Timestamp_Sent، Timestamp_Read.</td>
-        </tr>
-        <tr>
-          <td>الرمز (Symbol)</td>
-          <td>الحالة النفسية / الرمز البصري الذي يختاره المستخدم.</td>
-          <td>Symbol_Type (Wave/Stone/Light…) ، Color_Code (Hex)، Description.</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+      <p class="step-hint">يمكنك الضغط على أي رمز وسيتم الانتقال للخطوة التالية.</p>
+    </section>
 
-  <!-- تدفق المستخدم والوظائف -->
-  <section class="section">
-    <h2>تدفق المستخدم والوظائف (User Workflow &amp; Functions)</h2>
-    <h3>المرحلة 1: الإعداد (Pre-Sleep Flow)</h3>
-    <table class="flow-table">
-      <thead>
-        <tr>
-          <th>الخطوة</th>
-          <th>واجهة المستخدم (UI Action)</th>
-          <th>الوظيفة التقنية (Function)</th>
-          <th>نقاط البيانات (Data Points)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1. الإعلان</td>
-          <td>يضغط «أنا ذاهب للنوم الآن».</td>
-          <td>API: <code>postUserIntentionToSleep()</code></td>
-          <td>Start_Time، Session_ID.</td>
-        </tr>
-        <tr>
-          <td>2. اختيار الحالة</td>
-          <td>يختار رمزًا من القائمة (مثلاً Cloud).</td>
-          <td>FUNC: <code>selectMoodSymbol(Symbol_ID)</code></td>
-          <td>Mood_Symbol.</td>
-        </tr>
-        <tr>
-          <td>3. اختيار الغرفة</td>
-          <td>يختار غرفة (مثلاً Nomad Room).</td>
-          <td>FUNC: <code>joinSleepRoom(Room_ID)</code></td>
-          <td>Chosen_Room.</td>
-        </tr>
-        <tr>
-          <td>4. رسالة الغد</td>
-          <td>يكتب نصًا اختياريًا.</td>
-          <td>API: <code>storeTomorrowNote(Encrypted_Text)</code></td>
-          <td>TomorrowNote.</td>
-        </tr>
-        <tr>
-          <td>5. التزامن</td>
-          <td>تظهر الخريطة لمدة دقيقتين.</td>
-          <td>FUNC: <code>initializeAmbientMap()</code></td>
-          <td>Geo_Cell للمستخدمين النشطين.</td>
-        </tr>
-        <tr>
-          <td>6. السكون</td>
-          <td>تنطفئ الشاشة تلقائيًا.</td>
-          <td>FUNC: <code>activateScreenSaver()</code> (Sleep Mode)</td>
-          <td>يبدأ حساب <strong>Duration</strong>.</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-</main>
+    <!-- 5. رسالة الغد -->
+    <section class="sleep-screen" id="screen-message">
+      <h2 class="step-title">رسالة الغد (مجهولة)</h2>
+      <p class="step-text">
+        اكتب جملة قصيرة لشخص مجهول سيقرؤها عندما يستيقظ غدًا. يمكن أن تكون كلمة لطف،
+        أمل، أو مشاركة شعور عابر.
+      </p>
+      <textarea
+        id="tomorrow-message"
+        class="text-area"
+        rows="4"
+        placeholder="اكتب رسالة بسيطة لشخص مجهول عند استيقاظه..."
+      ></textarea>
+      <div class="step-actions">
+        <button class="secondary-btn" id="btn-skip-message">
+          تخطي الرسالة
+        </button>
+        <button class="primary-btn" id="btn-send-message">
+          إرسال الرسالة والذهاب للنوم
+        </button>
+      </div>
+    </section>
 
-<footer>
-  © SleepShare — رحلة واحدة متكاملة: نية، سكون، تحليل، وتفاعل هادئ.
-</footer>
+    <!-- 6. خريطة السكون -->
+    <section class="sleep-screen" id="screen-map">
+      <h2 class="step-title">خريطة السكون العالمية</h2>
+      <p class="step-text">
+        أنت الآن جزء من خريطة ليلية صامتة. النقاط المتوهجة تمثّل أشخاصًا ينامون
+        في اللحظة نفسها.
+      </p>
 
-<script src="main.js"></script>
+      <div class="map-box">
+        <div class="map-stars"></div>
+        <p class="map-count">
+          النائمون الآن: <span id="sleepers-count">0</span> شخصًا
+        </p>
+      </div>
+
+      <p class="step-hint">
+        للحفاظ على بطارية هاتفك، يمكنك إطفاء الشاشة يدويًا. عند استيقاظك اضغط الزر التالي.
+      </p>
+
+      <button class="primary-btn" id="btn-woke-up">
+        أنا استيقظت الآن
+      </button>
+    </section>
+
+    <!-- 7. رسالة مجهول بعد الاستيقاظ -->
+    <section class="sleep-screen" id="screen-wake">
+      <h2 class="step-title">مرحبًا بعودتك</h2>
+      <p class="step-text">
+        هذه رسالة رمزية مجهولة من أحد النائمين في شبكة السكون:
+      </p>
+      <div class="message-card">
+        <p id="received-message">
+          "كل ليلة فرصة صغيرة لنعيد ترتيب أرواحنا بهدوء، شكرًا لأنك اخترت أن تنام مع
+          العالم لا ضده."
+        </p>
+      </div>
+
+      <button class="primary-btn" id="btn-show-report">
+        عرض تقرير النوم والمزاج
+      </button>
+    </section>
+
+    <!-- 8. تقرير النوم -->
+    <section class="sleep-screen" id="screen-report">
+      <h2 class="step-title">تقرير نومك الليلي</h2>
+
+      <ul class="report-list">
+        <li>الحالة عند النوم: <span id="report-mood">—</span></li>
+        <li>المدة التقريبية للجلسة: <span id="report-duration">—</span></li>
+        <li>مؤشر السكينة (رمزي): <span id="report-serenity">—</span></li>
+        <li>التوقيع الحلمي (Dream Signature): <span id="report-dream">—</span></li>
+      </ul>
+
+      <p class="step-hint">
+        هذا التقرير رمزي وتجريبي، الهدف منه مساعدتك على ملاحظة علاقتك بالنوم
+        وتكرار لحظات السكون الواعية.
+      </p>
+
+      <button class="secondary-btn" id="btn-reset-flow">
+        العودة إلى البداية
+      </button>
+    </section>
+  </div>
+
+  <script src="main.js"></script>
 </body>
-</html>
