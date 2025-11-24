@@ -169,4 +169,153 @@ body::before {
 /* الحقول */
 
 .text-input,
-.text
+.text-area {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--text-color);
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  direction: rtl;
+  text-align: right;
+}
+
+.text-input::placeholder,
+.text-area::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.text-input:focus,
+.text-area:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(108, 76, 255, 0.4);
+}
+
+/* قائمة الحالات */
+
+.pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.pill {
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(2, 5, 20, 0.85);
+  color: var(--text-color);
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.18s ease-out;
+}
+
+.pill:hover {
+  background: rgba(108, 76, 255, 0.2);
+  border-color: var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+/* خريطة السكون */
+
+.map-box {
+  position: relative;
+  margin: 14px auto 8px;
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 16 / 9;
+  border-radius: 24px;
+  background: radial-gradient(circle at 50% 0%, #1e263a, #020310 70%);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.map-stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.8) 0, transparent 45%),
+    radial-gradient(circle at 70% 20%, rgba(165, 214, 255, 0.75) 0, transparent 40%),
+    radial-gradient(circle at 30% 70%, rgba(255, 180, 238, 0.7) 0, transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(186, 255, 201, 0.8) 0, transparent 35%);
+  mix-blend-mode: screen;
+  opacity: 0.9;
+  animation: breathe 7s ease-in-out infinite;
+}
+
+.map-count {
+  position: absolute;
+  inset-inline-start: 12px;
+  inset-block-end: 10px;
+  font-size: 0.85rem;
+  color: var(--muted-text);
+}
+
+/* رسالة مجهولة */
+
+.message-card {
+  margin-top: 12px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(3, 8, 30, 0.9);
+  text-align: right;
+  font-size: 0.95rem;
+  line-height: 1.9;
+}
+
+/* تقرير النوم */
+
+.report-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 4px;
+  text-align: right;
+}
+
+.report-list li {
+  margin-bottom: 6px;
+  font-size: 0.96rem;
+}
+
+.report-list span {
+  color: var(--accent-soft);
+}
+
+/* أنيميشن التنفس */
+
+@keyframes breathe {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
+
+/* استجابة الشاشات الصغيرة */
+
+@media (max-width: 600px) {
+  .flow-container {
+    padding: 28px 14px 40px;
+  }
+
+  .card {
+    padding: 26px 18px 22px;
+  }
+
+  .app-title {
+    font-size: 2rem;
+  }
+}
