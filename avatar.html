@@ -1,219 +1,140 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <title>SleepShare | اختيار الآفاتار</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #020313;
-      --card: #060719;
-      --accent: #7c3aed;
-      --accent-soft: rgba(124, 58, 237, 0.25);
-      --text: #f9fafb;
-      --muted: #9ca3af;
+// avatar.js
+import {
+  onAuthStateChanged,
+  signOut,
+  updateProfile,
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+import { auth } from "./firebase.js";
+
+// عناصر DOM
+const avatarItems = document.querySelectorAll(".avatar-item");
+const messageEl = document.getElementById("avatar-message");
+const saveBtn = document.getElementById("save-avatar");
+const logoutBtn = document.getElementById("avatar-logout");
+
+let currentUser = null;
+let selectedAvatar = null;
+
+// دالة لعرض الرسائل
+function showMessage(text, type = "success") {
+  if (!messageEl) return;
+  messageEl.textContent = text || "";
+  messageEl.classList.remove("error", "success");
+  if (text) {
+    messageEl.classList.add(type);
+  }
+}
+
+// تفعيل/إلغاء تفعيل العناصر
+function setActiveAvatarItem(targetEl) {
+  avatarItems.forEach((item) => {
+    if (item === targetEl) {
+      item.classList.add("active");
+    } else {
+      item.classList.remove("active");
+    }
+  });
+}
+
+// تحميل الآفاتار من localStorage (إن وجد)
+function loadStoredAvatar(user) {
+  if (!user) return;
+
+  const key = `sleepshare-avatar-${user.uid}`;
+  const stored = localStorage.getItem(key);
+
+  if (stored) {
+    selectedAvatar = stored;
+
+    avatarItems.forEach((item) => {
+      if (item.dataset.avatar === stored) {
+        item.classList.add("active");
+      } else {
+        item.classList.remove("active");
+      }
+    });
+
+    showMessage("تم استرجاع آفاتارك السابق 🌙", "success");
+  }
+}
+
+// حفظ الآفاتار في localStorage
+function storeAvatar(user, avatarValue) {
+  if (!user) return;
+  const key = `sleepshare-avatar-${user.uid}`;
+  localStorage.setItem(key, avatarValue);
+}
+
+// مراقبة حالة تسجيل الدخول
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    // لو المستخدم غير مسجّل الدخول نعيده لصفحة الحساب
+    window.location.href = "auth.html";
+    return;
+  }
+
+  currentUser = user;
+  loadStoredAvatar(user);
+});
+
+// التعامل مع اختيار الآفاتار
+avatarItems.forEach((item) => {
+  item.addEventListener("click", () => {
+    const avatarValue = item.dataset.avatar;
+    selectedAvatar = avatarValue;
+    setActiveAvatarItem(item);
+    showMessage(`اخترت: ${avatarValue}`, "success");
+  });
+});
+
+// حفظ الآفاتار
+if (saveBtn) {
+  saveBtn.addEventListener("click", async () => {
+    if (!currentUser) {
+      showMessage("الرجاء تسجيل الدخول أولاً.", "error");
+      return;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Tajawal', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    if (!selectedAvatar) {
+      showMessage("اختر آفاتارًا أولًا قبل الحفظ.", "error");
+      return;
     }
 
-    body {
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at 20% 0, rgba(148, 163, 184, 0.24), transparent 60%),
-        radial-gradient(circle at 100% 100, rgba(56, 189, 248, 0.18), transparent 55%),
-        radial-gradient(circle at 0 100%, rgba(167, 139, 250, 0.24), transparent 55%),
-        var(--bg);
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 32px 16px;
+    try {
+      // حفظ في localStorage
+      storeAvatar(currentUser, selectedAvatar);
+
+      // خيار بسيط: دمج الآفاتار مع displayName (بدون تعقيد Firestore الآن)
+      const currentName = currentUser.displayName || "";
+      const emojiPart = selectedAvatar.split(" ")[0]; // أول جزء (الإيموجي)
+      const namePart = currentName || "Sleeper";
+
+      await updateProfile(currentUser, {
+        displayName: `${emojiPart} ${namePart}`,
+      });
+
+      showMessage("تم حفظ آفاتارك بنجاح. نومًا هادئًا 🌌", "success");
+
+      // هنا يمكنك تحويله لصفحة تجربة النوم الفعلية
+      // مثال:
+      // window.location.href = "sleep.html";
+    } catch (err) {
+      console.error(err);
+      showMessage("تعذر حفظ الآفاتار، حاول مرة أخرى.", "error");
     }
+  });
+}
 
-    .avatar-shell {
-      width: 100%;
-      max-width: 560px;
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.92));
-      border-radius: 32px;
-      box-shadow:
-        0 30px 120px rgba(15, 23, 42, 0.9),
-        0 0 0 1px rgba(148, 163, 184, 0.15);
-      padding: 30px 24px 24px;
-      position: relative;
-      overflow: hidden;
+// تسجيل الخروج
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.href = "auth.html";
+    } catch (err) {
+      console.error(err);
+      showMessage("تعذر تسجيل الخروج، حاول مرة أخرى.", "error");
     }
-
-    .avatar-inner {
-      position: relative;
-      z-index: 1;
-    }
-
-    .app-title {
-      text-align: center;
-      font-size: 26px;
-      letter-spacing: 0.18em;
-      margin-bottom: 4px;
-    }
-
-    .app-subtitle {
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 18px;
-    }
-
-    .screen-title {
-      text-align: center;
-      font-size: 22px;
-      margin-bottom: 8px;
-    }
-
-    .screen-lead {
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 18px;
-    }
-
-    .avatars-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .avatar-item {
-      position: relative;
-      border-radius: 999px;
-      padding: 10px 8px 8px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.16s ease;
-    }
-
-    .avatar-item span.emoji {
-      display: block;
-      font-size: 26px;
-      margin-bottom: 4px;
-    }
-
-    .avatar-item span.label {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .avatar-item.active {
-      border-color: var(--accent);
-      box-shadow: 0 0 22px rgba(124, 58, 237, 0.9);
-      background: radial-gradient(circle at 50% 0, rgba(248, 250, 252, 0.14), transparent 65%), rgba(15, 23, 42, 0.98);
-    }
-
-    .primary-btn {
-      width: 100%;
-      padding: 11px;
-      border-radius: 999px;
-      border: none;
-      background: radial-gradient(circle at 50% 0, rgba(248, 250, 252, 0.16), transparent 65%), var(--accent);
-      color: #f9fafb;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 6px;
-      box-shadow:
-        0 0 30px rgba(124, 58, 237, 0.6),
-        0 14px 40px rgba(15, 23, 42, 0.9);
-      transition: transform 0.12s ease, box-shadow 0.12s ease;
-    }
-
-    .primary-btn:hover {
-      transform: translateY(-1px);
-      box-shadow:
-        0 0 36px rgba(124, 58, 237, 0.8),
-        0 16px 45px rgba(15, 23, 42, 0.95);
-    }
-
-    .message {
-      font-size: 13px;
-      min-height: 18px;
-      margin-bottom: 6px;
-    }
-
-    .message.error {
-      color: #f97373;
-    }
-
-    .message.success {
-      color: #4ade80;
-    }
-
-    .logout-link {
-      border: none;
-      background: none;
-      color: var(--muted);
-      font-size: 12px;
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      margin-top: 10px;
-    }
-  </style>
-</head>
-<body>
-  <div class="avatar-shell">
-    <div class="avatar-inner">
-      <h1 class="app-title">SLEEPSHARE</h1>
-      <p class="app-subtitle">شبكة السكون المشتركة</p>
-
-      <h2 class="screen-title">اختر آفاتارك الهادئ</h2>
-      <p class="screen-lead">
-        اختر رمزًا بصريًا يمثّلك داخل SleepShare. يمكنك تغييره لاحقًا.
-      </p>
-
-      <div id="avatar-message" class="message"></div>
-
-      <div class="avatars-grid" id="avatars-grid">
-        <div class="avatar-item" data-avatar="🌙 Nomad">
-          <span class="emoji">🌙</span>
-          <span class="label">Nomad – الرحّال الليلي</span>
-        </div>
-        <div class="avatar-item" data-avatar="🌊 Wave">
-          <span class="emoji">🌊</span>
-          <span class="label">Wave – موجة السكون</span>
-        </div>
-        <div class="avatar-item" data-avatar="🔥 Hearth">
-          <span class="emoji">🔥</span>
-          <span class="label">Hearth – دفء الموقد</span>
-        </div>
-        <div class="avatar-item" data-avatar="🕊 Drift">
-          <span class="emoji">🕊</span>
-          <span class="label">Drift – انجراف لطيف</span>
-        </div>
-        <div class="avatar-item" data-avatar="✨ Aurora">
-          <span class="emoji">✨</span>
-          <span class="label">Aurora – وهج الشفق</span>
-        </div>
-        <div class="avatar-item" data-avatar="🌀 Echo">
-          <span class="emoji">🌀</span>
-          <span class="label">Echo – صدى هادئ</span>
-        </div>
-      </div>
-
-      <button id="save-avatar" class="primary-btn">حفظ الآفاتار والانتقال إلى SleepShare</button>
-
-      <button class="logout-link" type="button" id="avatar-logout">
-        تسجيل الخروج من الحساب
-      </button>
-    </div>
-  </div>
-
-  <script type="module" src="avatar.js"></script>
-</body>
-</html>
+  });
+}
