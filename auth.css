@@ -1,7 +1,8 @@
+/* ====== Global Styles ====== */
 body {
-  font-family: Tajawal, sans-serif;
+  font-family: "Tajawal", sans-serif;
   background: #05050a;
-  color: white;
+  color: #ffffff;
   margin: 0;
   display: flex;
   justify-content: center;
@@ -9,23 +10,37 @@ body {
   height: 100vh;
 }
 
+/* ====== Auth Container ====== */
 .auth-container {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   padding: 40px;
   width: 320px;
   border-radius: 12px;
   text-align: center;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 25px rgba(0,0,0,0.3);
 }
 
+/* ====== Inputs ====== */
 input {
   width: 100%;
   padding: 12px;
   margin: 10px 0;
   border: none;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
   border-radius: 6px;
+  outline: none;
+  transition: 0.3s;
 }
 
+input:focus {
+  background: rgba(255,255,255,0.15);
+  transform: scale(1.02);
+}
+
+/* ====== Button ====== */
 button {
   width: 100%;
   padding: 12px;
@@ -35,11 +50,24 @@ button {
   border: none;
   border-radius: 8px;
   font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
+button:hover {
+  background: #6d28d9;
+  transform: translateY(-2px);
+}
+
+/* ====== Link ====== */
 .link {
   display: block;
   margin-top: 12px;
   color: #b0c4ff;
   text-decoration: none;
+  transition: 0.2s;
+}
+
+.link:hover {
+  color: #d6e1ff;
 }
