@@ -1,389 +1,375 @@
-/* ========== إعدادات عامة ========== */
+:root {
+  --bg-main: #02030a;
+  --bg-card: #050616;
+  --bg-card-soft: #090a1c;
+  --text-main: #ffffff;
+  --text-muted: #a2a7c8;
+  --accent: #8b5cff;
+  --accent-soft: rgba(139, 92, 255, 0.2);
+  --border-subtle: #27293d;
+
+  --room-global: #4cc9f0;
+  --room-nomad: #f72585;
+  --room-hearth: #ff9e4a;
+  --room-cave: #4361ee;
+  --room-tide: #4cc9f0;
+  --room-nest: #b5179e;
+  --room-aurora: #3bcf93;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  padding: 0;
-  background: #05050b;
-  font-family: "Tajawal", sans-serif;
-  color: #ffffff;
+  min-height: 100vh;
+  font-family: "Tajawal", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
   overflow-x: hidden;
 }
 
-/* حاوية التدفق العامة */
-.flow-container {
-  width: 100%;
-  max-width: 900px;
-  margin: auto;
+.background-gradient {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(76, 201, 240, 0.16), transparent 55%),
+    radial-gradient(circle at 80% 100%, rgba(247, 37, 133, 0.18), transparent 55%);
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: -2;
+}
+
+/* Header */
+
+.main-header {
   text-align: center;
-  padding-bottom: 120px;
+  padding: 24px 16px 8px;
 }
 
-.app-title {
-  font-size: 42px;
-  font-weight: 700;
-  margin-top: 40px;
-  letter-spacing: 3px;
+.brand-title {
+  margin: 0;
+  letter-spacing: 0.25em;
+  font-size: 20px;
 }
 
-.app-subtitle {
-  font-size: 18px;
-  opacity: 0.7;
-  margin-bottom: 30px;
+.brand-subtitle {
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 14px;
 }
 
-/* ========== الشاشات ========== */
+/* Flow container */
+
+.flow-container {
+  max-width: 900px;
+  margin: 0 auto 64px;
+  padding: 16px;
+}
+
 .sleep-screen {
   display: none;
-  animation: fadeIn 0.6s ease-in-out;
+  margin-top: 12px;
 }
 
-.sleep-screen.is-active {
+.sleep-screen.active {
   display: block;
 }
 
-/* ========== البطاقة الأساسية ========== */
 .card {
-  background: rgba(10, 10, 20, 0.88);
-  border-radius: 30px;
-  padding: 50px 40px;
-  width: 85%;
-  margin: 40px auto;
-  box-shadow: 0px 0px 40px rgba(110, 80, 255, 0.25);
+  background: radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.05), transparent 35%),
+    radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 0.03), transparent 45%),
+    var(--bg-card);
+  border-radius: 28px;
+  padding: 32px 24px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.8);
 }
 
-/* ========== العناوين ========== */
+/* Typography */
+
 .step-title {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 20px;
+  margin: 0 0 12px;
+  font-size: 22px;
 }
 
 .step-text {
-  font-size: 17px;
-  opacity: 0.8;
-  margin-bottom: 25px;
+  margin: 0 0 20px;
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.9;
 }
 
-/* ========== الأزرار ========== */
-.primary-btn {
-  background: linear-gradient(90deg, #8a4bff, #5c2dff);
-  padding: 14px 40px;
-  color: #fff;
-  border: none;
-  border-radius: 25px;
-  font-size: 17px;
+.step-hint {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Buttons */
+
+.primary-btn,
+.secondary-btn,
+.ghost-btn,
+.pill {
   cursor: pointer;
-  transition: 0.2s;
+  border-radius: 999px;
+  border: none;
+  font-family: inherit;
+  transition: all 0.15s ease-out;
+  font-size: 14px;
+}
+
+.primary-btn {
+  background: radial-gradient(circle at 50% 0%, #f8f5ff, #8b5cff);
+  color: #050616;
+  padding: 10px 32px;
+  font-weight: 600;
+  box-shadow: 0 18px 40px rgba(139, 92, 255, 0.45);
 }
 
 .primary-btn:hover {
-  transform: scale(1.06);
+  transform: translateY(-1px);
+  box-shadow: 0 22px 60px rgba(139, 92, 255, 0.6);
 }
 
 .secondary-btn {
   background: transparent;
-  border: 1px solid #6d6af5;
-  padding: 13px 30px;
-  border-radius: 25px;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  padding: 9px 26px;
 }
 
 .secondary-btn:hover {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-/* ========== الإدخال ========== */
-.text-input {
-  width: 100%;
-  padding: 14px;
-  font-size: 16px;
-  border-radius: 15px;
-  border: 1px solid #6d6af5;
-  background: transparent;
-  color: white;
-  margin-bottom: 20px;
-  box-sizing: border-box;
-}
-
-.text-area {
-  width: 100%;
-  padding: 18px;
-  font-size: 17px;
-  border-radius: 20px;
-  border: 1px solid #6d6af5;
-  background: transparent;
-  color: white;
-  min-height: 110px;
-  box-sizing: border-box;
-}
-
-/* ========== عناصر الاختيار (الأقراص) ========== */
-.pill-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.pill {
-  padding: 10px 26px;
-  border: 1px solid #6d6af5;
-  border-radius: 20px;
-  cursor: pointer;
   background: rgba(255, 255, 255, 0.03);
 }
 
-.pill:hover {
-  background: rgba(120, 100, 255, 0.3);
+.ghost-btn {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  color: var(--text-muted);
+  padding: 8px 18px;
+  font-size: 13px;
 }
 
-/* ========== Tabs المصادقة ========== */
-.auth-tabs {
+.ghost-btn.active {
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.38);
+  color: #ffffff;
+}
+
+/* Pills */
+
+.pill-list {
   display: flex;
-  gap: 8px;
-  justify-content: center;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.pill {
+  padding: 7px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+}
+
+.pill:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.pill.selected {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+/* Inputs */
+
+.text-input,
+.text-area {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(6, 7, 22, 0.92);
+  color: var(--text-main);
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.14s ease-out, box-shadow 0.14s ease-out;
+}
+
+.text-input:focus,
+.text-area:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(139, 92, 255, 0.6);
+}
+
+.text-area {
+  resize: vertical;
+}
+
+/* Actions */
+
+.step-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
   flex-wrap: wrap;
 }
 
-.auth-tab {
-  padding: 8px 18px;
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.3);
-  background: transparent;
-  color: #fff;
-  cursor: pointer;
-  font-size: 14px;
+.step-actions.map-actions {
+  justify-content: space-between;
 }
 
-.auth-tab.active {
-  background: rgba(110, 80, 255, 0.6);
-}
+/* Map */
 
-.auth-panel {
-  display: none;
-}
-
-.auth-panel.is-active {
-  display: block;
-}
-
-.divider {
-  margin: 25px 0 15px;
-  border: 0;
-  border-top: 1px solid rgba(255,255,255,0.12);
-}
-
-/* ===== الآفاتار ===== */
-.avatar-list {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.avatar-option {
-  width: 42px;
-  height: 42px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.35);
-  background: transparent;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.avatar-option.selected {
-  background: rgba(255,255,255,0.12);
-  box-shadow: 0 0 10px rgba(255,255,255,0.3);
-}
-
-/* ========== الخريطة + التنفّس البصري ========== */
 .map-box {
-  width: 100%;
-  height: 260px;
-  border-radius: 20px;
-  background: #111;
-  margin-top: 20px;
   position: relative;
+  margin-top: 4px;
+  border-radius: 24px;
+  height: 220px;
   overflow: hidden;
-  padding: 10px 10px 36px;
-  box-sizing: border-box;
+  background: radial-gradient(circle at 10% 10%, #f72585 0%, #3a0ca3 40%, #000 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.map-sky {
+.map-breath {
   position: absolute;
-  inset: 8px 8px 40px 8px;
-  border-radius: 16px;
-  background: radial-gradient(circle at 20% 40%, #445, #112);
-  opacity: 0.9;
-  animation: skyGlow 12s infinite alternate;
+  inset: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(76, 201, 240, 0.6), transparent 60%),
+              radial-gradient(circle at 80% 10%, rgba(247, 37, 133, 0.6), transparent 60%);
+  opacity: 0.7;
+  filter: blur(10px);
+  animation: breathe 8s ease-in-out infinite;
 }
 
-@keyframes skyGlow {
-  0% {
-    filter: blur(2px);
-    opacity: 0.6;
-  }
-  100% {
-    filter: blur(6px);
-    opacity: 1;
-  }
-}
-
-/* طبقة التنفس */
-.breath-layer {
-  position: absolute;
-  inset: 8px 8px 40px 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.breath-circle {
-  width: 120px;
-  height: 120px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
-  animation: breathPulse 8s ease-in-out infinite;
-}
-
-.breath-text {
-  margin-top: 12px;
-  font-size: 14px;
-  opacity: 0.8;
-}
-
-/* شهيق 4 – حبس 4 – زفير 6 تقريبًا ضمن 8 ثوانٍ */
-@keyframes breathPulse {
-  0% {
-    transform: scale(0.7);
-    opacity: 0.7;
-  }
-  20% {
-    transform: scale(1.05);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(0.7);
-    opacity: 0.65;
-  }
+.map-breath.second {
+  animation-delay: -4s;
+  mix-blend-mode: screen;
 }
 
 .map-count {
   position: absolute;
-  bottom: 8px;
-  right: 12px;
-  font-size: 15px;
-  opacity: 0.85;
+  right: 16px;
+  bottom: 14px;
+  font-size: 13px;
+  color: #f7f8ff;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
 }
 
-/* نص الغرفة تحت الخريطة */
-.current-room {
-  position: absolute;
-  bottom: 8px;
-  left: 12px;
+.room-label {
+  margin: 18px 0 6px;
   font-size: 14px;
-  opacity: 0.8;
-  text-align: left;
 }
 
-/* زر الصوت */
-.sound-btn {
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: white;
-  font-size: 20px;
-  padding: 6px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: 0.2s ease;
+.room-tagline {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--text-muted);
 }
 
-.sound-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
+/* Message card */
 
-.sound-off {
-  opacity: 0.4;
-}
-
-/* ========== الرسالة ========== */
 .message-card {
-  background: rgba(255, 255, 255, 0.06);
-  padding: 25px;
-  border-radius: 20px;
-  margin: 20px 0;
-  font-size: 17px;
+  margin: 10px 0 24px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.04), transparent 40%),
+    rgba(6, 7, 22, 0.92);
+  font-size: 14px;
+  color: #e5e7ff;
 }
 
-/* ========== تقرير النوم ========== */
+/* Report */
+
 .report-list {
   list-style: none;
   padding: 0;
-  text-align: right;
-  line-height: 2.3;
-  font-size: 17px;
+  margin: 8px 0 16px;
+  font-size: 14px;
 }
 
-/* ========== مؤثر الظهور ========== */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
+.report-list li {
+  margin-bottom: 6px;
+}
+
+.report-description {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.9;
+}
+
+/* Room color themes */
+
+body.room-Global .card,
+body.room-Global .primary-btn {
+  --accent: var(--room-global);
+  --accent-soft: rgba(76, 201, 240, 0.2);
+}
+
+body.room-Nomad .card,
+body.room-Nomad .primary-btn {
+  --accent: var(--room-nomad);
+  --accent-soft: rgba(247, 37, 133, 0.25);
+}
+
+body.room-Hearth .card,
+body.room-Hearth .primary-btn {
+  --accent: var(--room-hearth);
+  --accent-soft: rgba(255, 158, 74, 0.25);
+}
+
+body.room-Cave .card,
+body.room-Cave .primary-btn {
+  --accent: var(--room-cave);
+  --accent-soft: rgba(67, 97, 238, 0.25);
+}
+
+body.room-Tide .card,
+body.room-Tide .primary-btn {
+  --accent: var(--room-tide);
+  --accent-soft: rgba(76, 201, 240, 0.25);
+}
+
+body.room-Nest .card,
+body.room-Nest .primary-btn {
+  --accent: var(--room-nest);
+  --accent-soft: rgba(181, 23, 158, 0.25);
+}
+
+body.room-Aurora .card,
+body.room-Aurora .primary-btn {
+  --accent: var(--room-aurora);
+  --accent-soft: rgba(59, 207, 147, 0.25);
+}
+
+/* Animation */
+
+@keyframes breathe {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  50% {
+    transform: scale(1.12);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
   }
 }
 
-/* ===== خلفيات الغرف (ألوان مختلفة لكل غرفة) ===== */
+/* Responsive */
 
-.room-tide {
-  background: radial-gradient(circle at 20% 30%, #004f7c, #001d33) !important;
-}
-
-.room-hearth {
-  background: radial-gradient(circle at 20% 30%, #8a3200, #2d0f00) !important;
-}
-
-.room-cave {
-  background: radial-gradient(circle at 50% 50%, #0b0b0d, #000000) !important;
-}
-
-.room-nest {
-  background: radial-gradient(circle at 20% 20%, #3d2e00, #0f0c00) !important;
-}
-
-.room-nomad {
-  background: radial-gradient(circle at 20% 20%, #8c6b2f, #3d2b0d) !important;
-}
-
-.room-aurora {
-  background: radial-gradient(circle at 50% 50%, #4b0088, #120021) !important;
-}
-
-.room-global {
-  background: radial-gradient(circle at 50% 50%, #003344, #000c11) !important;
-}
-
-.room-friends {
-  background: radial-gradient(circle at 50% 50%, #004466, #002233) !important;
-}
-
-.room-silent {
-  background: radial-gradient(circle at 50% 50%, #0d0d0d, #000000) !important;
+@media (min-width: 768px) {
+  .card {
+    padding: 34px 40px 30px;
+  }
 }
