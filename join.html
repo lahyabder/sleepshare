@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>الدخول إلى غرفة خاصة | SleepShare</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="auth-guard.js"></script>
+</head>
+
+<body>
+  <div class="card">
+    <h2>الدخول إلى غرفة خاصة</h2>
+
+    <p id="room-info">جاري التحقق من الرابط...</p>
+
+    <button id="enter-room-btn" class="primary-btn">دخول الغرفة</button>
+  </div>
+
+  <script type="module">
+    import { auth, db } from "./firebase.js";
+    import {
+      doc, getDoc, setDoc, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const params = new URLSearchParams(window.location.search);
+    const roomId = params.get("room");
+    const code = params.get("code");
+
+    const roomInfo = document.getElementById("room-info");
+    const enterBtn = document.getElementById("enter-room-btn");
+
+    let roomData = null;
+
+    async function checkRoom() {
+      const ref = doc(db, "privateRooms", roomId);
+      const snap = await getDoc(ref);
+
+      if (!snap.exists()) {
+        roomInfo.textContent = "الغرفة غير موجودة.";
+        enterBtn.style.display = "none";
+        return;
+      }
+
+      roomData = snap.data();
+
+      if (roomData.roomCode !== code) {
+        roomInfo.textContent = "رمز غير صحيح.";
+        enterBtn.style.display = "none";
+        return;
+      }
+
+      roomInfo.textContent = "الغرفة صالحة. يمكنك الدخول.";
+    }
+
+    checkRoom();
+
+    enterBtn.addEventListener("click", async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const sleeperRef = doc(db, "privateRooms", roomId, "sleepers", user.uid);
+
+      await setDoc(sleeperRef, {
+        mood: "Unknown",
+        sleepTime: serverTimestamp()
+      });
+
+      window.location.href = "sleep.html?private=" + roomId;
+    });
+  </script>
+</body>
+</html>
