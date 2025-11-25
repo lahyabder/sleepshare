@@ -17,7 +17,6 @@ let currentUser = null;
 // التأكد من وجود مستخدم
 onAuthStateChanged(auth, (user) => {
   if (!user) {
-    // لا يوجد مستخدم → العودة إلى صفحة auth
     window.location.href = 'auth.html';
   } else {
     currentUser = user;
