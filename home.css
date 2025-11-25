@@ -1,3 +1,12 @@
+/* إعدادات عامة */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: 'Tajawal', sans-serif;
@@ -5,11 +14,13 @@ body {
   color: white;
 }
 
+/* الهيدر */
 .header {
   display: flex;
   justify-content: space-between;
-  padding: 20px 40px;
-  background: rgba(0,0,0,0.4);
+  align-items: center;
+  padding: 16px 40px;
+  background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(8px);
   position: fixed;
   width: 100%;
@@ -18,15 +29,26 @@ body {
 }
 
 .logo {
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
   color: #9bb8ff;
 }
 
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .nav a {
-  margin-left: 20px;
   text-decoration: none;
   color: #eee;
+  font-size: 14px;
+  transition: opacity 0.2s ease;
+}
+
+.nav a:hover {
+  opacity: 0.8;
 }
 
 .nav .cta {
@@ -36,48 +58,79 @@ body {
   color: white !important;
 }
 
+/* هيرو */
 .hero {
-  height: 80vh;
+  min-height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 120px 40px 20px;
+  padding: 120px 40px 40px;
   text-align: center;
 }
 
+.hero-inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 .hero-title {
-  font-size: 48px;
+  font-size: 42px;
   background: linear-gradient(45deg, #8ab4ff, #c084fc);
   -webkit-background-clip: text;
   color: transparent;
+  margin-bottom: 16px;
 }
 
 .hero-subtitle {
   max-width: 650px;
-  margin: auto;
+  margin: 0 auto;
   opacity: 0.8;
   font-size: 18px;
+  line-height: 1.7;
 }
 
 .hero-btn {
-  margin-top: 30px;
+  display: inline-block;
+  margin-top: 28px;
   background: #7c3aed;
   padding: 14px 24px;
   border-radius: 10px;
   text-decoration: none;
   color: white;
+  font-weight: 600;
+  box-shadow: 0 18px 40px rgba(124, 58, 237, 0.45);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
+.hero-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 55px rgba(124, 58, 237, 0.6);
+}
+
+/* الأقسام */
 .section {
   padding: 100px 40px;
+}
+
+.section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
   text-align: center;
 }
 
 .section-title {
-  font-size: 32px;
-  margin-bottom: 40px;
+  font-size: 30px;
+  margin-bottom: 32px;
 }
 
+.section-lead {
+  max-width: 700px;
+  margin: 0 auto 40px;
+  opacity: 0.8;
+  font-size: 15px;
+}
+
+/* لماذا SleepShare */
 .why-grid,
 .steps,
 .rooms-grid {
@@ -86,47 +139,74 @@ body {
 }
 
 .why-grid {
-  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
 .why-card {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   padding: 20px;
   border-radius: 12px;
+  text-align: right;
+  transition: transform 0.15s ease, background 0.15s ease;
 }
 
+.why-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* خطوات الاستخدام */
 .dark {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .steps {
-  grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.step {
+  text-align: center;
 }
 
 .step-number {
   width: 40px;
   height: 40px;
-  margin: auto;
+  margin: 0 auto 10px;
   border-radius: 50%;
   background: #8ab4ff;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  color: #03040a;
+  font-weight: 700;
 }
 
+.step-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* غرف النوم */
 .rooms-grid {
-  grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
 
 .room {
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 12px;
   background: white;
   color: black;
   font-weight: bold;
+  font-size: 15px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
+.room:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.18);
+}
+
+/* ألوان الغرف */
 .r-wave { background: #9bdcff; }
 .r-stone { background: #c6c6c6; }
 .r-cloud { background: #d3c0ff; }
@@ -136,27 +216,80 @@ body {
 .r-focus { background: #d0e5f5; }
 .r-ease { background: #ffd2e7; }
 
+/* الخصوصية */
 .privacy-text {
-  max-width: 600px;
-  margin: auto;
+  max-width: 650px;
+  margin: 0 auto;
   opacity: 0.8;
+  font-size: 14px;
+  line-height: 1.8;
 }
 
+/* قسم البدء */
 .start-section {
   padding: 80px 40px;
   text-align: center;
 }
 
+.start-inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
 .start-btn {
+  display: inline-block;
   padding: 14px 24px;
   background: #7c3aed;
   color: white;
   border-radius: 10px;
   text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 18px 40px rgba(124, 58, 237, 0.45);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
+.start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 55px rgba(124, 58, 237, 0.6);
+}
+
+/* الفوتر */
 .footer {
   text-align: center;
   padding: 20px;
   opacity: 0.6;
+  font-size: 13px;
+}
+
+/* استجابة للموبايل */
+@media (max-width: 768px) {
+  .header {
+    padding: 12px 16px;
+  }
+
+  .hero,
+  .section,
+  .start-section {
+    padding: 90px 16px 40px;
+  }
+
+  .hero-title {
+    font-size: 32px;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+  }
+
+  .section-title {
+    font-size: 24px;
+  }
+
+  .nav {
+    gap: 10px;
+  }
+
+  .nav a {
+    font-size: 13px;
+  }
 }
