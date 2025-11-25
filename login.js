@@ -1,65 +1,85 @@
-// login.js
+// login.js — منطق تسجيل الدخول في SleepShare
+
 import { auth } from "./firebase.js";
 import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-// (اختياري) ضبط لغة رسائل Firebase إلى العربية
-auth.languageCode = "ar";
+// عناصر الواجهة
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const loginBtn = document.getElementById("login-btn");
 
+// عنصر لعرض الرسالة (اختياري: أضفه في login.html إن أحببت)
+// <div id="auth-message" class="message"></div>
+const messageBox = document.getElementById("auth-message");
+
+// دالة مساعدة لعرض رسالة
+function showMessage(text, type = "normal") {
+  if (!messageBox) {
+    if (type === "error") {
+      alert(text);
+    }
+    return;
+  }
+
+  messageBox.textContent = text || "";
+  messageBox.classList.remove("error", "success");
+
+  if (type === "error") messageBox.classList.add("error");
+  if (type === "success") messageBox.classList.add("success");
+}
+
+// تحويل أكواد Firebase إلى رسائل لطيفة
 function mapFirebaseError(code) {
   switch (code) {
     case "auth/invalid-email":
       return "صيغة البريد الإلكتروني غير صحيحة.";
     case "auth/user-not-found":
-      return "لا يوجد حساب بهذا البريد.";
+      return "لا يوجد حساب بهذا البريد. جرّب إنشاء حساب جديد.";
     case "auth/wrong-password":
-      return "كلمة المرور غير صحيحة.";
+      return "كلمة المرور غير صحيحة، حاول مرة أخرى.";
     case "auth/too-many-requests":
-      return "عدد محاولات كبير. يرجى الانتظار قليلًا قبل المحاولة مرة أخرى.";
+      return "تم إيقاف المحاولات مؤقتًا بسبب محاولات عديدة. انتظر قليلًا ثم جرّب من جديد.";
     default:
-      return "حدث خطأ غير متوقع. حاول مرة أخرى بعد لحظات.";
+      return "حدث خلل بسيط في الاتصال. حاول مرة أخرى بعد لحظات.";
   }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
-  const loginBtn = document.getElementById("login-btn");
+// لو كان المستخدم مسجّل دخول بالفعل → نأخذه مباشرة إلى تجربة النوم
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    window.location.href = "sleep.html";
+  }
+});
 
-  if (!emailInput || !passwordInput || !loginBtn) return;
-
-  // لو المستخدم مسجّل دخول بالفعل → نحوله مباشرة
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // غيّر الوجهة لو تحب (مثلاً: avatar.html أو sleep.html)
-      window.location.href = "home.html";
-    }
-  });
-
+// حدث الضغط على زر الدخول
+if (loginBtn) {
   loginBtn.addEventListener("click", async () => {
     const email = emailInput.value.trim();
     const password = passwordInput.value;
 
     if (!email || !password) {
-      alert("من فضلك أدخل البريد الإلكتروني وكلمة المرور.");
+      showMessage("أدخل البريد وكلمة المرور أولًا.", "error");
       return;
     }
 
     loginBtn.disabled = true;
-    loginBtn.textContent = "جارٍ تسجيل الدخول...";
+    showMessage("يتم تسجيل الدخول بهدوء...", "normal");
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      // نجاح → تحويل لصفحة التطبيق
-      window.location.href = "home.html"; // غيّرها حسب مسارك
-    } catch (error) {
-      console.error("Login error:", error);
-      alert(mapFirebaseError(error.code));
+      showMessage("تم تسجيل الدخول بنجاح. جارٍ نقلك إلى رحلة النوم…", "success");
+
+      setTimeout(() => {
+        window.location.href = "sleep.html";
+      }, 900);
+    } catch (err) {
+      console.error("Login error:", err);
+      showMessage(mapFirebaseError(err.code), "error");
     } finally {
       loginBtn.disabled = false;
-      loginBtn.textContent = "دخول";
     }
   });
-});
+}
