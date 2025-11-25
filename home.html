@@ -3,91 +3,403 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SleepShare | العالم يهدأ معًا</title>
-  <link rel="stylesheet" href="home.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+  <title>SleepShare – تسجيل الدخول</title>
+
+  <!-- يمكن ربط ملف styles.css إن أحببت -->
+  <!-- <link rel="stylesheet" href="styles.css" /> -->
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Tajawal", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 10% 0%, #303444 0, #050510 55%, #02030a 100%);
+      color: #f5f5ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 540px;
+      background: rgba(3, 5, 20, 0.96);
+      border-radius: 32px;
+      padding: 32px 32px 28px;
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(123, 97, 255, 0.45);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      color: #c0c3ff;
+      background: radial-gradient(circle at 0 0, #28e6ff 0, transparent 50%),
+                  radial-gradient(circle at 100% 100%, #9b5bff 0, transparent 55%);
+      margin-bottom: 10px;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #32ff91;
+      box-shadow: 0 0 8px #32ff91;
+    }
+
+    h1.logo {
+      text-align: center;
+      letter-spacing: 0.2em;
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: #a5a9d6;
+      margin-bottom: 20px;
+    }
+
+    .hint {
+      text-align: center;
+      font-size: 13px;
+      color: #d0d3ff;
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: #c0c3ff;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(145, 133, 255, 0.5);
+      background: rgba(7, 9, 30, 0.95);
+      color: #ffffff;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input::placeholder {
+      color: #7b80a8;
+    }
+
+    input:focus {
+      border-color: #b08cff;
+      box-shadow: 0 0 0 1px rgba(176, 140, 255, 0.4);
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .password-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .link {
+      font-size: 12px;
+      color: #9f88ff;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 11px 16px;
+      border-radius: 999px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      flex: 1.2;
+      background: radial-gradient(circle at 0 0, #68e6ff 0, transparent 65%),
+                  radial-gradient(circle at 100% 100%, #b96bff 0, transparent 60%),
+                  linear-gradient(135deg, #5e4bff, #b96bff);
+      color: #ffffff;
+      box-shadow: 0 16px 40px rgba(82, 61, 255, 0.7);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 46px rgba(82, 61, 255, 0.85);
+    }
+
+    .btn-secondary {
+      flex: 1;
+      background: transparent;
+      color: #c8c9ff;
+      border: 1px solid rgba(138, 139, 210, 0.7);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(21, 28, 70, 0.9);
+      transform: translateY(-1px);
+    }
+
+    .small-note {
+      margin-top: 18px;
+      font-size: 11px;
+      color: #8287b6;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .message {
+      margin-top: 14px;
+      font-size: 13px;
+      text-align: center;
+      min-height: 18px;
+    }
+
+    .message.error {
+      color: #ff8080;
+    }
+
+    .message.success {
+      color: #63ffb0;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 22px 18px 18px;
+        border-radius: 24px;
+      }
+
+      .btn-row {
+        flex-direction: column-reverse;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <main class="card">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      وضع تجريبي – نسخة أولية
+    </div>
 
-  <!-- ====== HEADER ====== -->
-  <header class="header">
-    <div class="logo">SleepShare</div>
-    <nav class="nav">
-      <a href="#why">لماذا؟</a>
-      <a href="#how">كيف يعمل؟</a>
-      <a href="#rooms">الغرف</a>
-      <a href="#privacy">الخصوصية</a>
-      <a href="login.html">تسجيل الدخول</a>
-      <a href="signup.html" class="cta">إنشاء حساب</a>
-    </nav>
-  </header>
+    <h1 class="logo">SLEEPSHARE</h1>
+    <p class="subtitle">المنصة العالمية للنوم الجماعي والوعي الهادئ</p>
+    <p class="hint">ادخل بهدوء، واخرج ومعك قصة نوم أوضح.</p>
 
-  <!-- ====== HERO ====== -->
-  <section class="hero">
-    <h1 class="hero-title">العالم يهدأ معًا</h1>
-    <p class="hero-subtitle">
-      SleepShare يحوّل النوم إلى تجربة انتماء صامت بينك وبين العالم.
+    <form id="auth-form">
+      <div class="field">
+        <label for="email">البريد الإلكتروني</label>
+        <input
+          type="email"
+          id="email"
+          autocomplete="email"
+          placeholder="your.email@example.com"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <div class="password-row">
+          <label for="password">كلمة المرور</label>
+          <span id="reset-link" class="link">نسيت كلمة المرور؟</span>
+        </div>
+        <input
+          type="password"
+          id="password"
+          autocomplete="current-password"
+          placeholder="••••••••"
+          required
+        />
+      </div>
+
+      <div class="btn-row">
+        <button type="button" id="signup-btn" class="btn-secondary">
+          إنشاء حساب جديد
+        </button>
+        <button type="submit" id="login-btn" class="btn-primary">
+          تسجيل الدخول
+        </button>
+      </div>
+    </form>
+
+    <div id="auth-message" class="message"></div>
+
+    <p class="small-note">
+      دخولك الآن هو تجربة تجريبية؛ سيتم تخزين هذه البيانات بشكل أساسي على جهازك،
+      بهدف اختبار رحلة الدخول والعودة فقط، دون مشاركة مع جهة أخرى.
     </p>
-    <a href="signup.html" class="hero-btn">ابدأ الآن</a>
-  </section>
+  </main>
 
-  <!-- ====== WHY ====== -->
-  <section id="why" class="section">
-    <h2 class="section-title">لماذا SleepShare؟</h2>
-    <div class="why-grid">
-      <div class="why-card"><h3>سكون مشترك</h3><p>تنام مع آلاف الأشخاص في لحظة واحدة.</p></div>
-      <div class="why-card"><h3>رسائل إيجابية</h3><p>اكتب رسالة مجهولة… واستقبل أخرى عند الاستيقاظ.</p></div>
-      <div class="why-card"><h3>تحليل رمزي</h3><p>مؤشر سكينة + توقيع حلمي + شعور صباحي هادئ.</p></div>
-    </div>
-  </section>
+  <!-- كود Firebase Auth + منطق الصفحة بالكامل -->
+  <script type="module">
+    // 1) استيراد مكتبات Firebase من CDN
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      sendPasswordResetEmail,
+      onAuthStateChanged,
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  <!-- ====== HOW IT WORKS ====== -->
-  <section id="how" class="section dark">
-    <h2 class="section-title">كيف يعمل؟</h2>
-    <div class="steps">
-      <div class="step"><div class="step-number">1</div><p>اختيار الحالة.</p></div>
-      <div class="step"><div class="step-number">2</div><p>كتابة رسالة الغد.</p></div>
-      <div class="step"><div class="step-number">3</div><p>خريطة السكون.</p></div>
-      <div class="step"><div class="step-number">4</div><p>التقرير الصباحي.</p></div>
-    </div>
-  </section>
+    // 2) إعدادات مشروعك في Firebase (من لوحة التحكم)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCtuWAOF9bCaPGosu0M44NtgL8XhzxNWec",
+      authDomain: "sleepshare-fbe2a.firebaseapp.com",
+      projectId: "sleepshare-fbe2a",
+      storageBucket: "sleepshare-fbe2a.firebasestorage.app",
+      messagingSenderId: "357111824676",
+      appId: "1:357111824676:web:a425f1db67ea57bef3f3b1",
+      measurementId: "G-9BTE9JG8NC",
+    };
 
-  <!-- ====== ROOMS ====== -->
-  <section id="rooms" class="section">
-    <h2 class="section-title">الغرف الشعورية</h2>
-    <div class="rooms-grid">
-      <div class="room r-wave">Wave – هدوء</div>
-      <div class="room r-stone">Stone – تعب</div>
-      <div class="room r-cloud">Cloud – تشتّت</div>
-      <div class="room r-echo">Echo – حنين</div>
-      <div class="room r-light">Light – تفاؤل</div>
-      <div class="room r-drift">Drift – شرود</div>
-      <div class="room r-focus">Focus – صفاء</div>
-      <div class="room r-ease">Ease – راحة</div>
-    </div>
-  </section>
+    // 3) تهيئة Firebase و Auth
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  <!-- ====== PRIVACY ====== -->
-  <section id="privacy" class="section dark">
-    <h2 class="section-title">الخصوصية أولًا</h2>
-    <p class="privacy-text">
-      لا يطلب SleepShare أي بيانات حساسة.  
-      الهوية مجهولة وتتجدد يوميًا،  
-      والتحليل يتم محليًا على جهازك فقط.
-    </p>
-  </section>
+    // 4) عناصر الواجهة
+    const form = document.getElementById("auth-form");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const loginBtn = document.getElementById("login-btn");
+    const signupBtn = document.getElementById("signup-btn");
+    const resetLink = document.getElementById("reset-link");
+    const messageBox = document.getElementById("auth-message");
 
-  <!-- ====== START ====== -->
-  <section class="start-section">
-    <h2>ابدأ رحلتك الآن</h2>
-    <a href="signup.html" class="start-btn">إنشاء حساب</a>
-  </section>
+    function showMessage(text, type = "normal") {
+      messageBox.textContent = text;
+      messageBox.classList.remove("error", "success");
+      if (type === "error") messageBox.classList.add("error");
+      if (type === "success") messageBox.classList.add("success");
+    }
 
-  <!-- ====== FOOTER ====== -->
-  <footer class="footer">
-    <p>© 2025 SleepShare – اقتصاد السكون المشترك</p>
-  </footer>
+    function mapFirebaseError(code) {
+      switch (code) {
+        case "auth/invalid-email":
+          return "صيغة البريد الإلكتروني غير صحيحة.";
+        case "auth/user-not-found":
+          return "لا يوجد حساب بهذا البريد. جرّب إنشاء حساب جديد.";
+        case "auth/wrong-password":
+          return "كلمة المرور غير صحيحة، حاول مرة أخرى.";
+        case "auth/email-already-in-use":
+          return "يوجد حساب مسجل بهذا البريد بالفعل. جرّب تسجيل الدخول.";
+        case "auth/weak-password":
+          return "كلمة المرور ضعيفة. جرّب أن تكون ٦ أحرف على الأقل.";
+        default:
+          return "حدث خلل بسيط في الاتصال. حاول مرة أخرى بعد لحظات.";
+      }
+    }
 
+    // 5) تسجيل الدخول
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!email || !password) {
+        showMessage("من فضلك أدخل البريد وكلمة المرور.", "error");
+        return;
+      }
+
+      showMessage("جاري تسجيل الدخول بهدوء...", "normal");
+      loginBtn.disabled = true;
+      signupBtn.disabled = true;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        showMessage("تم تسجيل الدخول بنجاح. جاري نقلك إلى رحلة النوم...", "success");
+        // تحويل إلى صفحة الرحلة بعد ثانيتين
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1200);
+      } catch (err) {
+        console.error(err);
+        showMessage(mapFirebaseError(err.code), "error");
+      } finally {
+        loginBtn.disabled = false;
+        signupBtn.disabled = false;
+      }
+    });
+
+    // 6) إنشاء حساب جديد
+    signupBtn.addEventListener("click", async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!email || !password) {
+        showMessage("لإنشاء حساب جديد، أدخل بريدًا وكلمة مرور أولًا.", "error");
+        return;
+      }
+
+      showMessage("جاري إنشاء حساب هادئ جديد...", "normal");
+      loginBtn.disabled = true;
+      signupBtn.disabled = true;
+
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        showMessage("تم إنشاء الحساب وتسجيل الدخول. أهلاً بك في شبكة السكون.", "success");
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1200);
+      } catch (err) {
+        console.error(err);
+        showMessage(mapFirebaseError(err.code), "error");
+      } finally {
+        loginBtn.disabled = false;
+        signupBtn.disabled = false;
+      }
+    });
+
+    // 7) استرجاع كلمة المرور
+    resetLink.addEventListener("click", async () => {
+      const email = emailInput.value.trim();
+      if (!email) {
+        showMessage("أدخل بريدك الإلكتروني أولًا ثم اضغط على استرجاع كلمة المرور.", "error");
+        return;
+      }
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showMessage("تم إرسال رابط استرجاع كلمة المرور إلى بريدك.", "success");
+      } catch (err) {
+        console.error(err);
+        showMessage(mapFirebaseError(err.code), "error");
+      }
+    });
+
+    // 8) إذا كان المستخدم مسجّل دخول بالفعل، نحوله مباشرة إلى index.html
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // يمكن تعليق السطر التالي إذا أردت البقاء في صفحة الدخول
+        window.location.href = "index.html";
+      }
+    });
+  </script>
 </body>
 </html>
