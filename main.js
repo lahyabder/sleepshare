@@ -1,14 +1,13 @@
 // main.js
-import { auth, db } from './firebase.js';
+import { auth, db } from "./firebase.js";
 import {
   onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import {
   addDoc,
   collection,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  serverTimestamp,
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 // ==============================
 // التحقق من تسجيل الدخول
@@ -18,12 +17,9 @@ let currentUser = null;
 onAuthStateChanged(auth, (user) => {
   currentUser = user;
   // لو أردت أن يكون الدخول إلزاميًا:
-  // إذا لا يوجد مستخدم → نرجع لصفحة auth
-  // إذا أردته اختياريًا، علّق السطرين التاليين
-  if (!user) {
-    // يمكنك السماح كزائر، أو:
-    // window.location.href = 'auth.html';
-  }
+  // if (!user) {
+  //   window.location.href = "auth.html";
+  // }
 });
 
 // ==============================
@@ -37,7 +33,7 @@ const state = {
   endTime: null,
   serenity: null,
   dreamSignature: null,
-  userMessage: null
+  userMessage: null,
 };
 
 // إعداد الغرف
@@ -46,44 +42,50 @@ const roomConfig = {
     label: "World Room – العالم",
     labelFull: "World Room – العالم",
     tagline: "غرفة مفتوحة تلتقي فيها أنفاس من كل القارات في لحظة واحدة.",
-    soundUrl: ""
+    soundUrl: "",
   },
   Nomad: {
     label: "Nomad Room – الرحلة",
     labelFull: "Nomad Room – الرحلة",
-    tagline: "رحلة هادئة تحت سماء مفتوحة… لا أحد يعرفك هنا، لكن الكل ينام معك.",
-    soundUrl: ""
+    tagline:
+      "رحلة هادئة تحت سماء مفتوحة… لا أحد يعرفك هنا، لكن الكل ينام معك.",
+    soundUrl: "",
   },
   Hearth: {
     label: "Hearth Room – الدفء",
     labelFull: "Hearth Room – الدفء",
-    tagline: "نار صغيرة في بيت بعيد، حولها أرواح تبحث عن دفء خفيف قبل النوم.",
-    soundUrl: ""
+    tagline:
+      "نار صغيرة في بيت بعيد، حولها أرواح تبحث عن دفء خفيف قبل النوم.",
+    soundUrl: "",
   },
   Cave: {
     label: "Cave Room – العمق",
     labelFull: "Cave Room – العمق",
-    tagline: "نوم عميق يشبه كهفًا آمنًا… الظلام هنا حارس وليس تهديدًا.",
-    soundUrl: ""
+    tagline:
+      "نوم عميق يشبه كهفًا آمنًا… الظلام هنا حارس وليس تهديدًا.",
+    soundUrl: "",
   },
   Tide: {
     label: "Tide Room – المد والجزر",
     labelFull: "Tide Room – المد والجزر",
-    tagline: "صعود وهبوط، أفكار تأتي وتذهب مثل الموج، لكنها في النهاية تهدأ.",
-    soundUrl: ""
+    tagline:
+      "صعود وهبوط، أفكار تأتي وتذهب مثل الموج، لكنها في النهاية تهدأ.",
+    soundUrl: "",
   },
   Nest: {
     label: "Nest Room – العش",
     labelFull: "Nest Room – العش",
-    tagline: "غرفة صغيرة تلتف حولك كعشّ طائر، كل شيء فيها يدعوك للطمأنينة.",
-    soundUrl: ""
+    tagline:
+      "غرفة صغيرة تلتف حولك كعشّ طائر، كل شيء فيها يدعوك للطمأنينة.",
+    soundUrl: "",
   },
   Aurora: {
     label: "Aurora Room – الأضواء",
     labelFull: "Aurora Room – الأضواء",
-    tagline: "ألوان هادئة ترقص فوق نومك، كأن السماء تكتب على وسادتك.",
-    soundUrl: ""
-  }
+    tagline:
+      "ألوان هادئة ترقص فوق نومك، كأن السماء تكتب على وسادتك.",
+    soundUrl: "",
+  },
 };
 
 const anonymousMessages = [
@@ -91,7 +93,7 @@ const anonymousMessages = [
   "أغمِض عينيك… العالم يمكنه أن ينتظر حتى الصباح.",
   "هناك من ينام الآن وهو ممتن لوجودك في حياته، حتى لو لم يقل ذلك.",
   "النوم ليس هروبًا، بل عودة هادئة إلى الداخل.",
-  "دع روحك تستند على وسادة الليل كما يستند المسافر على كتف صديق."
+  "دع روحك تستند على وسادة الليل كما يستند المسافر على كتف صديق.",
 ];
 
 // ==============================
@@ -132,7 +134,7 @@ const reportDescription = document.getElementById("report-description");
 const btnResetFlow = document.getElementById("btn-reset-flow");
 
 // ==============================
-// تنقّل بين الشاشات
+// التنقل بين الشاشات
 // ==============================
 function showScreen(id) {
   screens.forEach((screen) => {
@@ -158,7 +160,7 @@ function generateDreamSignature() {
     Drift: ["Drift", "Wander", "Float"],
     Focus: ["Focus", "ClearTone", "Prism"],
     Ease: ["Ease", "SoftAir", "Velvet"],
-    Default: ["Dream", "NightTrace", "SilentSign"]
+    Default: ["Dream", "NightTrace", "SilentSign"],
   };
 
   const mood = state.mood || "Default";
@@ -185,6 +187,7 @@ function poeticSerenityDescription(score) {
 // ==============================
 function applyRoomTheme(roomKey) {
   state.room = roomKey;
+
   document.body.classList.remove(
     "room-Global",
     "room-Nomad",
@@ -198,8 +201,8 @@ function applyRoomTheme(roomKey) {
 
   const cfg = roomConfig[roomKey];
   if (cfg) {
-    roomNameLabel.textContent = cfg.labelFull;
-    roomTaglineEl.textContent = cfg.tagline;
+    if (roomNameLabel) roomNameLabel.textContent = cfg.labelFull;
+    if (roomTaglineEl) roomTaglineEl.textContent = cfg.tagline;
   }
 }
 
@@ -253,6 +256,7 @@ function formatDuration(start, end) {
 let sleepersBase = 2600 + Math.floor(Math.random() * 200);
 
 function tickSleepers() {
+  if (!sleepersCountEl) return;
   const delta = Math.floor(Math.random() * 7) - 3;
   sleepersBase = Math.max(1200, sleepersBase + delta);
   sleepersCountEl.textContent = sleepersBase.toString();
@@ -271,8 +275,11 @@ async function saveSessionToFirestore() {
       room: state.room || null,
       serenity: state.serenity || null,
       dreamSignature: state.dreamSignature || null,
-      durationMinutes: computeDurationMinutes(state.startTime, state.endTime),
-      createdAt: serverTimestamp()
+      durationMinutes: computeDurationMinutes(
+        state.startTime,
+        state.endTime
+      ),
+      createdAt: serverTimestamp(),
     });
   } catch (err) {
     console.error("خطأ في حفظ الجلسة في Firestore:", err);
@@ -282,29 +289,37 @@ async function saveSessionToFirestore() {
 // ==============================
 // الأحداث
 // ==============================
-btnStart.addEventListener("click", () => {
-  // لو أردت إجبار المستخدم على الحساب:
-  // if (!currentUser) { window.location.href = 'auth.html'; return; }
-  showScreen("screen-auth");
-});
+
+// بداية الرحلة
+if (btnStart) {
+  btnStart.addEventListener("click", () => {
+    showScreen("screen-auth");
+  });
+}
 
 // الاسم المستعار
-btnAuthSkip.addEventListener("click", () => {
-  state.nickname = null;
-  showScreen("screen-intention");
-});
+if (btnAuthSkip) {
+  btnAuthSkip.addEventListener("click", () => {
+    state.nickname = null;
+    showScreen("screen-intention");
+  });
+}
 
-btnAuthContinue.addEventListener("click", () => {
-  const value = inputName.value.trim();
-  state.nickname = value || null;
-  showScreen("screen-intention");
-});
+if (btnAuthContinue) {
+  btnAuthContinue.addEventListener("click", () => {
+    const value = inputName ? inputName.value.trim() : "";
+    state.nickname = value || null;
+    showScreen("screen-intention");
+  });
+}
 
 // إعلان النية
-btnGoingToSleep.addEventListener("click", () => {
-  state.startTime = Date.now();
-  showScreen("screen-mood");
-});
+if (btnGoingToSleep) {
+  btnGoingToSleep.addEventListener("click", () => {
+    state.startTime = Date.now();
+    showScreen("screen-mood");
+  });
+}
 
 // الحالة النفسية
 moodButtons.forEach((btn) => {
@@ -328,80 +343,117 @@ roomButtons.forEach((btn) => {
 });
 
 // رسالة الغد
-btnSkipMessage.addEventListener("click", () => {
-  state.userMessage = null;
-  showScreen("screen-map");
-  startRoomSound();
-});
+if (btnSkipMessage) {
+  btnSkipMessage.addEventListener("click", () => {
+    state.userMessage = null;
+    showScreen("screen-map");
+    startRoomSound();
+  });
+}
 
-btnSendMessage.addEventListener("click", () => {
-  const msg = textareaMessage.value.trim();
-  state.userMessage = msg || null;
-  showScreen("screen-map");
-  startRoomSound();
-});
+if (btnSendMessage) {
+  btnSendMessage.addEventListener("click", () => {
+    const msg = textareaMessage ? textareaMessage.value.trim() : "";
+    state.userMessage = msg || null;
+    showScreen("screen-map");
+    startRoomSound();
+  });
+}
 
 // الصوت
-btnToggleSound.addEventListener("click", () => {
-  soundEnabled = !soundEnabled;
-  if (soundEnabled) {
-    btnToggleSound.textContent = "الصوت: مفعّل";
-    btnToggleSound.classList.add("active");
-    startRoomSound();
-  } else {
-    btnToggleSound.textContent = "الصوت: متوقّف";
-    btnToggleSound.classList.remove("active");
-    stopRoomSound();
-  }
-});
+if (btnToggleSound) {
+  btnToggleSound.addEventListener("click", () => {
+    soundEnabled = !soundEnabled;
+    if (soundEnabled) {
+      btnToggleSound.textContent = "الصوت: مفعّل";
+      btnToggleSound.classList.add("active");
+      startRoomSound();
+    } else {
+      btnToggleSound.textContent = "الصوت: متوقّف";
+      btnToggleSound.classList.remove("active");
+      stopRoomSound();
+    }
+  });
+}
 
 // الاستيقاظ
-btnWokeUp.addEventListener("click", () => {
-  state.endTime = Date.now();
-  stopRoomSound();
+if (btnWokeUp) {
+  btnWokeUp.addEventListener("click", () => {
+    state.endTime = Date.now();
+    stopRoomSound();
 
-  const randomMsg =
-    anonymousMessages[Math.floor(Math.random() * anonymousMessages.length)];
-  receivedMessageEl.textContent = `"${randomMsg}"`;
+    if (receivedMessageEl) {
+      const randomMsg =
+        anonymousMessages[
+          Math.floor(Math.random() * anonymousMessages.length)
+        ];
+      receivedMessageEl.textContent = `"${randomMsg}"`;
+    }
 
-  showScreen("screen-wake");
-});
+    showScreen("screen-wake");
+  });
+}
 
 // التقرير + الحفظ
-btnShowReport.addEventListener("click", async () => {
-  state.serenity = generateSerenityIndex();
-  state.dreamSignature = generateDreamSignature();
+if (btnShowReport) {
+  btnShowReport.addEventListener("click", async () => {
+    state.serenity = generateSerenityIndex();
+    state.dreamSignature = generateDreamSignature();
 
-  reportMood.textContent = state.mood ? state.mood : "غير محددة";
-  const roomCfg = roomConfig[state.room];
-  reportRoom.textContent = roomCfg ? roomCfg.label : state.room;
-  reportDuration.textContent = formatDuration(state.startTime, state.endTime);
-  reportSerenity.textContent = `${state.serenity} / 100`;
-  reportDream.textContent = state.dreamSignature;
-  reportDescription.textContent = poeticSerenityDescription(state.serenity);
+    if (reportMood) {
+      reportMood.textContent = state.mood ? state.mood : "غير محددة";
+    }
+    const roomCfg = roomConfig[state.room];
+    if (reportRoom) {
+      reportRoom.textContent = roomCfg ? roomCfg.label : state.room;
+    }
+    if (reportDuration) {
+      reportDuration.textContent = formatDuration(
+        state.startTime,
+        state.endTime
+      );
+    }
+    if (reportSerenity) {
+      reportSerenity.textContent = `${state.serenity} / 100`;
+    }
+    if (reportDream) {
+      reportDream.textContent = state.dreamSignature;
+    }
+    if (reportDescription) {
+      reportDescription.textContent = poeticSerenityDescription(
+        state.serenity
+      );
+    }
 
-  await saveSessionToFirestore();
-
-  showScreen("screen-report");
-});
+    await saveSessionToFirestore();
+    showScreen("screen-report");
+  });
+}
 
 // إعادة البداية
-btnResetFlow.addEventListener("click", () => {
-  state.startTime = null;
-  state.endTime = null;
-  state.serenity = null;
-  state.dreamSignature = null;
-  textareaMessage.value = "";
-  inputName.value = "";
-  moodButtons.forEach((b) => b.classList.remove("selected"));
-  roomButtons.forEach((b) => b.classList.remove("selected"));
-  applyRoomTheme("Nomad");
-  soundEnabled = true;
-  btnToggleSound.textContent = "الصوت: مفعّل";
-  btnToggleSound.classList.add("active");
-  showScreen("screen-welcome");
-});
+if (btnResetFlow) {
+  btnResetFlow.addEventListener("click", () => {
+    state.startTime = null;
+    state.endTime = null;
+    state.serenity = null;
+    state.dreamSignature = null;
+    if (textareaMessage) textareaMessage.value = "";
+    if (inputName) inputName.value = "";
+    moodButtons.forEach((b) => b.classList.remove("selected"));
+    roomButtons.forEach((b) => b.classList.remove("selected"));
+    applyRoomTheme("Nomad");
+    soundEnabled = true;
+    if (btnToggleSound) {
+      btnToggleSound.textContent = "الصوت: مفعّل";
+      btnToggleSound.classList.add("active");
+    }
+    showScreen("screen-welcome");
+  });
+}
 
 // تهيئة أولية
 applyRoomTheme("Nomad");
-btnToggleSound.classList.add("active");
+if (btnToggleSound) {
+  btnToggleSound.classList.add("active");
+  btnToggleSound.textContent = "الصوت: مفعّل";
+}
