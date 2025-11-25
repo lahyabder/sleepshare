@@ -247,4 +247,23 @@
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 <script src="realtime.js"></script>
 <div id="sleep-map" class="sleep-map-container"></div>
+.sleep-map-container {
+  width: 100%;
+  height: 300px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sleep-dot {
+  width: 10px;
+  height: 10px;
+  background: #00e5ff;
+  border-radius: 50%;
+  position: absolute;
+  top: calc(50% - 5px);
+  left: calc(50% - 5px);
+  opacity: 0.8;
+}
 
