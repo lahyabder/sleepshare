@@ -1,8 +1,9 @@
 // firebase.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// نفس الإعدادات التي أعطيتني إياها
+// نفس الإعدادات التي أعطيتَني إياها
 const firebaseConfig = {
   apiKey: "AIzaSyCtuWAOF9bCaPGosu0M44NtgL8XhzxNWec",
   authDomain: "sleepshare-fbe2a.firebaseapp.com",
@@ -15,5 +16,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-export { auth };
+export { auth, db };
