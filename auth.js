@@ -4,10 +4,18 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
-  updateProfile
+  updateProfile,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-// تبادل التبويبات (دخول - تسجيل - استرجاع)
+// إذا كان المستخدم مسجّل دخول بالفعل → ارسله مباشرة لـ index.html
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    window.location.href = 'index.html';
+  }
+});
+
+// تبادل التبويبات
 const tabs = document.querySelectorAll('.tab-btn');
 const forms = document.querySelectorAll('.form');
 const messageBox = document.getElementById('auth-message');
@@ -23,12 +31,10 @@ tabs.forEach(tab => {
   tab.addEventListener('click', () => showForm(tab.dataset.target));
 });
 
-// أزرار نصية تفتح شاشة أخرى (مثلاً: نسيت كلمة المرور)
 document.querySelectorAll('[data-open]').forEach(btn => {
   btn.addEventListener('click', () => showForm(btn.dataset.open));
 });
 
-// رسائل
 function setMessage(text, type = 'error') {
   messageBox.textContent = text;
   messageBox.className = `message ${type}`;
