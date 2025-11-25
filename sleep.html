@@ -1,123 +1,246 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <title>SleepShare | رحلة النوم</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تجربة النوم الجماعي | SleepShare</title>
+
+  <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <!-- سكربتات الصفحة (Modules) -->
+  <script type="module" src="auth-guard.js"></script>
+  <script type="module" src="main.js"></script>
 </head>
 
-<body>
-  <div class="flow-container">
-    <h1 class="app-title">SleepShare</h1>
-    <p class="app-subtitle">رحلة النوم الجماعي والوعي الهادئ</p>
+<body class="room-Nomad">
+  <div class="background-gradient"></div>
 
-    <!-- 1. الترحيب -->
+  <!-- هيدر بسيط أعلى الصفحة + زر خروج -->
+  <header class="main-header">
+    <h1 class="brand-title">SLEEPSHARE</h1>
+    <p class="brand-subtitle">رحلة النوم الجماعي والوعي الهادئ</p>
+  </header>
+
+  <!-- زر الخروج (يتعامل معه auth-guard.js) -->
+  <button
+    id="logout-btn"
+    class="ghost-btn"
+    style="position: fixed; top: 16px; left: 16px; z-index: 20;"
+  >
+    تسجيل الخروج
+  </button>
+
+  <main class="flow-container">
+
+    <!-- 1. شاشة الترحيب -->
     <section class="sleep-screen active" id="screen-welcome">
-      <h2 class="step-title">أهلًا بك في SleepShare</h2>
-      <p class="step-text">تحوّل لحظة النوم إلى انتماء صامت...</p>
-      <button class="primary-btn" id="btn-start">ابدأ</button>
+      <div class="card">
+        <h2 class="step-title">العالم يهدأ معًا</h2>
+        <p class="step-text">
+          هنا تتحوّل لحظة النوم من عزلة فردية إلى انتماء صامت مع آلاف الأرواح حول العالم.
+          كل جلسة نوم هي إشارة صغيرة تضيء على خريطة ليلية هادئة.
+        </p>
+        <button class="primary-btn" id="btn-start">
+          ابدأ رحلة النوم الآن
+        </button>
+      </div>
     </section>
 
-    <!-- 2. الاسم المستعار -->
+    <!-- 2. شاشة الاسم المستعار -->
     <section class="sleep-screen" id="screen-auth">
-      <h2 class="step-title">الاسم المستعار (اختياري)</h2>
-      <input id="input-name" class="text-input" placeholder="اسم رمزي (اختياري)">
-      <div class="step-actions">
-        <button class="secondary-btn" id="btn-auth-skip">تخطي</button>
-        <button class="primary-btn" id="btn-auth-continue">متابعة</button>
+      <div class="card">
+        <h2 class="step-title">تعرّف على نفسك بهدوء</h2>
+        <p class="step-text">
+          يمكنك إدخال اسم مستعار يظهر داخليًا في التقارير والرسائل المجهولة.
+          أو يمكنك المتابعة دون كتابة أي شيء.
+        </p>
+
+        <input
+          type="text"
+          id="input-name"
+          class="text-input"
+          placeholder="اكتب اسمًا مستعارًا (اختياري)"
+        >
+
+        <div class="step-actions">
+          <button class="secondary-btn" id="btn-auth-skip">تخطي</button>
+          <button class="primary-btn" id="btn-auth-continue">متابعة</button>
+        </div>
       </div>
     </section>
 
     <!-- 3. إعلان النية -->
     <section class="sleep-screen" id="screen-intention">
-      <h2 class="step-title">إعلان النية</h2>
-      <p class="step-text">اضغط للانضمام لشبكة السكون العالمية.</p>
-      <button class="primary-btn" id="btn-going-to-sleep">
-        أنا ذاهب للنوم الآن
-      </button>
+      <div class="card">
+        <h2 class="step-title">إعلان النية للنوم</h2>
+        <p class="step-text">
+          بضغطك على هذا الزر، تُعلن بهدوء أنك ذاهب للنوم الآن وتنضم إلى شبكة السكون العالمية.
+          هذه اللحظة تصبح نقطة على الخريطة الليلية لـ SleepShare.
+        </p>
+        <button class="primary-btn" id="btn-going-to-sleep">
+          أنا ذاهب للنوم الآن
+        </button>
+      </div>
     </section>
 
-    <!-- 4. الحالة النفسية -->
+    <!-- 4. اختيار الحالة الشعورية -->
     <section class="sleep-screen" id="screen-mood">
-      <h2 class="step-title">كيف تشعر الآن؟</h2>
-      <div class="pill-list">
-        <button class="pill mood-option" data-mood="Wave">Wave – هدوء</button>
-        <button class="pill mood-option" data-mood="Stone">Stone – تعب</button>
-        <button class="pill mood-option" data-mood="Cloud">Cloud – تشتّت</button>
-        <button class="pill mood-option" data-mood="Echo">Echo – حنين</button>
-        <button class="pill mood-option" data-mood="Light">Light – تفاؤل</button>
-        <button class="pill mood-option" data-mood="Drift">Drift – شرود</button>
-        <button class="pill mood-option" data-mood="Focus">Focus – صفاء</button>
-        <button class="pill mood-option" data-mood="Ease">Ease – راحة</button>
-      </div>
-    </section>
-
-    <!-- 5. رسالة الغد -->
-    <section class="sleep-screen" id="screen-message">
-      <h2 class="step-title">رسالة الغد</h2>
-      <textarea id="tomorrow-message" class="text-area" rows="4"
-        placeholder="اكتب رسالة لشخص مجهول..."></textarea>
-      <div class="step-actions">
-        <button class="secondary-btn" id="btn-skip-message">تخطي</button>
-        <button class="primary-btn" id="btn-send-message">إرسال</button>
-      </div>
-    </section>
-
-    <!-- 6. خريطة السكون -->
-    <section class="sleep-screen" id="screen-map">
-      <h2 class="step-title">خريطة السكون</h2>
-      <p class="step-text">أنت الآن جزء من خريطة ليلية صامتة.</p>
-
-      <div class="map-box">
-        <div class="map-stars"></div>
-        <p class="map-count">
-          النائمون الآن: <span id="sleepers-count">0</span> شخصًا
+      <div class="card">
+        <h2 class="step-title">كيف تشعر الآن؟</h2>
+        <p class="step-text">
+          اختر الرمز الأقرب لحالتك الحالية. لا حاجة لشرح ما حدث في يومك؛ الرمز يكفي.
         </p>
 
-        <ul id="sleepers-list" class="sleepers-list"></ul>
+        <div class="pill-list" id="mood-list">
+          <button class="pill mood-option" data-mood="Wave">Wave – هدوء</button>
+          <button class="pill mood-option" data-mood="Stone">Stone – تعب</button>
+          <button class="pill mood-option" data-mood="Cloud">Cloud – تشتّت</button>
+          <button class="pill mood-option" data-mood="Echo">Echo – حنين</button>
+          <button class="pill mood-option" data-mood="Light">Light – تفاؤل</button>
+          <button class="pill mood-option" data-mood="Drift">Drift – شرود</button>
+          <button class="pill mood-option" data-mood="Focus">Focus – صفاء</button>
+          <button class="pill mood-option" data-mood="Ease">Ease – راحة</button>
+        </div>
+
+        <p class="step-hint">
+          يمكنك تغيير الحالة في جلسات أخرى لاحقًا؛ ما يهم هو هذه اللحظة فقط.
+        </p>
       </div>
-
-      <p class="step-hint">عند استيقاظك اضغط هنا:</p>
-
-      <button class="primary-btn" id="btn-woke-up">
-        أنا استيقظت الآن
-      </button>
     </section>
 
-    <!-- 7. رسالة الاستيقاظ -->
+    <!-- 5. اختيار الغرفة -->
+    <section class="sleep-screen" id="screen-room">
+      <div class="card">
+        <h2 class="step-title">اختر الغرفة الشعورية</h2>
+        <p class="step-text">
+          كل غرفة تمثّل طقسًا مختلفًا للنوم. اختر المكان الذي يناسب روحك هذه الليلة.
+        </p>
+
+        <div class="pill-list" id="room-list">
+          <button class="pill room-option" data-room="Tide">Tide Room – غرفة الموج</button>
+          <button class="pill room-option" data-room="Hearth">Hearth Room – غرفة الدفء</button>
+          <button class="pill room-option" data-room="Cave">Cave Room – الكهف</button>
+          <button class="pill room-option" data-room="Nest">Nest Room – العشّ</button>
+          <button class="pill room-option" data-room="Nomad">Nomad Room – الرحلة</button>
+          <button class="pill room-option" data-room="Aurora">Aurora Room – الشفق</button>
+        </div>
+
+        <p class="step-hint">
+          يمكنك تغيير الغرفة في ليالٍ أخرى. tonight، اختر الغرفة الأقرب لقلبك.
+        </p>
+      </div>
+    </section>
+
+    <!-- 6. رسالة الغد -->
+    <section class="sleep-screen" id="screen-message">
+      <div class="card">
+        <h2 class="step-title">رسالة الغد (مجهولة)</h2>
+        <p class="step-text">
+          اكتب جملة قصيرة لشخص مجهول سيقرؤها عندما يستيقظ غدًا. يمكن أن تكون كلمة لطف،
+          أمل، أو شعور عابر تتركه في طريق أحدهم.
+        </p>
+
+        <textarea
+          id="tomorrow-message"
+          class="text-area"
+          rows="4"
+          placeholder="اكتب رسالة بسيطة لشخص مجهول عند استيقاظه..."
+        ></textarea>
+
+        <div class="step-actions">
+          <button class="secondary-btn" id="btn-skip-message">تخطي الرسالة</button>
+          <button class="primary-btn" id="btn-send-message">إرسال الرسالة والذهاب إلى الخريطة</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. خريطة السكون -->
+    <section class="sleep-screen" id="screen-map">
+      <div class="card">
+        <h2 class="step-title">خريطة السكون العالمية</h2>
+        <p class="step-text">
+          أنت الآن جزء من خريطة ليلية صامتة. النقاط المتوهجة تمثّل أشخاصًا ينامون
+          في اللحظة نفسها في غرف شعورية مختلفة حول العالم.
+        </p>
+
+        <div class="map-box">
+          <div class="map-breath"></div>
+          <div class="map-breath second"></div>
+          <p class="map-count">
+            النائمون الآن: <span id="sleepers-count">2600</span> شخصًا (رمزيًا)
+          </p>
+        </div>
+
+        <p class="room-label">
+          أنت الآن في <span id="room-name-label">Nomad Room – الرحلة</span>
+        </p>
+        <p class="room-tagline" id="room-tagline">
+          رحلة هادئة تحت سماء مفتوحة… لا أحد يعرفك هنا، لكن الكل ينام معك.
+        </p>
+
+        <div class="step-actions map-actions">
+          <button class="ghost-btn active" id="btn-toggle-sound">الصوت: مفعّل</button>
+          <button class="primary-btn" id="btn-woke-up">أنا استيقظت الآن</button>
+        </div>
+
+        <p class="step-hint">
+          يمكنك إطفاء الشاشة للحفاظ على البطارية. عند الاستيقاظ اضغط «أنا استيقظت الآن»
+          ليُغلق النظام جلستك ويجهّز رسالة الصباح.
+        </p>
+      </div>
+    </section>
+
+    <!-- 8. رسالة مجهول بعد الاستيقاظ -->
     <section class="sleep-screen" id="screen-wake">
-      <h2 class="step-title">مرحبًا بعودتك</h2>
-      <div class="message-card">
-        <p id="received-message"></p>
+      <div class="card">
+        <h2 class="step-title">مرحبا بعودتك</h2>
+        <p class="step-text">
+          هذه رسالة رمزية مجهولة من أحد النائمين في شبكة السكون. ليست نصيحة ولا توجيهًا،
+          بل جملة صغيرة تُذكّرك بأنك لست وحدك في هذا الليل.
+        </p>
+
+        <div class="message-card">
+          <p id="received-message">
+            "كل ليلة فرصة صغيرة لنعيد ترتيب أرواحنا بهدوء، شكرًا لأنك اخترت أن تنام مع
+            العالم لا ضده."
+          </p>
+        </div>
+
+        <button class="primary-btn" id="btn-show-report">
+          عرض تقرير النوم والمزاج
+        </button>
       </div>
-      <button class="primary-btn" id="btn-show-report">عرض التقرير</button>
     </section>
 
-    <!-- 8. التقرير -->
+    <!-- 9. تقرير النوم -->
     <section class="sleep-screen" id="screen-report">
-      <h2 class="step-title">تقرير نومك</h2>
+      <div class="card">
+        <h2 class="step-title">تقرير نومك الليلي</h2>
 
-      <ul class="report-list">
-        <li>الحالة: <span id="report-mood">—</span></li>
-        <li>المدة: <span id="report-duration">—</span></li>
-        <li>السكينة: <span id="report-serenity">—</span></li>
-        <li>التوقيع: <span id="report-dream">—</span></li>
-      </ul>
+        <ul class="report-list">
+          <li>الحالة عند النوم: <span id="report-mood">—</span></li>
+          <li>الغرفة المختارة: <span id="report-room">—</span></li>
+          <li>المدة التقريبية للجلسة: <span id="report-duration">—</span></li>
+          <li>مؤشر السكينة (رمزي): <span id="report-serenity">—</span></li>
+          <li>التوقيع الحلمي (Dream Signature): <span id="report-dream">—</span></li>
+        </ul>
 
-      <button class="secondary-btn" id="btn-reset-flow">
-        العودة للبداية
-      </button>
+        <p class="report-description" id="report-description">
+          <!-- يملؤها main.js بوصف شاعري بناءً على مؤشر السكينة -->
+        </p>
+
+        <p class="step-hint">
+          هذا التقرير رمزي وتجريبي. الهدف منه مساعدتك على ملاحظة علاقتك بالنوم
+          وتكرار لحظات السكون الواعية، لا استبدال أي استشارة طبية أو نفسية.
+        </p>
+
+        <div class="step-actions">
+          <button class="secondary-btn" id="btn-reset-flow">العودة إلى البداية</button>
+        </div>
+      </div>
     </section>
-  </div>
 
-  <!-- Socket.IO -->
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-
-  <!-- منطق الصفحات -->
-  <script type="module" src="main.js"></script>
-
-  <!-- الاتصال اللحظي بالخادم -->
-  <script type="module" src="realtime.js"></script>
+  </main>
 </body>
 </html>
