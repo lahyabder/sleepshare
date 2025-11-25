@@ -7,6 +7,31 @@
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCtuWAOF9bCaPGosu0M44NtgL8XhzxNWec",
+    authDomain: "sleepshare-fbe2a.firebaseapp.com",
+    projectId: "sleepshare-fbe2a",
+    storageBucket: "sleepshare-fbe2a.firebasestorage.app",
+    messagingSenderId: "357111824676",
+    appId: "1:357111824676:web:a425f1db67ea57bef3f3b1",
+    measurementId: "G-9BTE9JG8NC"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // حماية الصفحة
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // لو غير مسجّل دخول → يرجع للصفحة الرئيسية
+      window.location.href = "home.html";
+    }
+  });
+</script>
 
 <body>
   <div class="flow-container">
