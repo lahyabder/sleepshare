@@ -1,31 +1,44 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SleepShare | تجربة النوم الجماعي</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+
 <body>
+
+  <!-- زر تسجيل الخروج (ثابت أعلى الصفحة) -->
+  <button id="logout-btn" class="secondary-btn"
+          style="position: fixed; top: 20px; left: 20px; z-index: 999;">
+    تسجيل الخروج
+  </button>
+
   <div class="flow-container">
     <h1 class="app-title">SleepShare</h1>
     <p class="app-subtitle">رحلة النوم الجماعي والوعي الهادئ</p>
 
-    <!-- 1. صفحة الترحيب / الدخول -->
+    <!-- 1. صفحة الترحيب -->
     <section class="sleep-screen" id="screen-welcome">
       <h2 class="step-title">أهلًا بك في SleepShare</h2>
       <p class="step-text">
         هنا تتحوّل لحظة النوم من عزلة فردية إلى انتماء صامت مع آلاف الأرواح حول العالم.
       </p>
-      <button class="primary-btn" id="btn-start">
-        ابدأ / تسجيل الدخول
-      </button>
+      <button class="primary-btn" id="btn-start">ابدأ / تسجيل الدخول</button>
     </section>
 
-    <!-- 2. صفحة الدخول البسيط -->
+    <!-- 2. اسم مستعار -->
     <section class="sleep-screen" id="screen-auth">
       <h2 class="step-title">تسجيل الدخول الهادئ</h2>
       <p class="step-text">
         يمكنك إدخال اسم مستعار (اختياري) أو المتابعة مباشرة دون اسم.
       </p>
-      <input
-        type="text"
-        id="input-name"
-        class="text-input"
-        placeholder="اكتب اسمًا مستعارًا (اختياري)"
-      />
+
+      <input type="text" id="input-name" class="text-input" placeholder="اكتب اسمًا مستعارًا (اختياري)" />
+
       <div class="step-actions">
         <button class="secondary-btn" id="btn-auth-skip">تخطي</button>
         <button class="primary-btn" id="btn-auth-continue">متابعة</button>
@@ -36,14 +49,12 @@
     <section class="sleep-screen" id="screen-intention">
       <h2 class="step-title">إعلان النية للنوم</h2>
       <p class="step-text">
-        بضغطك على هذا الزر، تُعلن بهدوء أنك ذاهب للنوم الآن وتنضم إلى شبكة السكون العالمية.
+        بضغطك على هذا الزر، تُعلن أنك ذاهب للنوم الآن وتنضم إلى شبكة السكون العالمية.
       </p>
-      <button class="primary-btn" id="btn-going-to-sleep">
-        أنا ذاهب للنوم الآن
-      </button>
+      <button class="primary-btn" id="btn-going-to-sleep">أنا ذاهب للنوم الآن</button>
     </section>
 
-    <!-- 4. اختيار الحالة النفسية -->
+    <!-- 4. اختيار الحالة -->
     <section class="sleep-screen" id="screen-mood">
       <h2 class="step-title">كيف تشعر الآن؟</h2>
       <p class="step-text">اختر الرمز الأقرب لحالتك الحالية:</p>
@@ -58,73 +69,48 @@
         <button class="pill mood-option" data-mood="Focus">Focus – صفاء</button>
         <button class="pill mood-option" data-mood="Ease">Ease – راحة</button>
       </div>
-
-      <p class="step-hint">يمكنك الضغط على أي رمز وسيتم الانتقال للخطوة التالية.</p>
     </section>
 
     <!-- 5. رسالة الغد -->
     <section class="sleep-screen" id="screen-message">
       <h2 class="step-title">رسالة الغد (مجهولة)</h2>
       <p class="step-text">
-        اكتب جملة قصيرة لشخص مجهول سيقرؤها عندما يستيقظ غدًا. يمكن أن تكون كلمة لطف،
-        أمل، أو مشاركة شعور عابر.
+        اكتب رسالة رمزية لشخص مجهول سيقرؤها عند استيقاظه غدًا.
       </p>
-      <textarea
-        id="tomorrow-message"
-        class="text-area"
-        rows="4"
-        placeholder="اكتب رسالة بسيطة لشخص مجهول عند استيقاظه..."
-      ></textarea>
+
+      <textarea id="tomorrow-message" class="text-area" rows="4"
+                placeholder="اكتب رسالة بسيطة لشخص مجهول..."></textarea>
+
       <div class="step-actions">
-        <button class="secondary-btn" id="btn-skip-message">
-          تخطي الرسالة
-        </button>
-        <button class="primary-btn" id="btn-send-message">
-          إرسال الرسالة والذهاب للنوم
-        </button>
+        <button class="secondary-btn" id="btn-skip-message">تخطي</button>
+        <button class="primary-btn" id="btn-send-message">إرسال والذهاب للنوم</button>
       </div>
     </section>
 
     <!-- 6. خريطة السكون -->
     <section class="sleep-screen" id="screen-map">
       <h2 class="step-title">خريطة السكون العالمية</h2>
-      <p class="step-text">
-        أنت الآن جزء من خريطة ليلية صامتة. النقاط المتوهجة تمثّل أشخاصًا ينامون
-        في اللحظة نفسها.
-      </p>
+      <p class="step-text">أنت الآن جزء من خريطة ليلية صامتة.</p>
 
       <div class="map-box">
         <div class="map-stars"></div>
-        <p class="map-count">
-          النائمون الآن: <span id="sleepers-count">0</span> شخصًا
-        </p>
+        <p class="map-count">النائمون الآن: <span id="sleepers-count">0</span> شخصًا</p>
       </div>
 
-      <p class="step-hint">
-        للحفاظ على بطارية هاتفك، يمكنك إطفاء الشاشة يدويًا. عند استيقاظك اضغط الزر التالي.
-      </p>
-
-      <button class="primary-btn" id="btn-woke-up">
-        أنا استيقظت الآن
-      </button>
+      <button class="primary-btn" id="btn-woke-up">أنا استيقظت الآن</button>
     </section>
 
-    <!-- 7. رسالة مجهول بعد الاستيقاظ -->
+    <!-- 7. رسالة بعد الاستيقاظ -->
     <section class="sleep-screen" id="screen-wake">
       <h2 class="step-title">مرحبًا بعودتك</h2>
-      <p class="step-text">
-        هذه رسالة رمزية مجهولة من أحد النائمين في شبكة السكون:
-      </p>
+
       <div class="message-card">
         <p id="received-message">
-          "كل ليلة فرصة صغيرة لنعيد ترتيب أرواحنا بهدوء، شكرًا لأنك اخترت أن تنام مع
-          العالم لا ضده."
+          "كل ليلة فرصة صغيرة لنعيد ترتيب أرواحنا بهدوء."
         </p>
       </div>
 
-      <button class="primary-btn" id="btn-show-report">
-        عرض تقرير النوم والمزاج
-      </button>
+      <button class="primary-btn" id="btn-show-report">عرض تقرير النوم</button>
     </section>
 
     <!-- 8. تقرير النوم -->
@@ -133,21 +119,40 @@
 
       <ul class="report-list">
         <li>الحالة عند النوم: <span id="report-mood">—</span></li>
-        <li>المدة التقريبية للجلسة: <span id="report-duration">—</span></li>
-        <li>مؤشر السكينة (رمزي): <span id="report-serenity">—</span></li>
-        <li>التوقيع الحلمي (Dream Signature): <span id="report-dream">—</span></li>
+        <li>المدة التقريبية: <span id="report-duration">—</span></li>
+        <li>مؤشر السكينة: <span id="report-serenity">—</span></li>
+        <li>التوقيع الحلمي: <span id="report-dream">—</span></li>
       </ul>
 
-      <p class="step-hint">
-        هذا التقرير رمزي وتجريبي، الهدف منه مساعدتك على ملاحظة علاقتك بالنوم
-        وتكرار لحظات السكون الواعية.
-      </p>
-
-      <button class="secondary-btn" id="btn-reset-flow">
-        العودة إلى البداية
-      </button>
+      <button class="secondary-btn" id="btn-reset-flow">العودة إلى البداية</button>
     </section>
   </div>
 
+  <!-- Firebase + حماية الصفحة -->
+  <script type="module">
+    import { auth } from "./firebase.js";
+    import {
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    // الحماية — لو المستخدم غير مسجّل → يرجع للصفحة الرئيسية
+    onAuthStateChanged(auth, (user) => {
+      if (!user) window.location.href = "home.html";
+    });
+
+    // زر تسجيل الخروج
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", async () => {
+        await signOut(auth);
+        window.location.href = "home.html";
+      });
+    }
+  </script>
+
+  <!-- منطق الواجهة -->
   <script src="main.js"></script>
+
 </body>
+</html>
