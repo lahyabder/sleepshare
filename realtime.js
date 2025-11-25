@@ -89,3 +89,41 @@ socket.on("connect", () => {
 socket.on("disconnect", () => {
   console.log("تم قطع الاتصال بخادم SleepShare Realtime.");
 });
+// الاتصال بخادم SleepShare على Render
+const BACKEND_URL = "https://sleepshare-backend.onrender.com"; // عدل الرابط لو مختلف
+const socket = io(BACKEND_URL, {
+  transports: ["websocket"],
+});
+
+// [1] عند فتح الصفحة: إرسال الجلسة
+function joinSleepSession(ephemeralId, geoCell, room, moodSymbol) {
+  socket.emit("join_sleep_session", {
+    ephemeralId,
+    geoCell,
+    chosenRoom: room,
+    moodSymbol
+  });
+}
+
+// [2] استقبال التحديثات من السيرفر
+socket.on("sleep_map_update", (sleepers) => {
+  console.log("Updated sleepers:", sleepers);
+
+  // هنا تضع أي كود لعرض النقاط على الخريطة
+  updateSleepMapUI(sleepers);
+});
+
+// مثال بسيط لعرض النقاط على الشاشة
+function updateSleepMapUI(list) {
+  const container = document.getElementById("sleep-map");
+  if (!container) return;
+
+  container.innerHTML = "";
+  
+  list.forEach((sleeper) => {
+    const dot = document.createElement("div");
+    dot.className = "sleep-dot";
+    dot.title = `Mood: ${sleeper.mood} | Geo: ${sleeper.geo}`;
+    container.appendChild(dot);
+  });
+}
