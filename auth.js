@@ -1,108 +1,172 @@
 // auth.js
-import { auth } from './firebase.js';
 import {
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   updateProfile,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-// إذا كان المستخدم مسجّل دخول بالفعل → ارسله مباشرة لـ index.html
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    window.location.href = 'index.html';
+import { auth } from "./firebase.js";
+
+// عناصر الواجهة
+const tabs = document.querySelectorAll(".tab-btn");
+const forms = document.querySelectorAll(".form");
+const messageEl = document.getElementById("auth-message");
+
+// نماذج
+const loginForm = document.getElementById("login-form");
+const signupForm = document.getElementById("signup-form");
+const resetForm = document.getElementById("reset-form");
+
+// دالة لمسطرة الرسائل
+function showMessage(text, type = "success") {
+  if (!messageEl) return;
+  messageEl.textContent = text || "";
+  messageEl.classList.remove("error", "success");
+  if (text) {
+    messageEl.classList.add(type);
   }
-});
-
-// تبادل التبويبات
-const tabs = document.querySelectorAll('.tab-btn');
-const forms = document.querySelectorAll('.form');
-const messageBox = document.getElementById('auth-message');
-
-function showForm(targetId) {
-  forms.forEach(f => f.classList.toggle('active', f.id === targetId));
-  tabs.forEach(t => t.classList.toggle('active', t.dataset.target === targetId));
-  messageBox.textContent = '';
-  messageBox.className = 'message';
 }
 
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => showForm(tab.dataset.target));
-});
+// التحكم في التابات
+function setActiveForm(targetId) {
+  // زر التاب
+  tabs.forEach((btn) => {
+    if (btn.dataset.target === targetId) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
 
-document.querySelectorAll('[data-open]').forEach(btn => {
-  btn.addEventListener('click', () => showForm(btn.dataset.open));
-});
+  // النماذج
+  forms.forEach((form) => {
+    if (form.id === targetId) {
+      form.classList.add("active");
+    } else {
+      form.classList.remove("active");
+    }
+  });
 
-function setMessage(text, type = 'error') {
-  messageBox.textContent = text;
-  messageBox.className = `message ${type}`;
+  // تنظيف الرسالة عند تغيير التاب
+  showMessage("");
 }
 
-// تسجيل الدخول
-const loginForm = document.getElementById('login-form');
-loginForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    setMessage('تم تسجيل الدخول بنجاح، جاري نقلك إلى SleepShare…', 'success');
-    setTimeout(() => {
-      window.location.href = 'index.html';
-    }, 800);
-  } catch (err) {
-    console.error(err);
-    let msg = 'تعذّر تسجيل الدخول. تأكد من البريد وكلمة المرور.';
-    if (err.code === 'auth/user-not-found') msg = 'لا يوجد حساب بهذا البريد.';
-    if (err.code === 'auth/wrong-password') msg = 'كلمة المرور غير صحيحة.';
-    setMessage(msg, 'error');
-  }
+// عند الضغط على التابات
+tabs.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const target = btn.dataset.target;
+    if (target) {
+      setActiveForm(target);
+    }
+  });
 });
 
-// إنشاء حساب
-const signupForm = document.getElementById('signup-form');
-signupForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const name = document.getElementById('signup-name').value.trim();
-  const email = document.getElementById('signup-email').value.trim();
-  const password = document.getElementById('signup-password').value;
+// الروابط الداخلية (مثل "نسيت كلمة المرور؟")
+document.querySelectorAll("[data-open]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const target = btn.dataset.open;
+    if (target) {
+      setActiveForm(target);
+    }
+  });
+});
 
-  try {
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
+// ===== تسجيل الدخول =====
+if (loginForm) {
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    showMessage("جاري الدخول بهدوء…", "success");
 
-    if (name) {
-      await updateProfile(cred.user, { displayName: name });
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value;
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+
+      showMessage("تم تسجيل الدخول بنجاح. نومًا هادئًا 🌙", "success");
+
+      // هنا يمكنك إعادة التوجيه لصفحة أخرى بعد تسجيل الدخول
+      // window.location.href = "home.html";
+    } catch (err) {
+      console.error(err);
+      let msg = "تعذر تسجيل الدخول. تأكد من البيانات.";
+
+      if (err.code === "auth/user-not-found") msg = "لا يوجد حساب بهذا البريد.";
+      else if (err.code === "auth/wrong-password") msg = "كلمة المرور غير صحيحة.";
+      else if (err.code === "auth/invalid-email") msg = "صيغة البريد غير صحيحة.";
+
+      showMessage(msg, "error");
+    }
+  });
+}
+
+// ===== إنشاء حساب =====
+if (signupForm) {
+  signupForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    showMessage("جاري إنشاء حسابك الهادئ…", "success");
+
+    const name = document.getElementById("signup-name").value.trim();
+    const email = document.getElementById("signup-email").value.trim();
+    const password = document.getElementById("signup-password").value;
+
+    if (password.length < 6) {
+      showMessage("الرجاء اختيار كلمة مرور من 6 أحرف فأكثر.", "error");
+      return;
     }
 
-    setMessage('تم إنشاء الحساب بنجاح! سننقلك لاختيار الآفاتار…', 'success');
-    setTimeout(() => {
-      window.location.href = 'avatar.html';
-    }, 900);
-  } catch (err) {
-    console.error(err);
-    let msg = 'تعذّر إنشاء الحساب.';
-    if (err.code === 'auth/email-already-in-use') msg = 'هذا البريد مسجل مسبقًا.';
-    if (err.code === 'auth/weak-password') msg = 'كلمة المرور ضعيفة، استخدم 6 أحرف فأكثر.';
-    setMessage(msg, 'error');
-  }
-});
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
 
-// استرجاع كلمة المرور
-const resetForm = document.getElementById('reset-form');
-resetForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const email = document.getElementById('reset-email').value.trim();
+      if (name) {
+        await updateProfile(cred.user, { displayName: name });
+      }
 
-  try {
-    await sendPasswordResetEmail(auth, email);
-    setMessage('تم إرسال رابط استرجاع كلمة المرور إلى بريدك.', 'success');
-  } catch (err) {
-    console.error(err);
-    let msg = 'تعذّر إرسال رسالة الاسترجاع.';
-    if (err.code === 'auth/user-not-found') msg = 'لا يوجد حساب بهذا البريد.';
-    setMessage(msg, 'error');
-  }
-});
+      showMessage("تم إنشاء حسابك في SleepShare بنجاح 🌌", "success");
+
+      // يمكنك تحويل المستخدم مباشرة بعد التسجيل
+      // window.location.href = "home.html";
+    } catch (err) {
+      console.error(err);
+      let msg = "تعذر إنشاء الحساب. حاول مرة أخرى.";
+
+      if (err.code === "auth/email-already-in-use")
+        msg = "هذا البريد مستخدم بالفعل.";
+      else if (err.code === "auth/invalid-email")
+        msg = "صيغة البريد الإلكتروني غير صحيحة.";
+      else if (err.code === "auth/weak-password")
+        msg = "كلمة المرور ضعيفة. اختر كلمة أقوى.";
+
+      showMessage(msg, "error");
+    }
+  });
+}
+
+// ===== استرجاع كلمة المرور =====
+if (resetForm) {
+  resetForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    showMessage("جاري إرسال الرابط…", "success");
+
+    const email = document.getElementById("reset-email").value.trim();
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      showMessage(
+        "تم إرسال رابط استرجاع كلمة المرور إلى بريدك (تحقق من صندوق الرسائل والرسائل غير المرغوب فيها).",
+        "success"
+      );
+    } catch (err) {
+      console.error(err);
+      let msg = "تعذر إرسال رابط الاسترجاع.";
+
+      if (err.code === "auth/user-not-found")
+        msg = "لا يوجد حساب مرتبط بهذا البريد.";
+      else if (err.code === "auth/invalid-email")
+        msg = "صيغة البريد الإلكتروني غير صحيحة.";
+
+      showMessage(msg, "error");
+    }
+  });
+}
