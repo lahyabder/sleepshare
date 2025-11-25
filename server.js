@@ -1,70 +1,83 @@
-// server.js - Backend Code for SleepShare
+// server.js - Backend Code for SleepShare (Realtime Sleep Map)
 
-const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
+const express = require("express");
+const http = require("http");
+const socketIo = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
 
-// ⚠️ هام: يجب أن تسمح لجميع المصادر بالوصول لخادمك مؤقتاً
+// السماح لجميع المصادر بالوصول مؤقتاً (للتجارب)
 const io = socketIo(server, {
-    cors: {
-        origin: "*", // السماح بالاتصال من أي موقع (لتجنب مشاكل CORS)
-        methods: ["GET", "POST"]
-    }
+  cors: {
+    origin: "*", // يمكن تقييدها لاحقاً لدومين محدد
+    methods: ["GET", "POST"],
+  },
 });
 
-// تخزين المستخدمين النشطين (Active Sleepers) بشكل مؤقت
+// تخزين المستخدمين النشطين (Active Sleepers) في الذاكرة مؤقتاً
 let activeSleepers = {};
 
-io.on('connection', (socket) => {
-    console.log(`User connected: ${socket.id}`);
+io.on("connection", (socket) => {
+  console.log(`User connected: ${socket.id}`);
 
-    // [1] استقبال: وظيفة إعلان النية والانضمام إلى غرفة
-    socket.on('join_sleep_session', (data) => {
-        const { ephemeralId, geoCell, chosenRoom, moodSymbol } = data;
-        
-        // الانضمام إلى غرفة مخصصة
-        socket.join(chosenRoom);
+  // [1] استقبال: إعلان النية والانضمام إلى غرفة شعورية
+  socket.on("join_sleep_session", (data) => {
+    const { ephemeralId, geoCell, chosenRoom, moodSymbol } = data || {};
 
-        // تسجيل بيانات المستخدم (مجهولة/رمزية)
-        activeSleepers[socket.id] = {
-            id: ephemeralId, 
-            geo: geoCell, 
-            room: chosenRoom,
-            mood: moodSymbol,
-            startTime: new Date()
-        };
-        
-        // إرسال تحديث لخريطة السكون (لجميع المستخدمين في نفس الغرفة)
-        io.to(chosenRoom).emit('sleep_map_update', getAmbientSleepers(chosenRoom));
-    });
+    const safeRoom = chosenRoom || "Global";
 
-    // [2] عند الانفصال (الاستيقاظ أو إغلاق المتصفح)
-    socket.on('disconnect', () => {
-        const sleeper = activeSleepers[socket.id];
-        if (sleeper) {
-            const room = sleeper.room;
-            delete activeSleepers[socket.id];
-            
-            // إرسال تحديث للخريطة بعد خروج المستخدم
-            io.to(room).emit('sleep_map_update', getAmbientSleepers(room));
-            console.log(`User disconnected from room ${room}`);
-        }
-    });
+    // الانضمام إلى غرفة مخصصة
+    socket.join(safeRoom);
+
+    // تسجيل بيانات المستخدم (مجهولة/رمزية)
+    activeSleepers[socket.id] = {
+      id: ephemeralId || `EPH-${socket.id}`,
+      geo: geoCell || "UN",
+      room: safeRoom,
+      mood: moodSymbol || "Unknown",
+      startTime: new Date(),
+    };
+
+    console.log(
+      `User joined room ${safeRoom} with mood ${moodSymbol} and geo ${geoCell}`
+    );
+
+    // إرسال تحديث لخريطة السكون (لجميع الموجودين في نفس الغرفة)
+    io.to(safeRoom).emit("sleep_map_update", getAmbientSleepers(safeRoom));
+  });
+
+  // [2] عند الانفصال (الاستيقاظ أو إغلاق المتصفح)
+  socket.on("disconnect", () => {
+    const sleeper = activeSleepers[socket.id];
+    if (sleeper) {
+      const room = sleeper.room;
+      delete activeSleepers[socket.id];
+
+      // تحديث الخريطة بعد خروج المستخدم
+      io.to(room).emit("sleep_map_update", getAmbientSleepers(room));
+      console.log(`User disconnected from room ${room}`);
+    } else {
+      console.log(`User disconnected: ${socket.id}`);
+    }
+  });
 });
 
-// وظيفة لاستخراج قائمة النائمين الرمزية
+// إرجاع قائمة النائمين الرمزية في غرفة معينة
 function getAmbientSleepers(room) {
-    // إرجاع قائمة مجهولة بأشخاص في نفس الغرفة
-    const roomSleepers = Object.values(activeSleepers).filter(s => s.room === room);
-    
-    // تطبيق المجهولية: إرجاع فقط الموقع الواسع
-    return roomSleepers.map(s => ({ geo: s.geo, mood: s.mood }));
+  const roomSleepers = Object.values(activeSleepers).filter(
+    (s) => s.room === room
+  );
+
+  // لا نُرجع الـid الحقيقية – فقط geo + mood (مجهولية)
+  return roomSleepers.map((s) => ({
+    geo: s.geo,
+    mood: s.mood,
+  }));
 }
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`SleepShare Server running on port ${PORT}`));
 
-// تنبيه: هذا الكود لن يعمل إلا إذا تم تشغيله في بيئة Node.js حية.
+// ملاحظة: يجب تشغيل هذا الملف في بيئة Node.js عبر:
+// node server.js
