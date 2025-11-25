@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>SleepShare | تسجيل الدخول</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #020313;
+      --card: #060719;
+      --accent: #7c3aed;
+      --accent-soft: rgba(124, 58, 237, 0.25);
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --error: #f97373;
+      --success: #4ade80;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(148, 163, 184, 0.24), transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(56, 189, 248, 0.18), transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(167, 139, 250, 0.24), transparent 55%),
+        var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    .auth-shell {
+      width: 100%;
+      max-width: 540px;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.92));
+      border-radius: 32px;
+      box-shadow:
+        0 30px 120px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(148, 163, 184, 0.15);
+      padding: 32px 24px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-shell::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(129, 140, 248, 0.08), transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(56, 189, 248, 0.08), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .auth-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .app-title {
+      text-align: center;
+      font-size: 32px;
+      letter-spacing: 0.15em;
+      margin-bottom: 4px;
+    }
+
+    .app-subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .screen-title {
+      text-align: center;
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .screen-lead {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 8px 0;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .tab-btn.active {
+      background: radial-gradient(circle at 50% 0, rgba(248, 250, 252, 0.14), transparent 65%), var(--accent);
+      border-color: transparent;
+      color: #f9fafb;
+      box-shadow: 0 0 24px rgba(124, 58, 237, 0.55);
+    }
+
+    .form {
+      display: none;
+      animation: fadeUp 0.25s ease-out;
+    }
+
+    .form.active {
+      display: block;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 5px;
+      color: #e5e7eb;
+    }
+
+    .input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      transition: all 0.16s ease;
+    }
+
+    .input::placeholder {
+      color: #6b7280;
+    }
+
+    .input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.5);
+      background: rgba(15, 23, 42, 0.98);
+    }
+
+    .primary-btn {
+      width: 100%;
+      padding: 11px;
+      border-radius: 999px;
+      border: none;
+      background: radial-gradient(circle at 50% 0, rgba(248, 250, 252, 0.16), transparent 65%), var(--accent);
+      color: #f9fafb;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 6px;
+      box-shadow:
+        0 0 30px rgba(124, 58, 237, 0.6),
+        0 14px 40px rgba(15, 23, 42, 0.9);
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 36px rgba(124, 58, 237, 0.8),
+        0 16px 45px rgba(15, 23, 42, 0.95);
+    }
+
+    .link-btn {
+      border: none;
+      background: none;
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      margin-top: 8px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .message {
+      font-size: 13px;
+      margin-bottom: 8px;
+      min-height: 18px;
+    }
+
+    .message.error {
+      color: var(--error);
+    }
+
+    .message.success {
+      color: var(--success);
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-shell">
+    <div class="auth-inner">
+      <h1 class="app-title">SLEEPSHARE</h1>
+      <p class="app-subtitle">المنصة العالمية للنوم الجماعي والوعي الهادئ</p>
+
+      <h2 class="screen-title">حسابك في SleepShare</h2>
+      <p class="screen-lead">
+        أنشئ حسابًا هادئًا لتتابع تجارب نومك، تختار آفاتارك، وتحفظ تقارير السكون.
+      </p>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-target="login-form">تسجيل الدخول</button>
+        <button class="tab-btn" data-target="signup-form">إنشاء حساب</button>
+        <button class="tab-btn" data-target="reset-form">استرجاع كلمة المرور</button>
+      </div>
+
+      <div id="auth-message" class="message"></div>
+
+      <!-- نموذج تسجيل الدخول -->
+      <form id="login-form" class="form active">
+        <div class="field">
+          <label for="login-email">البريد الإلكتروني</label>
+          <input id="login-email" type="email" class="input" placeholder="you@example.com" required />
+        </div>
+        <div class="field">
+          <label for="login-password">كلمة المرور</label>
+          <input id="login-password" type="password" class="input" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="primary-btn">تسجيل الدخول</button>
+        <button type="button" class="link-btn" data-open="reset-form">نسيت كلمة المرور؟</button>
+      </form>
+
+      <!-- نموذج إنشاء حساب -->
+      <form id="signup-form" class="form">
+        <div class="field">
+          <label for="signup-name">الاسم المعروض (اختياري)</label>
+          <input id="signup-name" type="text" class="input" placeholder="اسمك في شبكة السكون" />
+        </div>
+        <div class="field">
+          <label for="signup-email">البريد الإلكتروني</label>
+          <input id="signup-email" type="email" class="input" placeholder="you@example.com" required />
+        </div>
+        <div class="field">
