@@ -1,15 +1,28 @@
-// firebase.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول | SleepShare</title>
+  <link rel="stylesheet" href="auth.css">
 
-// ضع هنا إعدادات مشروعك من Firebase console
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  appId: "YOUR_APP_ID",
-  // لو عندك بيانات أخرى (storageBucket, messagingSenderId...) أضفها هنا
-};
+  <!-- تحميل Firebase قبل login.js -->
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="login.js"></script>
+</head>
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+<body>
+  <div class="auth-container">
+    <h1>تسجيل الدخول</h1>
+
+    <input id="email" type="email" placeholder="البريد الإلكتروني">
+    <input id="password" type="password" placeholder="كلمة المرور">
+
+    <button id="login-btn">دخول</button>
+
+    <a class="link" href="reset.html">نسيت كلمة المرور؟</a>
+    <a class="link" href="signup.html">إنشاء حساب جديد</a>
+    <a class="link" href="home.html">العودة للرئيسية</a>
+  </div>
+</body>
+</html>
