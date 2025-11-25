@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>SleepShare | رحلة النوم</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="flow-container">
+    <h1 class="app-title">SleepShare</h1>
+    <p class="app-subtitle">رحلة النوم الجماعي والوعي الهادئ</p>
+
+    <!-- 1. الترحيب -->
+    <section class="sleep-screen active" id="screen-welcome">
+      <h2 class="step-title">أهلًا بك في SleepShare</h2>
+      <p class="step-text">تحوّل لحظة النوم إلى انتماء صامت...</p>
+      <button class="primary-btn" id="btn-start">ابدأ</button>
+    </section>
+
+    <!-- 2. الاسم المستعار -->
+    <section class="sleep-screen" id="screen-auth">
+      <h2 class="step-title">الاسم المستعار (اختياري)</h2>
+      <input id="input-name" class="text-input" placeholder="اسم رمزي (اختياري)">
+      <div class="step-actions">
+        <button class="secondary-btn" id="btn-auth-skip">تخطي</button>
+        <button class="primary-btn" id="btn-auth-continue">متابعة</button>
+      </div>
+    </section>
+
+    <!-- 3. إعلان النية -->
+    <section class="sleep-screen" id="screen-intention">
+      <h2 class="step-title">إعلان النية</h2>
+      <p class="step-text">اضغط للانضمام لشبكة السكون العالمية.</p>
+      <button class="primary-btn" id="btn-going-to-sleep">
+        أنا ذاهب للنوم الآن
+      </button>
+    </section>
+
+    <!-- 4. الحالة النفسية -->
+    <section class="sleep-screen" id="screen-mood">
+      <h2 class="step-title">كيف تشعر الآن؟</h2>
+      <div class="pill-list">
+        <button class="pill mood-option" data-mood="Wave">Wave – هدوء</button>
+        <button class="pill mood-option" data-mood="Stone">Stone – تعب</button>
+        <button class="pill mood-option" data-mood="Cloud">Cloud – تشتّت</button>
+        <button class="pill mood-option" data-mood="Echo">Echo – حنين</button>
+        <button class="pill mood-option" data-mood="Light">Light – تفاؤل</button>
+        <button class="pill mood-option" data-mood="Drift">Drift – شرود</button>
+        <button class="pill mood-option" data-mood="Focus">Focus – صفاء</button>
+        <button class="pill mood-option" data-mood="Ease">Ease – راحة</button>
+      </div>
+    </section>
+
+    <!-- 5. رسالة الغد -->
+    <section class="sleep-screen" id="screen-message">
+      <h2 class="step-title">رسالة الغد</h2>
+      <textarea id="tomorrow-message" class="text-area" rows="4"
+        placeholder="اكتب رسالة لشخص مجهول..."></textarea>
+      <div class="step-actions">
+        <button class="secondary-btn" id="btn-skip-message">تخطي</button>
+        <button class="primary-btn" id="btn-send-message">إرسال</button>
+      </div>
+    </section>
+
+    <!-- 6. خريطة السكون -->
+    <section class="sleep-screen" id="screen-map">
+      <h2 class="step-title">خريطة السكون</h2>
+      <p class="step-text">أنت الآن جزء من خريطة ليلية صامتة.</p>
+
+      <div class="map-box">
+        <div class="map-stars"></div>
+        <p class="map-count">
+          النائمون الآن: <span id="sleepers-count">0</span> شخصًا
+        </p>
+
+        <ul id="sleepers-list" class="sleepers-list"></ul>
+      </div>
+
+      <p class="step-hint">عند استيقاظك اضغط هنا:</p>
+
+      <button class="primary-btn" id="btn-woke-up">
+        أنا استيقظت الآن
+      </button>
+    </section>
+
+    <!-- 7. رسالة الاستيقاظ -->
+    <section class="sleep-screen" id="screen-wake">
+      <h2 class="step-title">مرحبًا بعودتك</h2>
+      <div class="message-card">
+        <p id="received-message"></p>
+      </div>
+      <button class="primary-btn" id="btn-show-report">عرض التقرير</button>
+    </section>
+
+    <!-- 8. التقرير -->
+    <section class="sleep-screen" id="screen-report">
+      <h2 class="step-title">تقرير نومك</h2>
+
+      <ul class="report-list">
+        <li>الحالة: <span id="report-mood">—</span></li>
+        <li>المدة: <span id="report-duration">—</span></li>
+        <li>السكينة: <span id="report-serenity">—</span></li>
+        <li>التوقيع: <span id="report-dream">—</span></li>
+      </ul>
+
+      <button class="secondary-btn" id="btn-reset-flow">
+        العودة للبداية
+      </button>
+    </section>
+  </div>
+
+  <!-- Socket.IO -->
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+  <!-- منطق الصفحات -->
+  <script type="module" src="main.js"></script>
+
+  <!-- الاتصال اللحظي بالخادم -->
+  <script type="module" src="realtime.js"></script>
+</body>
+</html>
