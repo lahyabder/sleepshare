@@ -1,3 +1,31 @@
+// main.js
+import { auth, db } from './firebase.js';
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  addDoc,
+  collection,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ==============================
+// التحقق من تسجيل الدخول
+// ==============================
+let currentUser = null;
+
+onAuthStateChanged(auth, (user) => {
+  currentUser = user;
+  // لو أردت أن يكون الدخول إلزاميًا:
+  // إذا لا يوجد مستخدم → نرجع لصفحة auth
+  // إذا أردته اختياريًا، علّق السطرين التاليين
+  if (!user) {
+    // يمكنك السماح كزائر، أو:
+    // window.location.href = 'auth.html';
+  }
+});
+
 // ==============================
 // بيانات الجلسة
 // ==============================
@@ -12,13 +40,13 @@ const state = {
   userMessage: null
 };
 
-// قواميس للغرف
+// إعداد الغرف
 const roomConfig = {
   Global: {
     label: "World Room – العالم",
     labelFull: "World Room – العالم",
     tagline: "غرفة مفتوحة تلتقي فيها أنفاس من كل القارات في لحظة واحدة.",
-    soundUrl: "" // أضف رابط صوت عند الحاجة
+    soundUrl: ""
   },
   Nomad: {
     label: "Nomad Room – الرحلة",
@@ -58,7 +86,6 @@ const roomConfig = {
   }
 };
 
-// رسائل مجهولة محتملة
 const anonymousMessages = [
   "كل ليلة فرصة صغيرة لنغفر لأنفسنا أشياء اليوم.",
   "أغمِض عينيك… العالم يمكنه أن ينتظر حتى الصباح.",
@@ -80,7 +107,6 @@ const inputName = document.getElementById("input-name");
 const btnGoingToSleep = document.getElementById("btn-going-to-sleep");
 
 const moodButtons = document.querySelectorAll(".mood-option");
-
 const roomButtons = document.querySelectorAll(".room-option");
 
 const textareaMessage = document.getElementById("tomorrow-message");
@@ -106,7 +132,7 @@ const reportDescription = document.getElementById("report-description");
 const btnResetFlow = document.getElementById("btn-reset-flow");
 
 // ==============================
-// التنقّل بين الشاشات
+// تنقّل بين الشاشات
 // ==============================
 function showScreen(id) {
   screens.forEach((screen) => {
@@ -116,14 +142,13 @@ function showScreen(id) {
 }
 
 // ==============================
-// أدوات المؤشر الحلمي
+// المؤشرات (Serenity + Dream)
 // ==============================
 function generateSerenityIndex() {
-  // رقم بين 60 و 100 لمزيد من الإيجابية
-  return Math.floor(60 + Math.random() * 40);
+  return Math.floor(60 + Math.random() * 40); // 60–100
 }
 
-function generateDreamSignature(roomKey) {
+function generateDreamSignature() {
   const dictionaries = {
     Wave: ["Wave", "Tide", "Azure"],
     Stone: ["Stone", "Basalt", "IronShade"],
@@ -156,7 +181,7 @@ function poeticSerenityDescription(score) {
 }
 
 // ==============================
-// تفعيل السمة اللونية للغرفة
+// تفعيل سمة الغرفة
 // ==============================
 function applyRoomTheme(roomKey) {
   state.room = roomKey;
@@ -194,9 +219,7 @@ function startRoomSound() {
   currentAudio = new Audio(cfg.soundUrl);
   currentAudio.loop = true;
   currentAudio.volume = 0.35;
-  currentAudio.play().catch(() => {
-    // إذا منع المتصفح التشغيل التلقائي نتجاهل الخطأ
-  });
+  currentAudio.play().catch(() => {});
 }
 
 function stopRoomSound() {
@@ -207,21 +230,25 @@ function stopRoomSound() {
 }
 
 // ==============================
-// حساب المدة
+// المدة
 // ==============================
-function formatDuration(start, end) {
-  if (!start || !end) return "غير معروفة";
+function computeDurationMinutes(start, end) {
+  if (!start || !end) return null;
   const diffMs = end - start;
   const diffMinutes = Math.max(1, Math.round(diffMs / 60000));
-  if (diffMinutes < 60) {
-    return `${diffMinutes} دقيقة تقريبًا`;
-  }
+  return diffMinutes;
+}
+
+function formatDuration(start, end) {
+  const diffMinutes = computeDurationMinutes(start, end);
+  if (!diffMinutes) return "غير معروفة";
+  if (diffMinutes < 60) return `${diffMinutes} دقيقة تقريبًا`;
   const hours = (diffMinutes / 60).toFixed(1);
   return `${hours} ساعة (تقريبًا)`;
 }
 
 // ==============================
-// عدّاد النائمين (تمثيلي)
+// عدّاد النائمين
 // ==============================
 let sleepersBase = 2600 + Math.floor(Math.random() * 200);
 
@@ -233,15 +260,35 @@ function tickSleepers() {
 setInterval(tickSleepers, 5000);
 
 // ==============================
+// حفظ الجلسة في Firestore
+// ==============================
+async function saveSessionToFirestore() {
+  try {
+    await addDoc(collection(db, "sleepSessions"), {
+      uid: currentUser ? currentUser.uid : null,
+      nickname: state.nickname || null,
+      mood: state.mood || null,
+      room: state.room || null,
+      serenity: state.serenity || null,
+      dreamSignature: state.dreamSignature || null,
+      durationMinutes: computeDurationMinutes(state.startTime, state.endTime),
+      createdAt: serverTimestamp()
+    });
+  } catch (err) {
+    console.error("خطأ في حفظ الجلسة في Firestore:", err);
+  }
+}
+
+// ==============================
 // الأحداث
 // ==============================
-
-// 1) البداية
 btnStart.addEventListener("click", () => {
+  // لو أردت إجبار المستخدم على الحساب:
+  // if (!currentUser) { window.location.href = 'auth.html'; return; }
   showScreen("screen-auth");
 });
 
-// 2) الاسم المستعار
+// الاسم المستعار
 btnAuthSkip.addEventListener("click", () => {
   state.nickname = null;
   showScreen("screen-intention");
@@ -253,13 +300,13 @@ btnAuthContinue.addEventListener("click", () => {
   showScreen("screen-intention");
 });
 
-// 3) إعلان النية
+// إعلان النية
 btnGoingToSleep.addEventListener("click", () => {
   state.startTime = Date.now();
   showScreen("screen-mood");
 });
 
-// 4) اختيار الحالة النفسية
+// الحالة النفسية
 moodButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
     moodButtons.forEach((b) => b.classList.remove("selected"));
@@ -269,7 +316,7 @@ moodButtons.forEach((btn) => {
   });
 });
 
-// 5) اختيار الغرفة
+// اختيار الغرفة
 roomButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
     roomButtons.forEach((b) => b.classList.remove("selected"));
@@ -280,7 +327,7 @@ roomButtons.forEach((btn) => {
   });
 });
 
-// 6) رسالة الغد
+// رسالة الغد
 btnSkipMessage.addEventListener("click", () => {
   state.userMessage = null;
   showScreen("screen-map");
@@ -294,7 +341,7 @@ btnSendMessage.addEventListener("click", () => {
   startRoomSound();
 });
 
-// 7) التحكم بالصوت
+// الصوت
 btnToggleSound.addEventListener("click", () => {
   soundEnabled = !soundEnabled;
   if (soundEnabled) {
@@ -308,7 +355,7 @@ btnToggleSound.addEventListener("click", () => {
   }
 });
 
-// 8) الاستيقاظ
+// الاستيقاظ
 btnWokeUp.addEventListener("click", () => {
   state.endTime = Date.now();
   stopRoomSound();
@@ -320,13 +367,11 @@ btnWokeUp.addEventListener("click", () => {
   showScreen("screen-wake");
 });
 
-// 9) عرض التقرير
-btnShowReport.addEventListener("click", () => {
-  // توليد المؤشرات
+// التقرير + الحفظ
+btnShowReport.addEventListener("click", async () => {
   state.serenity = generateSerenityIndex();
-  state.dreamSignature = generateDreamSignature(state.room);
+  state.dreamSignature = generateDreamSignature();
 
-  // تعبئة التقرير
   reportMood.textContent = state.mood ? state.mood : "غير محددة";
   const roomCfg = roomConfig[state.room];
   reportRoom.textContent = roomCfg ? roomCfg.label : state.room;
@@ -335,12 +380,13 @@ btnShowReport.addEventListener("click", () => {
   reportDream.textContent = state.dreamSignature;
   reportDescription.textContent = poeticSerenityDescription(state.serenity);
 
+  await saveSessionToFirestore();
+
   showScreen("screen-report");
 });
 
-// 10) إعادة البداية
+// إعادة البداية
 btnResetFlow.addEventListener("click", () => {
-  // إعادة التهيئة الخفيفة
   state.startTime = null;
   state.endTime = null;
   state.serenity = null;
