@@ -1,37 +1,31 @@
+// auth-guard.js — حارس الصفحات المحمية في SleepShare
+
 import { auth } from "./firebase.js";
 import {
   onAuthStateChanged,
-  signOut
+  signOut,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-/* --------------------------------------------------
-   حراسة الصفحة: منع الدخول لغير المسجلين
--------------------------------------------------- */
-
+// إذا لم يكن المستخدم مسجّلاً → نرسله إلى صفحة تسجيل الدخول
 onAuthStateChanged(auth, (user) => {
   if (!user) {
-    // المستخدم غير مسجل الدخول -> نعيده للصفحة الرئيسية
-    window.location.href = "home.html";
-  } else {
-    console.log("مستخدم مسجل الدخول:", user.email);
+    window.location.href = "login.html";
   }
 });
 
-/* --------------------------------------------------
-   زر تسجيل الخروج
--------------------------------------------------- */
-
-const logoutBtn = document.getElementById("btn-logout");
+// زر تسجيل الخروج (اختياري: لو وُجد في الصفحة)
+const logoutBtn = document.getElementById("logout-btn");
 
 if (logoutBtn) {
-  logoutBtn.addEventListener("click", () => {
-    signOut(auth)
-      .then(() => {
-        // بعد تسجيل الخروج نرجع لصفحة تسجيل الدخول
-        window.location.href = "login.html";
-      })
-      .catch((err) => {
-        alert("حدث خطأ أثناء تسجيل الخروج: " + err.message);
-      });
+  logoutBtn.addEventListener("click", async () => {
+    logoutBtn.disabled = true;
+    try {
+      await signOut(auth);
+      window.location.href = "home.html";
+    } catch (err) {
+      console.error("Logout error:", err);
+      alert("حدث خطأ أثناء تسجيل الخروج، حاول مرة أخرى.");
+      logoutBtn.disabled = false;
+    }
   });
 }
