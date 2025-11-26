@@ -1,6 +1,6 @@
-// realtime.js – SleepShare Realtime World Map with Approximate Geo Positions
+// realtime.js – SleepShare Realtime World Map with Approximate Geo Positions + Mood Colors
 
-// 1) الاتصال مع السيرفر
+// 1) الاتصال مع السيرفر (ضع هنا رابط الـ backend على Render)
 const socket = io("https://sleepshare-backend.onrender.com", {
   transports: ["websocket"],
   timeout: 10000,
@@ -17,11 +17,12 @@ const joinButton = document.getElementById("join-sleep-btn");
 const mapBox = document.getElementById("sleep-map");
 
 // 4) قيم مؤقتة للمستخدم
-//   يمكن لاحقاً توليد هذه القيم من الموقع أو من Firebase User Profile
+// لاحقًا يمكن ربطها بحساب Firebase أو إعدادات المستخدم
 let ephemeralId = "EPH-" + Math.random().toString(36).substring(2, 10);
-// نفترض أنك الآن في الرياض مثلاً
+// مثال افتراضي: السعودية – الرياض
 let geoCell = "SA-RIY";
-let moodSymbol = "Wave"; // مستقبلاً يمكن ربطها بالحالة النفسية الفعلية
+// مود افتراضي – يمكن تغييره من رحلة النوم
+let moodSymbol = "Wave";
 
 // 5) جدول مواقع تقريبية لكل دولة على خريطة العالم (بنسبة مئوية من عرض/ارتفاع العنصر)
 const GEO_POSITIONS = {
@@ -79,32 +80,71 @@ const GEO_POSITIONS = {
   NZ: { x: 89, y: 73 },
 };
 
-// 6) دالة لحساب موضع النقطة بناءً على geoCell
+// 6) ألوان المزاج (Mood → لون النقطة)
+const MOOD_COLORS = {
+  Wave: {
+    bg: "#38bdf8", // أزرق هادئ
+    glow: "0 0 10px rgba(56,189,248,0.9)",
+  },
+  Stone: {
+    bg: "#f97316", // برتقالي متعب
+    glow: "0 0 10px rgba(249,115,22,0.9)",
+  },
+  Cloud: {
+    bg: "#a855f7", // بنفسجي ضبابي
+    glow: "0 0 10px rgba(168,85,247,0.9)",
+  },
+  Echo: {
+    bg: "#fb7185", // وردي حنين
+    glow: "0 0 10px rgba(251,113,133,0.9)",
+  },
+  Light: {
+    bg: "#facc15", // أصفر متفائل
+    glow: "0 0 10px rgba(250,204,21,0.9)",
+  },
+  Drift: {
+    bg: "#64748b", // أزرق رمادي
+    glow: "0 0 10px rgba(100,116,139,0.9)",
+  },
+  Focus: {
+    bg: "#22c55e", // أخضر نقي
+    glow: "0 0 10px rgba(34,197,94,0.9)",
+  },
+  Ease: {
+    bg: "#14b8a6", // تركواز مريح
+    glow: "0 0 10px rgba(20,184,166,0.9)",
+  },
+  Default: {
+    bg: "#e5e7eb",
+    glow: "0 0 10px rgba(229,231,235,0.9)",
+  },
+};
+
+// 7) دالة لحساب موضع النقطة بناءً على geoCell
 function getPositionForGeo(geo) {
   if (!geo) {
-    // مركز الخريطة تقريباً إذا ما عندنا أي كود
-    return { x: 50, y: 50 };
+    return { x: 50, y: 50 }; // مركز الخريطة تقريباً
   }
 
   // نأخذ أول جزء قبل "-" ليكون كود الدولة (SA, FR, US, …)
   const countryCode = geo.split("-")[0].toUpperCase();
   const base = GEO_POSITIONS[countryCode] || { x: 50, y: 50 };
 
-  // نضيف اهتزاز بسيط حتى لا تتراكم النقاط فوق بعض
+  // اهتزاز بسيط حتى لا تتراكم النقاط فوق بعض
   const jitterX = (Math.random() - 0.5) * 6; // من -3 إلى +3
   const jitterY = (Math.random() - 0.5) * 6;
 
   let x = base.x + jitterX;
   let y = base.y + jitterY;
 
-  // نضمن أن النقطة تبقى داخل الخريطة (2% إلى 98%)
+  // نضمن أن النقطة تبقى داخل الخريطة (من 2% إلى 98%)
   x = Math.max(2, Math.min(98, x));
   y = Math.max(2, Math.min(98, y));
 
   return { x, y };
 }
 
-// 7) تغيير الغرفة من الأزرار
+// 8) تغيير الغرفة من الأزرار
 roomButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
     currentRoom = btn.getAttribute("data-room") || "Global";
@@ -112,15 +152,19 @@ roomButtons.forEach((btn) => {
     roomButtons.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
 
-    roomNameSpan.textContent = currentRoom;
-    sleepersCountSpan.textContent = "0";
+    if (roomNameSpan) {
+      roomNameSpan.textContent = currentRoom;
+    }
+    if (sleepersCountSpan) {
+      sleepersCountSpan.textContent = "0";
+    }
     if (mapBox) {
       mapBox.innerHTML = "";
     }
   });
 });
 
-// 8) عند الضغط على زر "أُميتُ جلسة النوم الآن"
+// 9) عند الضغط على زر "أنا أبدأ جلسة النوم الآن" (أو ما يعادلها)
 if (joinButton) {
   joinButton.addEventListener("click", () => {
     socket.emit("join_sleep_session", {
@@ -130,23 +174,34 @@ if (joinButton) {
       moodSymbol,
     });
 
-    console.log("Joined room:", currentRoom, "geo:", geoCell, "mood:", moodSymbol);
+    console.log(
+      "Joined room:",
+      currentRoom,
+      "| geo:",
+      geoCell,
+      "| mood:",
+      moodSymbol
+    );
   });
 }
 
-// 9) استقبال تحديث الخريطة من السيرفر
+// 10) استقبال تحديث الخريطة من السيرفر
 socket.on("sleep_map_update", (sleepers) => {
   if (!mapBox) return;
 
   const count = sleepers.length || 0;
-  sleepersCountSpan.textContent = String(count);
+  if (sleepersCountSpan) {
+    sleepersCountSpan.textContent = String(count);
+  }
 
   // مسح النقاط القديمة
   mapBox.innerHTML = "";
 
-  // رسم نقاط جديدة حسب مواقعها التقريبية
+  // رسم نقاط جديدة حسب مواقعها + المود
   sleepers.forEach((sleeper) => {
     const pos = getPositionForGeo(sleeper.geo);
+    const mood = sleeper.mood || "Default";
+    const moodStyle = MOOD_COLORS[mood] || MOOD_COLORS.Default;
 
     const dot = document.createElement("div");
     dot.className = "sleep-dot";
@@ -155,21 +210,27 @@ socket.on("sleep_map_update", (sleepers) => {
     dot.style.left = pos.x + "%";
     dot.style.top = pos.y + "%";
 
-    // (اختياري) يمكن تغيير اللون بناءً على المود
-    // if (sleeper.mood === "Stone") dot.style.background = "#f97373";
+    // لون حسب الحالة
+    dot.style.background = moodStyle.bg;
+    dot.style.boxShadow = moodStyle.glow;
+
+    // (اختياري) Tooltip بسيط عند تمرير الفأرة
+    dot.title = `Mood: ${mood}`;
 
     mapBox.appendChild(dot);
   });
 });
 
-// 10) رسائل اتصال / قطع
+// 11) رسائل اتصال / قطع
 socket.on("connect", () => {
   console.log("Connected to SleepShare backend:", socket.id);
 });
 
 socket.on("disconnect", () => {
   console.log("Disconnected from backend");
-  sleepersCountSpan.textContent = "0";
+  if (sleepersCountSpan) {
+    sleepersCountSpan.textContent = "0";
+  }
   if (mapBox) {
     mapBox.innerHTML = "";
   }
