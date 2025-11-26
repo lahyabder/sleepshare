@@ -227,43 +227,9 @@ body {
   justify-content: space-between;
 }
 
-/* خريطة السكون */
+/* خريطة السكون القديمة حُذفت – نستخدم النسخة الجديدة أدناه */
 
-.map-box {
-  position: relative;
-  margin-top: 4px;
-  border-radius: 24px;
-  height: 220px;
-  overflow: hidden;
-  background: radial-gradient(circle at 10% 10%, #f72585 0%, #3a0ca3 40%, #000 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.map-breath {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 20% 80%, rgba(76, 201, 240, 0.6), transparent 60%),
-              radial-gradient(circle at 80% 10%, rgba(247, 37, 133, 0.6), transparent 60%);
-  opacity: 0.7;
-  filter: blur(10px);
-  animation: breathe 8s ease-in-out infinite;
-}
-
-.map-breath.second {
-  animation-delay: -4s;
-  mix-blend-mode: screen;
-}
-
-.map-count {
-  position: absolute;
-  right: 16px;
-  bottom: 14px;
-  font-size: 13px;
-  color: #f7f8ff;
-  text-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
-}
-
-/* قائمة النائمين (للخريطة اللحظية) */
+/* قائمة النائمين (لو أردت عرضها كنص داخل الكرت) */
 
 .sleepers-list {
   position: absolute;
@@ -377,7 +343,7 @@ body.room-Aurora .primary-btn {
   --accent-soft: rgba(59, 207, 147, 0.25);
 }
 
-/* تنفس الخريطة */
+/* تنفس الخلفيات العامة */
 
 @keyframes breathe {
   0% {
@@ -401,116 +367,11 @@ body.room-Aurora .primary-btn {
     padding: 34px 40px 30px;
   }
 }
+
 /* ================================
-   خريطة السكون اللحظية – Sleep Map
+   واجهة اختيار الغرفة النصّية
    ================================ */
 
-.sleep-map-container {
-  position: relative;
-  margin-top: 18px;
-  width: 100%;
-  height: 260px;
-  border-radius: 26px;
-  overflow: hidden;
-  background: radial-gradient(circle at 10% 10%, #0f172a 0%, #020617 55%, #000 100%);
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.9);
-}
-
-.sleep-map-glow {
-  position: absolute;
-  inset: -20%;
-  background:
-    radial-gradient(circle at 20% 80%, rgba(76, 201, 240, 0.45), transparent 60%),
-    radial-gradient(circle at 80% 15%, rgba(139, 92, 255, 0.5), transparent 55%);
-  filter: blur(14px);
-  opacity: 0.7;
-  animation: sleep-map-breathe 12s ease-in-out infinite;
-  mix-blend-mode: screen;
-}
-
-.sleep-map-glow.second {
-  animation-delay: -6s;
-  opacity: 0.5;
-}
-
-.sleep-dot {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  box-shadow: 0 0 14px rgba(15, 23, 42, 0.9);
-  opacity: 0.9;
-  transform: translate(-50%, -50%) scale(0.9);
-  animation: sleep-dot-breathe 6s ease-in-out infinite;
-}
-
-/* أنيميشن تنفس النقاط */
-@keyframes sleep-dot-breathe {
-  0% {
-    transform: translate(-50%, -50%) scale(0.9);
-    box-shadow: 0 0 10px rgba(148, 163, 184, 0.5);
-    opacity: 0.7;
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.4);
-    box-shadow: 0 0 20px rgba(248, 250, 252, 0.9);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(0.9);
-    box-shadow: 0 0 10px rgba(148, 163, 184, 0.5);
-    opacity: 0.7;
-  }
-}
-
-/* أنيميشن تنفس الخلفية */
-@keyframes sleep-map-breathe {
-  0% {
-    transform: scale(1);
-    opacity: 0.55;
-  }
-  50% {
-    transform: scale(1.08);
-    opacity: 0.95;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.55;
-  }
-}
-.room-selector {
-  margin-top: 16px;
-  text-align: center;
-}
-
-.room-title {
-  font-size: 14px;
-  opacity: 0.8;
-  margin-bottom: 8px;
-}
-
-.room-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-}
-
-.room-btn {
-  border: none;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.06);
-  color: #fff;
-  font-size: 12px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.room-btn.active {
-  background: linear-gradient(135deg, #a855f7, #6366f1);
-}
 .room-switcher {
   margin-top: 16px;
   display: flex;
@@ -522,8 +383,8 @@ body.room-Aurora .primary-btn {
 .room-btn {
   padding: 6px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
   color: #fff;
   font-size: 12px;
   cursor: pointer;
@@ -532,12 +393,12 @@ body.room-Aurora .primary-btn {
 
 .room-btn.active {
   background: linear-gradient(135deg, #a855f7, #ec4899);
-  box-shadow: 0 0 12px rgba(236,72,153,0.55);
+  box-shadow: 0 0 12px rgba(236, 72, 153, 0.55);
   transform: translateY(-1px);
 }
 
 .room-btn:hover {
-  background: rgba(255,255,255,0.14);
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .sleep-room-status {
@@ -547,24 +408,30 @@ body.room-Aurora .primary-btn {
   opacity: 0.85;
 }
 
+/* ================================
+   خريطة السكون – World Map Background
+   ================================ */
+
+/* الحاوية الأساسية للخريطة (نفس العنصر الذي يحمل id="sleep-map") */
 .sleep-map {
   margin-top: 20px;
   width: 100%;
   height: 260px;
-  background: linear-gradient(135deg, #1a1f3b, #4f3b73, #2d4061);
-  border-radius: 16px;
+  border-radius: 32px;
   position: relative;
   overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.9);
+  background: transparent;
 }
-/* ===== SleepShare World Map Background (Override) ===== */
 
+/* خريطة العالم الداكنة */
 #sleep-map {
   position: relative;
   width: 100%;
-  height: 260px;               /* غيّرها إذا أردت ارتفاعًا أكبر أو أصغر */
+  height: 100%; /* تستعمل ارتفاع الحاوية (.sleep-map) */
   border-radius: 32px;
   overflow: hidden;
-  /* خريطة العالم الداكنة */
   background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/1920px-World_map_-_low_resolution.svg.png");
   background-size: cover;
   background-position: center;
@@ -576,14 +443,15 @@ body.room-Aurora .primary-btn {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.25) 0, transparent 45%),
-              radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.25) 0, transparent 50%),
-              linear-gradient(135deg, #020617 0%, #020617 40%, #020617 100%);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.25) 0, transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.25) 0, transparent 50%),
+    linear-gradient(135deg, #020617 0%, #020617 40%, #020617 100%);
   mix-blend-mode: soft-light;
   pointer-events: none;
 }
 
-/* النقاط فوق الخريطة */
+/* النقاط فوق الخريطة – اللون يحدده الـ JS حسب الـ mood */
 .sleep-dot {
   position: absolute;
   width: 10px;
