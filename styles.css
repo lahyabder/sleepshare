@@ -243,3 +243,23 @@ body {
     height: 220px;
   }
 }
+/* ================================
+   Cyber Network Animated Overlay
+================================ */
+
+#map-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* توهج لطيف فوق الخريطة */
+.sleep-map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 30%, rgba(0, 200, 255, 0.10), transparent);
+  pointer-events: none;
+}
