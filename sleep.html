@@ -1,81 +1,56 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تجربة النوم الجماعي – SleepShare</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SleepShare | رحلة النوم الجماعي</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
-<body class="room-Global">
 
-<header>
-  <div class="logo">SleepShare</div>
-  <nav>
-    <a href="home.html">الرئيسية</a>
-    <a href="journey.html">تجربة النوم</a>
-    <a href="analytics.html">التحليل</a>
-    <a href="symbols.html">القاموس الرمزي</a>
-    <a href="tech.html">الهوية التقنية</a>
-    <a href="social.html">التفاعل الهادئ</a>
-    <a href="login.html">حسابي</a>
-  </nav>
-</header>
+<body>
 
-<main>
-  <section class="flow-container">
-    <div class="card">
-      <h1 class="step-title">رحلة النوم الجماعي في SleepShare</h1>
-      <p class="step-text">
-        عند الضغط على الزر أدناه، ينضم ملفك الشعوري بشكل مجهول إلى
-        خريطة السكون العالمية. تُضاف نقطة ضوء صغيرة تمثّلك، وتتنفّس
-        مع مئات النقاط الأخرى في اللحظة نفسها.
-      </p>
+  <section class="sleep-container">
 
-      <div class="step-actions">
-        <button id="start-sleep-btn" class="primary-btn">
-          أنا ذاهب للنوم الآن
-        </button>
-        <button id="leave-sleep-btn" class="secondary-btn" style="display:none;">
-          أنهيت جلسة النوم
-        </button>
-      </div>
+    <h2 class="title">رحلة النوم الجماعي في SleepShare</h2>
 
-      <p id="sleep-map-status" class="step-hint">
-        لم تنضم بعد إلى خريطة السكون. عندما تضغط الزر، ستظهر نقطة
-        تمثّلك في الخريطة أدناه.
-      </p>
+    <p class="desc">
+      عند الضغط على الزر أدناه، ينضم ملفك الشعوري بشكل مجهول إلى خريطة السكون العالمية.
+      تُضاف نقطة ضوء صغيرة تمثّلك، وتتنفّس مع مئات النقاط الأخرى في اللحظة نفسها.
+    </p>
 
-      <div id="sleep-map" class="sleep-map-container">
-        <div class="sleep-map-glow"></div>
-        <div class="sleep-map-glow second"></div>
-        <!-- النقاط ستضاف هنا تلقائيًا من realtime.js -->
-      </div>
+    <button id="join-sleep-btn" class="btn-primary">
+      أُميتُ جلسة النوم الآن
+    </button>
 
-      <p class="step-hint">
-        الخريطة لا تُظهر أي بيانات شخصية: فقط حالة شعورية عامة
-        (Wave, Stone, Cloud…) ومنطقة واسعة (مثل مدينة أو بلد).
-      </p>
+    <!-- ⭐ اختيار الغرف -->
+    <div class="room-switcher">
+      <button class="room-btn active" data-room="Global">Global</button>
+      <button class="room-btn" data-room="Dreamers">Dreamers</button>
+      <button class="room-btn" data-room="Calm Souls">Calm Souls</button>
+      <button class="room-btn" data-room="Midnight Wave">Midnight Wave</button>
     </div>
+
+    <!-- ⭐ عرض الغرفة الحالية وعدد الأرواح -->
+    <p class="sleep-room-status">
+      أنت الآن في غرفة
+      «<span id="current-room-name">Global</span>».
+      عدد الأرواح النائمة معك الآن:
+      <span id="sleepers-count">0</span>.
+    </p>
+
+    <!-- مساحة الخريطة -->
+    <div id="sleep-map" class="sleep-map">
+      <!-- لاحقاً سيتم إضافة النقاط هنا -->
+    </div>
+
+    <p class="privacy-note">
+      الخريطة لا تُظهر أي بيانات شخصية: فقط حالة شعورية عامة (Wave, Stone, Cloud)
+      ومنطقة واسعة (مدينة أو بلد).
+    </p>
+
   </section>
-</main>
 
-<footer>
-  © SleepShare — العالم يهدأ معًا، نقطة ضوء واحدة في كل مرّة.
-</footer>
-
-<!-- Socket.IO من السيرفر -->
-<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-<!-- سكربت الربط اللحظي -->
-<script src="realtime.js"></script>
+  <script src="realtime.js"></script>
 </body>
 </html>
-<!-- اختيار الغرفة الشعورية -->
-<div class="room-selector">
-  <p class="room-title">اختر الغرفة التي تريد النوم فيها:</p>
-  <div class="room-buttons">
-    <button class="room-btn active" data-room="Global">الغرفة العالمية Global</button>
-    <button class="room-btn" data-room="Calm">غرفة الهدوء Calm</button>
-    <button class="room-btn" data-room="Dreamers">غرفة الحالمين Dreamers</button>
-    <button class="room-btn" data-room="NightOwls">غرفة الساهرين Night Owls</button>
-  </div>
-</div>
