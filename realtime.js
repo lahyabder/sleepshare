@@ -142,6 +142,7 @@ function updateSleepMapUI(sleepers) {
     statusEl.textContent =
       `هناك ${count} شخصًا في حالة سكون الآن في هذه الغرفة. يمكنك الانضمام بالضغط على الزر أعلاه.`;
   }
+let currentRoom = "Global"; // الغرفة الافتراضية
 
   if (!sleepers || !sleepers.length) return;
 
