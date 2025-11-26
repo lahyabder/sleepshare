@@ -1,3 +1,7 @@
+/* ===========================================
+   SleepShare Full Final CSS – World Map Version
+   =========================================== */
+
 :root {
   --bg-main: #02030a;
   --bg-card: #050616;
@@ -32,345 +36,46 @@ body {
   overflow-x: hidden;
 }
 
-.background-gradient {
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at 10% 0%, rgba(76, 201, 240, 0.16), transparent 55%),
-    radial-gradient(circle at 80% 100%, rgba(247, 37, 133, 0.18), transparent 55%);
-  opacity: 0.9;
-  pointer-events: none;
-  z-index: -2;
-}
+/* ============================
+    رأس الصفحة
+============================ */
 
-/* Header (لصفحات عامة لو احتجتها) */
-.main-header {
+.title {
   text-align: center;
-  padding: 24px 16px 8px;
+  margin-top: 24px;
+  font-size: 26px;
 }
 
-.brand-title {
-  margin: 0;
-  letter-spacing: 0.25em;
-  font-size: 20px;
-}
-
-.brand-subtitle {
-  margin: 8px 0 0;
+.desc {
+  text-align: center;
   color: var(--text-muted);
-  font-size: 14px;
-}
-
-/* حاوية رحلة النوم */
-
-.flow-container {
-  max-width: 900px;
-  margin: 0 auto 64px;
-  padding: 16px;
-}
-
-.sleep-screen {
-  display: none;
-  margin-top: 12px;
-}
-
-.sleep-screen.active {
-  display: block;
-}
-
-/* الكرت الأساسي */
-
-.card {
-  background: radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.05), transparent 35%),
-    radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 0.03), transparent 45%),
-    var(--bg-card);
-  border-radius: 28px;
-  padding: 32px 24px 28px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.8);
-}
-
-/* العناوين والنصوص */
-
-.step-title {
-  margin: 0 0 12px;
-  font-size: 22px;
-}
-
-.step-text {
-  margin: 0 0 20px;
+  max-width: 720px;
+  margin: 12px auto 24px;
   font-size: 15px;
-  color: var(--text-muted);
-  line-height: 1.9;
 }
 
-.step-hint {
-  margin-top: 16px;
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-/* الأزرار */
-
-.primary-btn,
-.secondary-btn,
-.ghost-btn,
-.pill {
-  cursor: pointer;
-  border-radius: 999px;
-  border: none;
-  font-family: inherit;
-  transition: all 0.15s ease-out;
-  font-size: 14px;
-}
-
-.primary-btn {
-  background: radial-gradient(circle at 50% 0%, #f8f5ff, #8b5cff);
-  color: #050616;
+.btn-primary {
+  display: block;
+  margin: 0 auto;
   padding: 10px 32px;
-  font-weight: 600;
+  background: radial-gradient(circle at 50% 0%, #f8f5ff, #8b5cff);
+  border: none;
+  border-radius: 999px;
+  color: #050616;
+  font-size: 16px;
+  cursor: pointer;
   box-shadow: 0 18px 40px rgba(139, 92, 255, 0.45);
+  transition: 0.2s;
 }
 
-.primary-btn:hover {
-  transform: translateY(-1px);
+.btn-primary:hover {
+  transform: translateY(-2px);
   box-shadow: 0 22px 60px rgba(139, 92, 255, 0.6);
 }
 
-.secondary-btn {
-  background: transparent;
-  border: 1px solid var(--border-subtle);
-  color: var(--text-main);
-  padding: 9px 26px;
-}
-
-.secondary-btn:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.ghost-btn {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed rgba(255, 255, 255, 0.18);
-  color: var(--text-muted);
-  padding: 8px 18px;
-  font-size: 13px;
-}
-
-.ghost-btn.active {
-  border-style: solid;
-  border-color: rgba(255, 255, 255, 0.38);
-  color: #ffffff;
-}
-
-/* الحبوب (Pills) */
-
-.pill-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.pill {
-  padding: 7px 14px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--text-muted);
-}
-
-.pill:hover {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.pill.selected {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-  color: #ffffff;
-}
-
-/* الحقول */
-
-.text-input,
-.text-area {
-  width: 100%;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(6, 7, 22, 0.92);
-  color: var(--text-main);
-  padding: 10px 14px;
-  font-family: inherit;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.14s ease-out, box-shadow 0.14s ease-out;
-}
-
-.text-input:focus,
-.text-area:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 1px rgba(139, 92, 255, 0.6);
-}
-
-.text-area {
-  resize: vertical;
-}
-
-/* أزرار/أفعال أسفل كل خطوة */
-
-.step-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 18px;
-  flex-wrap: wrap;
-}
-
-.step-actions.map-actions {
-  justify-content: space-between;
-}
-
-/* خريطة السكون القديمة حُذفت – نستخدم النسخة الجديدة أدناه */
-
-/* قائمة النائمين (لو أردت عرضها كنص داخل الكرت) */
-
-.sleepers-list {
-  position: absolute;
-  left: 12px;
-  bottom: 12px;
-  margin: 0;
-  padding: 8px 10px;
-  list-style: none;
-  max-width: 48%;
-  max-height: 60%;
-  overflow-y: auto;
-  font-size: 11px;
-  background: rgba(5, 6, 22, 0.6);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #e5e7ff;
-  backdrop-filter: blur(8px);
-}
-
-.sleepers-list li {
-  margin-bottom: 4px;
-  opacity: 0.9;
-}
-
-/* وصف الغرفة */
-
-.room-label {
-  margin: 18px 0 6px;
-  font-size: 14px;
-}
-
-.room-tagline {
-  margin: 0 0 12px;
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-/* كرت الرسالة */
-
-.message-card {
-  margin: 10px 0 24px;
-  padding: 16px 18px;
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.04), transparent 40%),
-    rgba(6, 7, 22, 0.92);
-  font-size: 14px;
-  color: #e5e7ff;
-}
-
-/* تقرير النوم */
-
-.report-list {
-  list-style: none;
-  padding: 0;
-  margin: 8px 0 16px;
-  font-size: 14px;
-}
-
-.report-list li {
-  margin-bottom: 6px;
-}
-
-.report-description {
-  font-size: 13px;
-  color: var(--text-muted);
-  line-height: 1.9;
-}
-
-/* ثيم الغرف */
-
-body.room-Global .card,
-body.room-Global .primary-btn {
-  --accent: var(--room-global);
-  --accent-soft: rgba(76, 201, 240, 0.2);
-}
-
-body.room-Nomad .card,
-body.room-Nomad .primary-btn {
-  --accent: var(--room-nomad);
-  --accent-soft: rgba(247, 37, 133, 0.25);
-}
-
-body.room-Hearth .card,
-body.room-Hearth .primary-btn {
-  --accent: var(--room-hearth);
-  --accent-soft: rgba(255, 158, 74, 0.25);
-}
-
-body.room-Cave .card,
-body.room-Cave .primary-btn {
-  --accent: var(--room-cave);
-  --accent-soft: rgba(67, 97, 238, 0.25);
-}
-
-body.room-Tide .card,
-body.room-Tide .primary-btn {
-  --accent: var(--room-tide);
-  --accent-soft: rgba(76, 201, 240, 0.25);
-}
-
-body.room-Nest .card,
-body.room-Nest .primary-btn {
-  --accent: var(--room-nest);
-  --accent-soft: rgba(181, 23, 158, 0.25);
-}
-
-body.room-Aurora .card,
-body.room-Aurora .primary-btn {
-  --accent: var(--room-aurora);
-  --accent-soft: rgba(59, 207, 147, 0.25);
-}
-
-/* تنفس الخلفيات العامة */
-
-@keyframes breathe {
-  0% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(1.12);
-    opacity: 0.9;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-}
-
-/* Responsive */
-
-@media (min-width: 768px) {
-  .card {
-    padding: 34px 40px 30px;
-  }
-}
-
-/* ================================
-   واجهة اختيار الغرفة النصّية
-   ================================ */
+/* ============================
+      اختيار الغرفة Room
+============================ */
 
 .room-switcher {
   margin-top: 16px;
@@ -408,12 +113,10 @@ body.room-Aurora .primary-btn {
   opacity: 0.85;
 }
 
+/* ======================================
+     الخريطة العالمية – World Map
+====================================== */
 
-/* ================================
-   خريطة السكون – World Map Background
-   ================================ */
-
-/* الحاوية الأساسية للخريطة */
 .sleep-map {
   margin-top: 20px;
   width: 100%;
@@ -426,7 +129,7 @@ body.room-Aurora .primary-btn {
   background: #020617;
 }
 
-/* خريطة العالم الواضحة */
+/* خريطة العالم */
 #sleep-map {
   position: relative;
   width: 100%;
@@ -442,7 +145,7 @@ body.room-Aurora .primary-btn {
   filter: brightness(1.2) contrast(1.1);
 }
 
-/* طبقة تلوين ليلية ناعمة فوق الخريطة */
+/* طبقة نعومة */
 #sleep-map::before {
   content: "";
   position: absolute;
@@ -454,7 +157,10 @@ body.room-Aurora .primary-btn {
   pointer-events: none;
 }
 
-/* النقاط فوق الخريطة – اللون يأتي من الـ JS حسب الـMood */
+/* ============================
+       نقاط السكون Sleep Dots
+============================ */
+
 .sleep-dot {
   position: absolute;
   width: 10px;
@@ -470,3 +176,31 @@ body.room-Aurora .primary-btn {
   transform: translate(-50%, -50%) scale(1.3);
   opacity: 1;
 }
+
+/* الألوان حسب الـMood */
+.sleep-dot[data-mood="Wave"] {
+  background-color: #4cc9f0;
+  box-shadow: 0 0 10px #4cc9f0;
+}
+
+.sleep-dot[data-mood="Stone"] {
+  background-color: #6366f1;
+  box-shadow: 0 0 10px #6366f1;
+}
+
+.sleep-dot[data-mood="Cloud"] {
+  background-color: #a855f7;
+  box-shadow: 0 0 10px #a855f7;
+}
+
+/* ============================
+   ملاحظات خصوصية
+============================ */
+
+.privacy-note {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
