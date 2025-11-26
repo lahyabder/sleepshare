@@ -100,12 +100,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const geoCell = localStorage.getItem("sleep_geo_cell") || "SA-RI";
 
       // إرسال الانضمام للجلسة
-      socket.emit("join_sleep_session", {
-        ephemeralId,
-        geoCell,
-        chosenRoom: currentRoom,
-        moodSymbol: savedMood
-      });
+    socket.emit("join_sleep_session", {
+  ephemeralId,
+  geoCell,
+  chosenRoom: currentRoom,   // نرسل الغرفة المختارة فعليًا
+  moodSymbol,
+});
+
 
       hasJoined = true;
 
