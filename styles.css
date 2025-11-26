@@ -1,26 +1,15 @@
 /* ===========================================
-   SleepShare Full Final CSS – World Map Version
+   SleepShare – خريطة نوم عالمية بخلفية محلية
+   (استخدم هذا الملف كاملاً مكان styles.css الحالي)
    =========================================== */
 
 :root {
   --bg-main: #02030a;
-  --bg-card: #050616;
-  --bg-card-soft: #090a1c;
   --text-main: #ffffff;
   --text-muted: #a2a7c8;
-  --accent: #8b5cff;
-  --accent-soft: rgba(139, 92, 255, 0.2);
-  --border-subtle: #27293d;
-
-  --room-global: #4cc9f0;
-  --room-nomad: #f72585;
-  --room-hearth: #ff9e4a;
-  --room-cave: #4361ee;
-  --room-tide: #4cc9f0;
-  --room-nest: #b5179e;
-  --room-aurora: #3bcf93;
 }
 
+/* Reset بسيط */
 *,
 *::before,
 *::after {
@@ -33,31 +22,38 @@ body {
   font-family: "Tajawal", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--bg-main);
   color: var(--text-main);
-  overflow-x: hidden;
 }
 
-/* ============================
-    رأس الصفحة
-============================ */
+/* الحاوية العامة لواجهة SleepShare */
+.sleep-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* العنوان والوصف */
 
 .title {
   text-align: center;
-  margin-top: 24px;
-  font-size: 26px;
+  margin-top: 16px;
+  font-size: 28px;
 }
 
 .desc {
   text-align: center;
   color: var(--text-muted);
-  max-width: 720px;
-  margin: 12px auto 24px;
+  max-width: 760px;
+  margin: 10px auto 22px;
   font-size: 15px;
+  line-height: 1.9;
 }
+
+/* زر الانضمام */
 
 .btn-primary {
   display: block;
-  margin: 0 auto;
-  padding: 10px 32px;
+  margin: 0 auto 18px;
+  padding: 10px 34px;
   background: radial-gradient(circle at 50% 0%, #f8f5ff, #8b5cff);
   border: none;
   border-radius: 999px;
@@ -70,15 +66,13 @@ body {
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 22px 60px rgba(139, 92, 255, 0.6);
+  box-shadow: 0 22px 60px rgba(139, 92, 255, 0.65);
 }
 
-/* ============================
-      اختيار الغرفة Room
-============================ */
+/* اختيار الغرف */
 
 .room-switcher {
-  margin-top: 16px;
+  margin-top: 10px;
   display: flex;
   justify-content: center;
   gap: 8px;
@@ -96,44 +90,74 @@ body {
   transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 
-.room-btn.active {
-  background: linear-gradient(135deg, #a855f7, #ec4899);
-  box-shadow: 0 0 12px rgba(236, 72, 153, 0.55);
-  transform: translateY(-1px);
-}
-
 .room-btn:hover {
   background: rgba(255, 255, 255, 0.14);
 }
+
+.room-btn.active {
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
+  transform: translateY(-1px);
+}
+
+/* حالة الغرفة */
 
 .sleep-room-status {
   margin-top: 10px;
   font-size: 13px;
   text-align: center;
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 /* ======================================
-     الخريطة العالمية – World Map
-====================================== */
-
-/* ======================================
-   الخريطة العالمية – World Map
+   الخريطة العالمية – الخلفية من sleep-map-bg.jpg
 ====================================== */
 
 .sleep-map {
-  margin-top: 20px;
+  margin-top: 22px;
   width: 100%;
   height: 260px;
   border-radius: 32px;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(148, 163, 184, 0.45);
-  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.9);
-  /* لا نضع أي خلفية هنا، الخلفية تأتي من الـ inline style في HTML */
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.95);
+  background: #020617;
 }
 
-/* نقاط السكون فوق الخريطة */
+/* خلفية الخريطة من الصورة المحلية */
+#sleep-map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 32px;
+  overflow: hidden;
+
+  /* مهم: الصورة في نفس المجلد مع index.html و styles.css */
+  background-image: url("sleep-map-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  filter: brightness(1.2) contrast(1.1);
+}
+
+/* طبقة توهج ناعمة فوق الخريطة */
+#sleep-map::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(56, 189, 248, 0.35) 0, transparent 55%),
+    radial-gradient(circle at 82% 78%, rgba(59, 130, 246, 0.3) 0, transparent 60%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* ======================================
+   نقاط السكون – Sleep Dots
+====================================== */
+
 .sleep-dot {
   position: absolute;
   width: 10px;
@@ -142,38 +166,48 @@ body {
   transform: translate(-50%, -50%);
   opacity: 0.95;
   transition: transform 0.3s ease, opacity 0.3s ease;
-  box-shadow: 0 0 14px rgba(15, 23, 42, 0.9);
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.9);
 }
 
+/* توهج عند مرور الماوس */
 .sleep-dot:hover {
-  transform: translate(-50%, -50%) scale(1.3);
+  transform: translate(-50%, -50%) scale(1.35);
   opacity: 1;
 }
 
-/* الألوان حسب الـMood */
+/* ألوان حسب الـ Mood (يعدلها الـ JS بإضافة data-mood) */
+
 .sleep-dot[data-mood="Wave"] {
-  background-color: #4cc9f0;
-  box-shadow: 0 0 10px #4cc9f0;
+  background-color: #38bdf8;      /* أزرق سماوي */
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.95);
 }
 
 .sleep-dot[data-mood="Stone"] {
-  background-color: #6366f1;
-  box-shadow: 0 0 10px #6366f1;
+  background-color: #6366f1;      /* أزرق بنفسجي */
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.95);
 }
 
 .sleep-dot[data-mood="Cloud"] {
-  background-color: #a855f7;
-  box-shadow: 0 0 10px #a855f7;
+  background-color: #a855f7;      /* بنفسجي */
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.95);
 }
 
-
-/* ============================
-   ملاحظات خصوصية
-============================ */
+/* ملاحظة الخصوصية */
 
 .privacy-note {
   text-align: center;
   margin-top: 18px;
   font-size: 13px;
   color: var(--text-muted);
+}
+
+/* تكيف بسيط للشاشات المتوسطة والكبيرة */
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 30px;
+  }
+  .sleep-map {
+    height: 280px;
+  }
 }
