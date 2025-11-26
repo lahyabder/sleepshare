@@ -556,3 +556,45 @@ body.room-Aurora .primary-btn {
   position: relative;
   overflow: hidden;
 }
+/* ===== SleepShare World Map Background (Override) ===== */
+
+#sleep-map {
+  position: relative;
+  width: 100%;
+  height: 260px;               /* غيّرها إذا أردت ارتفاعًا أكبر أو أصغر */
+  border-radius: 32px;
+  overflow: hidden;
+  /* خريطة العالم الداكنة */
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/1920px-World_map_-_low_resolution.svg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* طبقة تلوين ليلية ناعمة فوق الخريطة */
+#sleep-map::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.25) 0, transparent 45%),
+              radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.25) 0, transparent 50%),
+              linear-gradient(135deg, #020617 0%, #020617 40%, #020617 100%);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+/* النقاط فوق الخريطة */
+.sleep-dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  opacity: 0.95;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.sleep-dot:hover {
+  transform: translate(-50%, -50%) scale(1.3);
+  opacity: 1;
+}
