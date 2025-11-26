@@ -5,21 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SleepShare | رحلة النوم الجماعي</title>
 
-  <!-- ملف التنسيق -->
+  <!-- ملف الأنماط العام -->
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- Socket.IO -->
+  <!-- Socket.IO للاتصال اللحظي -->
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
 
 <body>
 
   <section class="sleep-container">
-
-    <h2 class="title">رحلة النوم الجماعي في SleepShare</h2>
+    <h2 class="title">رحلة النوم الجماعي في <span class="brand">SleepShare</span></h2>
 
     <p class="desc">
-      عند الضغط على الزر أدناه، ينضم ملفك الشعوري بشكل مجهول إلى خريطة السكون العالمية.
+      عند الضغط على الزر أدناه، ينضم ملفك الشعوري بشكل مجهول إلى خريطة السكون العالمية؛
       تُضاف نقطة ضوء صغيرة تمثّلك، وتتنفّس مع مئات النقاط الأخرى في اللحظة نفسها.
     </p>
 
@@ -27,7 +26,7 @@
       أُميتُ جلسة النوم الآن
     </button>
 
-    <!-- ⭐ اختيار الغرف -->
+    <!-- اختيار الغرف -->
     <div class="room-switcher">
       <button class="room-btn active" data-room="Global">Global</button>
       <button class="room-btn" data-room="Dreamers">Dreamers</button>
@@ -35,37 +34,23 @@
       <button class="room-btn" data-room="Midnight Wave">Midnight Wave</button>
     </div>
 
-    <!-- ⭐ عرض الغرفة الحالية وعدد الأرواح -->
+    <!-- حالة الغرفة -->
     <p class="sleep-room-status" id="sleep-room-status">
-      أنت الآن في غرفة
-      «<span id="current-room-name">Global</span>».
-      عدد الأرواح النائمة معك الآن:
-      <span id="sleepers-count">0</span>.
+      أنت الآن في غرفة «Global». عدد الأرواح النائمة معك الآن: 0.
     </p>
 
-   <!-- مساحة الخريطة -->
-<div
-  id="sleep-map"
-  class="sleep-map"
-  style="
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Map_of_the_world_night.svg/1920px-Map_of_the_world_night.svg.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
-  "
->
-</div>
-
+    <!-- مستطيل خريطة السكون -->
+    <div class="sleep-map">
+      <div id="sleep-map"></div>
+    </div>
 
     <p class="privacy-note">
       الخريطة لا تُظهر أي بيانات شخصية: فقط حالة شعورية عامة (Wave, Stone, Cloud)
-      ومنطقة واسعة (مدينة أو بلد).
+      ومنطقة جغرافية واسعة (مدينة أو بلد).
     </p>
-
   </section>
 
-  <!-- كود الخريطة اللحظية -->
+  <!-- سكربت الخريطة اللحظية -->
   <script src="realtime.js"></script>
 </body>
 </html>
