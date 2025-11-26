@@ -166,3 +166,73 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("report-dream").textContent = dream;
   }
 });
+/* =====================================
+   Cyber Network Animated Lines & Nodes
+===================================== */
+
+const canvas = document.getElementById("map-overlay");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+// نقاط عشوائية تتحرك ببطء فوق الخريطة
+const POINTS = [];
+const POINT_COUNT = 50;
+
+for (let i = 0; i < POINT_COUNT; i++) {
+  POINTS.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 0.2,
+    vy: (Math.random() - 0.5) * 0.2,
+  });
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // رسم الخطوط الخفيفة بين النقاط
+  for (let i = 0; i < POINTS.length; i++) {
+    for (let j = i + 1; j < POINTS.length; j++) {
+      const dx = POINTS[i].x - POINTS[j].x;
+      const dy = POINTS[i].y - POINTS[j].y;
+      const dist = Math.sqrt(dx * dy + dy * dy);
+
+      if (dist < 160) {
+        ctx.beginPath();
+        ctx.moveTo(POINTS[i].x, POINTS[i].y);
+        ctx.lineTo(POINTS[j].x, POINTS[j].y);
+        ctx.strokeStyle = "rgba(0, 180, 255, 0.10)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+  }
+
+  // رسم النقاط المتوهجة
+  for (let p of POINTS) {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 2.2, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(0, 200, 255, 0.8)";
+    ctx.shadowColor = "rgba(0, 200, 255, 0.9)";
+    ctx.shadowBlur = 8;
+    ctx.fill();
+
+    // الحركة البطيئة
+    p.x += p.vx;
+    p.y += p.vy;
+
+    // حواف الخريطة
+    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+  }
+
+  requestAnimationFrame(draw);
+}
+
+draw();
