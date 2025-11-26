@@ -479,3 +479,35 @@ body.room-Aurora .primary-btn {
     opacity: 0.55;
   }
 }
+.room-selector {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.room-title {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+
+.room-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.room-btn {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.room-btn.active {
+  background: linear-gradient(135deg, #a855f7, #6366f1);
+}
