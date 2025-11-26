@@ -1,14 +1,19 @@
 /* ===========================================
-   SleepShare – Global Styles
-=========================================== */
+   SleepShare – خريطة نوم عالمية تفاعلية
+   =========================================== */
 
 :root {
-  --bg-main: #02030a;
-  --text-main: #ffffff;
-  --text-muted: #a2a7c8;
+  --bg-main: #020617;
+  --text-main: #f9fafb;
+  --text-muted: #9ca3af;
 
-  --accent: #8b5cff;
-  --accent-soft: rgba(139, 92, 255, 0.25);
+  --accent: #a855f7;
+  --accent-soft: rgba(168, 85, 247, 0.15);
+
+  --room-global: #4cc9f0;
+  --room-dreamers: #f97316;
+  --room-midnight: #38bdf8;
+  --room-calm: #a855f7;
 }
 
 *,
@@ -20,32 +25,35 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Tajawal", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: radial-gradient(circle at 0% 0%, #050816 0, #02030a 40%, #000 100%);
+  font-family: "Tajawal", system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+  background: radial-gradient(circle at 0% 0%, #0f172a, #020617 55%, #000 100%);
   color: var(--text-main);
+  direction: rtl;
 }
 
-/* صفحة النوم */
+/* صفحة كاملة */
 
-.sleep-page {
+.page-wrapper {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 32px 16px 64px;
+  padding: 32px 16px 40px;
 }
 
-/* العنوان والوصف */
+/* رأس الصفحة */
 
 .sleep-header {
   text-align: center;
-  margin-bottom: 18px;
+  margin-bottom: 24px;
 }
 
 .sleep-title {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   font-size: 28px;
+  letter-spacing: 0.03em;
 }
 
-.sleep-brand {
+.brand {
   color: #a855f7;
 }
 
@@ -59,44 +67,39 @@ body {
 
 /* زر الانضمام */
 
-.sleep-join-wrapper {
-  text-align: center;
-  margin: 20px 0 10px;
-}
-
-.btn-primary {
-  padding: 11px 34px;
+.primary-btn {
+  display: block;
+  margin: 24px auto 16px;
+  padding: 11px 38px;
   border-radius: 999px;
   border: none;
-  cursor: pointer;
-  font-size: 16px;
+  font-family: inherit;
+  font-size: 15px;
   font-weight: 600;
-  background: radial-gradient(circle at 50% 0%, #f8f5ff, #8b5cff);
-  color: #050616;
-  box-shadow: 0 18px 40px rgba(139, 92, 255, 0.5);
-  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, opacity 0.15s ease-out;
+  cursor: pointer;
+  background: radial-gradient(circle at 0% 0%, #f9fafb, #a855f7 60%);
+  color: #020617;
+  box-shadow: 0 18px 40px rgba(168, 85, 247, 0.6);
+  transition: transform 0.18s ease-out, box-shadow 0.18s ease-out,
+    opacity 0.18s ease-out;
 }
 
-.btn-primary:hover {
+.primary-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 22px 60px rgba(139, 92, 255, 0.7);
+  box-shadow: 0 24px 60px rgba(168, 85, 247, 0.85);
 }
 
-.btn-primary:disabled {
-  opacity: 0.6;
+.primary-btn:disabled {
+  opacity: 0.65;
   cursor: default;
+  transform: none;
+  box-shadow: 0 16px 32px rgba(31, 41, 55, 0.8);
 }
 
-.join-status-text {
-  margin-top: 8px;
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-/* اختيار الغرفة */
+/* أزرار الغرف */
 
 .room-switcher {
-  margin-top: 12px;
+  margin-top: 8px;
   display: flex;
   justify-content: center;
   gap: 8px;
@@ -106,21 +109,23 @@ body {
 .room-btn {
   padding: 6px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(15, 23, 42, 0.7);
-  color: #fff;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(15, 23, 42, 0.8);
+  color: #e5e7eb;
   font-size: 12px;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  transition: background 0.18s ease, box-shadow 0.18s ease,
+    transform 0.12s ease;
 }
 
 .room-btn:hover {
-  background: rgba(148, 163, 184, 0.35);
+  background: rgba(30, 64, 175, 0.92);
 }
 
 .room-btn.active {
-  background: linear-gradient(135deg, #a855f7, #6366f1);
-  box-shadow: 0 0 16px rgba(99, 102, 241, 0.7);
+  background: linear-gradient(135deg, #a855f7, #22d3ee);
+  border-color: transparent;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.65);
   transform: translateY(-1px);
 }
 
@@ -128,127 +133,95 @@ body {
 
 .sleep-room-status {
   margin-top: 10px;
-  font-size: 13px;
+  font-size: 14px;
   text-align: center;
-  opacity: 0.9;
+  color: #e5e7eb;
 }
 
-/* ======================================
-   خريطة السكون – الخلفية + الـ Canvas
-====================================== */
+/* حاوية الخريطة */
 
-.sleep-map {
-  margin-top: 24px;
-  width: 100%;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  height: 360px;
+.sleep-map-wrapper {
+  margin-top: 22px;
   border-radius: 32px;
-  position: relative;
   overflow: hidden;
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.9);
-  background: #020617;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.95);
 }
+
+/* العنصر الذي يحتوي Mapbox */
 
 #sleep-map {
-  position: relative;
   width: 100%;
-  height: 100%;
+  height: 360px;
 }
 
-.map-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* نجعل كانفس Mapbox مستدير الحواف أيضاً */
+
+#sleep-map .mapboxgl-canvas-container,
+#sleep-map canvas {
   border-radius: 32px;
-  display: block;
+  outline: none;
 }
 
-/* طبقة الكانفس فوق الصورة */
+/* نخفي شعار Mapbox لتبقى نظيفة (يمكن تركه لو تحب) */
 
-#map-overlay {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
+.mapboxgl-ctrl-logo,
+.mapboxgl-ctrl-attrib {
+  display: none !important;
 }
 
-/* طبقة توهج ناعم فوق الخريطة */
+/* الماركَر الخاص بنا */
 
-.sleep-map::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.18) 0, transparent 55%),
-    radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.22) 0, transparent 60%);
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
-
-/* طبقة الديف التي تُرسم فيها نقاط النائمين */
-
-#sleepers-layer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-/* نقاط النائمين */
-
-.sleep-dot {
-  position: absolute;
+.sleep-marker {
   width: 10px;
   height: 10px;
   border-radius: 999px;
-  transform: translate(-50%, -50%);
-  opacity: 0.95;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  box-shadow: 0 0 14px rgba(15, 23, 42, 0.9);
+  background-color: #38bdf8;
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.95);
 }
 
-.sleep-dot:hover {
-  transform: translate(-50%, -50%) scale(1.35);
-  opacity: 1;
-}
+/* حسب الـMood */
 
-/* ألوان حسب الـ Mood */
-
-.sleep-dot[data-mood="Wave"] {
+.sleep-marker[data-mood="Wave"] {
   background-color: #4cc9f0;
-  box-shadow: 0 0 16px rgba(76, 201, 240, 0.9);
+  box-shadow: 0 0 18px rgba(76, 201, 240, 0.95);
 }
 
-.sleep-dot[data-mood="Stone"] {
+.sleep-marker[data-mood="Stone"] {
   background-color: #6366f1;
-  box-shadow: 0 0 16px rgba(99, 102, 241, 0.9);
+  box-shadow: 0 0 18px rgba(99, 102, 241, 0.95);
 }
 
-.sleep-dot[data-mood="Cloud"] {
+.sleep-marker[data-mood="Cloud"] {
   background-color: #a855f7;
-  box-shadow: 0 0 16px rgba(168, 85, 247, 0.9);
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.95);
 }
 
 /* ملاحظة الخصوصية */
 
 .privacy-note {
-  text-align: center;
   margin-top: 18px;
   font-size: 13px;
+  text-align: center;
   color: var(--text-muted);
 }
 
-/* استجابة */
+/* استجابة للأجهزة الصغيرة */
 
 @media (max-width: 640px) {
   .sleep-title {
-    font-size: 24px;
+    font-size: 22px;
   }
 
-  .sleep-map {
-    height: 260px;
+  .sleep-desc {
+    font-size: 14px;
+  }
+
+  #sleep-map {
+    height: 280px;
+  }
+
+  .page-wrapper {
+    padding-inline: 12px;
   }
 }
