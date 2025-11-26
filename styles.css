@@ -1,7 +1,7 @@
 /* ===========================================
-   SleepShare – خريطة نوم عالمية بخلفية محلية
-   (استخدم هذا الملف كاملاً مكان styles.css الحالي)
-   =========================================== */
+   SleepShare – خريطة السكون العالمية
+   ملف أنماط كامل
+=========================================== */
 
 :root {
   --bg-main: #02030a;
@@ -9,7 +9,8 @@
   --text-muted: #a2a7c8;
 }
 
-/* Reset بسيط */
+/* أساس الصفحة */
+
 *,
 *::before,
 *::after {
@@ -24,7 +25,8 @@ body {
   color: var(--text-main);
 }
 
-/* الحاوية العامة لواجهة SleepShare */
+/* حاوية شاشة النوم */
+
 .sleep-container {
   max-width: 1100px;
   margin: 0 auto;
@@ -39,6 +41,10 @@ body {
   font-size: 28px;
 }
 
+.title .brand {
+  color: #a855f7;
+}
+
 .desc {
   text-align: center;
   color: var(--text-muted);
@@ -48,7 +54,7 @@ body {
   line-height: 1.9;
 }
 
-/* زر الانضمام */
+/* زر الدخول في جلسة النوم */
 
 .btn-primary {
   display: block;
@@ -69,7 +75,7 @@ body {
   box-shadow: 0 22px 60px rgba(139, 92, 255, 0.65);
 }
 
-/* اختيار الغرف */
+/* أزرار الغرف */
 
 .room-switcher {
   margin-top: 10px;
@@ -110,7 +116,7 @@ body {
 }
 
 /* ======================================
-   الخريطة العالمية – الخلفية من sleep-map-bg.jpg
+   خريطة العالم – خلفية الصورة المحلية
 ====================================== */
 
 .sleep-map {
@@ -125,7 +131,7 @@ body {
   background: #020617;
 }
 
-/* خلفية الخريطة من الصورة المحلية */
+/* هنا نستخدم sleep-map-bg.jpg الموجود في نفس المجلد */
 #sleep-map {
   position: relative;
   width: 100%;
@@ -133,7 +139,6 @@ body {
   border-radius: 32px;
   overflow: hidden;
 
-  /* مهم: الصورة في نفس المجلد مع index.html و styles.css */
   background-image: url("sleep-map-bg.jpg");
   background-size: cover;
   background-position: center;
@@ -142,7 +147,8 @@ body {
   filter: brightness(1.2) contrast(1.1);
 }
 
-/* طبقة توهج ناعمة فوق الخريطة */
+/* طبقة توهج ليلية فوق الخريطة */
+
 #sleep-map::before {
   content: "";
   position: absolute;
@@ -154,9 +160,7 @@ body {
   pointer-events: none;
 }
 
-/* ======================================
-   نقاط السكون – Sleep Dots
-====================================== */
+/* نقاط السكون */
 
 .sleep-dot {
   position: absolute;
@@ -169,26 +173,27 @@ body {
   box-shadow: 0 0 18px rgba(56, 189, 248, 0.9);
 }
 
-/* توهج عند مرور الماوس */
+/* تأثير عند المرور */
+
 .sleep-dot:hover {
   transform: translate(-50%, -50%) scale(1.35);
   opacity: 1;
 }
 
-/* ألوان حسب الـ Mood (يعدلها الـ JS بإضافة data-mood) */
+/* ألوان حسب الـ Mood */
 
 .sleep-dot[data-mood="Wave"] {
-  background-color: #38bdf8;      /* أزرق سماوي */
+  background-color: #38bdf8;
   box-shadow: 0 0 16px rgba(56, 189, 248, 0.95);
 }
 
 .sleep-dot[data-mood="Stone"] {
-  background-color: #6366f1;      /* أزرق بنفسجي */
+  background-color: #6366f1;
   box-shadow: 0 0 16px rgba(99, 102, 241, 0.95);
 }
 
 .sleep-dot[data-mood="Cloud"] {
-  background-color: #a855f7;      /* بنفسجي */
+  background-color: #a855f7;
   box-shadow: 0 0 16px rgba(168, 85, 247, 0.95);
 }
 
@@ -201,13 +206,14 @@ body {
   color: var(--text-muted);
 }
 
-/* تكيف بسيط للشاشات المتوسطة والكبيرة */
+/* استجابة بسيطة */
 
-@media (min-width: 768px) {
+@media (max-width: 640px) {
   .title {
-    font-size: 30px;
+    font-size: 22px;
   }
+
   .sleep-map {
-    height: 280px;
+    height: 220px;
   }
 }
