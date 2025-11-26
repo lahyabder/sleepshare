@@ -1,82 +1,60 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SleepShare | رحلة النوم الجماعي</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepShare | رحلة النوم الجماعي</title>
 
-  <!-- خط Tajawal -->
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
 
-  <!-- Mapbox CSS -->
-  <link
-    href="https://api.mapbox.com/mapbox-gl-js/v2.16.1/mapbox-gl.css"
-    rel="stylesheet"
-  />
+    <!-- ملف التنسيقات -->
+    <link rel="stylesheet" href="styles.css">
 
-  <!-- ملف التنسيق الخاص بنا -->
-  <link rel="stylesheet" href="styles.css" />
+    <!-- Mapbox CSS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css" rel="stylesheet" />
 </head>
 
 <body>
-  <div class="page-wrapper">
 
-    <header class="sleep-header">
-      <h1 class="sleep-title">
-        رحلة النوم الجماعي في
-        <span class="brand">SleepShare</span>
-      </h1>
-      <p class="sleep-desc">
-        عند الضغط على الزر أدناه، ينضم ملفك الشعوري بشكل مجهول إلى خريطة السكون العالمية؛
-        تُضاف نقطة ضوء صغيرة تمثّلك، وتتنفّس مع مئات النقاط الأخرى في اللحظة نفسها.
-      </p>
-    </header>
+    <div class="container">
 
-    <main class="sleep-main">
+        <h1 class="title"><span style="color:#bb86fc">SleepShare</span> في رحلة النوم الجماعي</h1>
 
-      <!-- زر الانضمام -->
-      <button id="join-sleep-btn" class="primary-btn">
-        أُميتُ جلسة النوم الآن
-      </button>
+        <p class="subtitle">
+            عند الضغط على الزر أدناه، ينضم ملفك الشعوري بشكل مجهول إلى خريطة السكون العالمية؛
+            تُضاف نقطة ضوء صغيرة تُمثّلك، وتتناغم مع مئات النقاط الأخرى في اللحظة نفسها.
+        </p>
 
-      <!-- أزرار الغرف -->
-      <div class="room-switcher">
-        <button class="room-btn active" data-room="Global">Global</button>
-        <button class="room-btn" data-room="Dreamers">Dreamers</button>
-        <button class="room-btn" data-room="Midnight Wave">Midnight Wave</button>
-        <button class="room-btn" data-room="Calm Souls">Calm Souls</button>
-      </div>
+        <!-- زر الانضمام -->
+        <button id="join-sleep-btn" class="join-btn">أنهيتُ جلسة النوم الآن</button>
 
-      <!-- حالة الغرفة -->
-      <p id="sleep-room-status" class="sleep-room-status">
-        أنت الآن في غرفة «Global». عدد الأرواح النائمة معك الآن: 0.
-      </p>
+        <!-- غرف السكون -->
+        <div class="rooms">
+            <button class="room-btn" data-room="Global">Global</button>
+            <button class="room-btn" data-room="Dreamers">Dreamers</button>
+            <button class="room-btn" data-room="Midnight Wave">Midnight Wave</button>
+            <button class="room-btn" data-room="Calm Souls">Calm Souls</button>
+        </div>
 
-      <!-- حاوية الخريطة -->
-      <section class="sleep-map-wrapper">
-        <div id="sleep-map"></div>
-      </section>
+        <p id="sleep-room-status" class="room-status">أنت الآن في غرفة «Global». عدد الأرواح النائمة معك الآن: 0.</p>
 
-      <!-- ملاحظة الخصوصية -->
-      <p class="privacy-note">
-        الخريطة لا تُظهر أي بيانات شخصية: فقط حالة شعورية عامة (Wave, Stone, Cloud)
-        ومنطقة جغرافية واسعة تقريبية (مدينة أو بلد).
-      </p>
+        <!-- هنا تظهر الخريطة -->
+        <div id="sleep-map" class="sleep-map"></div>
 
-    </main>
-  </div>
+        <p class="privacy-note">
+            الخريطة لا تُظهر أي بيانات شخصية؛ فقط حالة شعورية عامة (Wave, Stone, Cloud) ومنطقة جغرافية تقريبية (مدينة أو بلد).
+        </p>
+    </div>
 
-  <!-- Mapbox JS -->
-  <script src="https://api.mapbox.com/mapbox-gl-js/v2.16.1/mapbox-gl.js"></script>
+    <!-- Socket.IO -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 
-  <!-- Socket.IO -->
-  <script
-    src="https://cdn.socket.io/4.7.2/socket.io.min.js"
-    integrity="sha384-Rlqj4aFf+zPsg1EJZqe+v3JkM0F0QfG6hJ0af43qL0OprtA+Tn9z7sS3FpcK8R1p"
-    crossorigin="anonymous"
-  ></script>
+    <!-- Mapbox JS -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
 
-  <!-- كود SleepShare Realtime -->
-  <script src="realtime.js"></script>
+    <!-- سكربت الخريطة والتحديثات -->
+    <script src="realtime.js"></script>
+
 </body>
 </html>
