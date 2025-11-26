@@ -1,214 +1,182 @@
-// ===============================================
-// SleepShare Realtime Frontend (sleep.html)
-// ===============================================
+// ===============================
+// SleepShare Realtime – Mapbox Map
+// ===============================
 
-// عنوان الباكенд على Render
-const SOCKET_URL = "https://sleepshare-backend.onrender.com";
+// 1) ضع هنا الـ Access Token من حسابك في Mapbox
+// https://account.mapbox.com
+mapboxgl.accessToken = "PUT_YOUR_MAPBOX_ACCESS_TOKEN_HERE";
+
+// 2) تهيئة الخريطة
+const map = new mapboxgl.Map({
+  container: "sleep-map",
+  style: "mapbox://styles/mapbox/dark-v11",
+  center: [20, 25], // وسط العالم تقريباً
+  zoom: 1.6,
+  projection: "globe"
+});
+
+map.on("style.load", () => {
+  map.setFog({
+    color: "rgb(11, 15, 25)",
+    "high-color": "rgb(36, 99, 235)",
+    "space-color": "rgb(0, 0, 0)",
+    "horizon-blend": 0.2
+  });
+});
+
+// 3) الاتصال مع Backend عبر Socket.IO
+const socket = io("https://sleepshare-backend.onrender.com", {
+  transports: ["websocket"]
+});
+
+// 4) حالة المستخدم الحالية
+let currentRoom = "Global";
+let currentMood = randomMood(); // Wave / Stone / Cloud
+let currentGeoCell = "SA-RIY"; // تقريباً: الرياض (يمكن تطويرها لاحقاً)
+let ephemeralId = makeEphemeralId();
+
+let hasJoined = false;
+let markers = [];
 
 // عناصر الواجهة
 const joinBtn = document.getElementById("join-sleep-btn");
-const joinStatusEl = document.getElementById("join-status");
 const roomButtons = document.querySelectorAll(".room-btn");
-const roomStatusEl = document.getElementById("sleep-room-status");
-const sleepersLayer = document.getElementById("sleepers-layer");
+const statusEl = document.getElementById("sleep-room-status");
 
-// الحالة الحالية
-let currentRoom = "Global";
-let hasJoinedOnce = false;
-
-// اتصال Socket.io
-const socket = io(SOCKET_URL, {
-  transports: ["websocket"],
-});
-
-// اتصال ناجح
-socket.on("connect", () => {
-  console.log("Connected to SleepShare backend:", socket.id);
-});
-
-// خريطة بسيطة لتحويل geoCell إلى مواقع تقريبية على الخريطة
-// القيم هي نسبة مئوية من عرض/ارتفاع الخريطة
-const GEO_MAP = {
-  "SA-RIY": { x: 58, y: 52 }, // الرياض تقريباً
-  "FR-PAR": { x: 47, y: 34 }, // باريس
-  "US-NYC": { x: 26, y: 34 }, // نيويورك
-  "BR-RIO": { x: 33, y: 63 }, // ريو
-  "JP-TYO": { x: 82, y: 40 }, // طوكيو
-  "EG-CAI": { x: 52, y: 46 }, // القاهرة
-};
-
-// دالة لتحديد geoCell للمستخدم (حالياً ثابتة للرياض كتجربة)
-function detectGeoCell() {
-  // يمكنك لاحقاً ربطها بـ IP أو اختيار المستخدم
-  return "SA-RIY";
-}
-
-// اختيار Mood عشوائي
-function pickRandomMood() {
-  const moods = ["Wave", "Stone", "Cloud"];
-  return moods[Math.floor(Math.random() * moods.length)];
-}
-
-// تحديث نص حالة الغرفة
-function updateRoomStatus(count) {
-  roomStatusEl.textContent = `أنت الآن في غرفة «${currentRoom}». عدد الأرواح النائمة معك الآن: ${count}.`;
-}
-
-// رسم النقاط على الخريطة
-function renderSleepDots(sleepers) {
-  sleepersLayer.innerHTML = "";
-
-  sleepers.forEach((sleeper) => {
-    const geo = sleeper.geo || "SA-RIY";
-    const mood = sleeper.mood || "Wave";
-
-    const coords = GEO_MAP[geo] || { x: 58, y: 52 };
-
-    const dot = document.createElement("div");
-    dot.className = "sleep-dot";
-    dot.dataset.mood = mood;
-    dot.style.left = `${coords.x}%`;
-    dot.style.top = `${coords.y}%`;
-
-    sleepersLayer.appendChild(dot);
-  });
-
-  updateRoomStatus(sleepers.length);
-}
-
-// استقبال التحديث من الباكند
-socket.on("sleep_map_update", (sleepers) => {
-  console.log("sleep_map_update:", sleepers);
-  renderSleepDots(sleepers || []);
-});
-
-// عند الضغط على زر الانضمام
+// 5) عند الضغط على زر الانضمام
 joinBtn.addEventListener("click", () => {
-  const geoCell = detectGeoCell();
-  const moodSymbol = pickRandomMood();
+  if (hasJoined) return;
 
-  const payload = {
-    ephemeralId: crypto.randomUUID ? crypto.randomUUID() : `EPH-${Date.now()}`,
-    geoCell,
-    chosenRoom: currentRoom,
-    moodSymbol,
-  };
-
-  console.log("Joining sleep session:", payload);
-  socket.emit("join_sleep_session", payload);
-
-  hasJoinedOnce = true;
-  joinBtn.textContent = "تم الانضمام إلى خريطة السكون ✔";
+  hasJoined = true;
+  joinBtn.textContent = "✓ تم الانضمام إلى خريطة السكون";
   joinBtn.disabled = true;
-  joinStatusEl.textContent = "نقطة ضوئك بدأت تتنفس الآن مع الآخرين.";
+
+  sendJoin();
 });
 
-// تغيير الغرفة
+// 6) عند تغيير الغرفة
 roomButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
     const room = btn.dataset.room;
-
-    if (room === currentRoom) return;
+    if (!room) return;
 
     currentRoom = room;
 
     roomButtons.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
 
-    // لو سبق أن انضمّ، نرسل طلب انضمام جديد بنفس الجلسة ولكن في الغرفة الجديدة
-    if (hasJoinedOnce) {
-      const geoCell = detectGeoCell();
-      const moodSymbol = pickRandomMood();
+    updateStatusCount(0);
 
-      const payload = {
-        ephemeralId: crypto.randomUUID ? crypto.randomUUID() : `EPH-${Date.now()}`,
-        geoCell,
-        chosenRoom: currentRoom,
-        moodSymbol,
-      };
-
-      socket.emit("join_sleep_session", payload);
+    if (hasJoined) {
+      // إعادة إرسال الانضمام لكن مع الغرفة الجديدة
+      sendJoin();
     }
-
-    // تحديث النص مؤقتاً حتى يصل sleep_map_update من الباكند
-    updateRoomStatus(0);
   });
 });
 
-/* =====================================
-   Cyber Network Canvas Animation
-===================================== */
+// 7) إرسال حدث الانضمام إلى الـ backend
+function sendJoin() {
+  const payload = {
+    ephemeralId,
+    geoCell: currentGeoCell,
+    chosenRoom: currentRoom,
+    moodSymbol: currentMood
+  };
 
-const canvas = document.getElementById("map-overlay");
-const ctx = canvas.getContext("2d");
-
-function resizeCanvas() {
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
+  console.log("Joining sleep session:", payload);
+  socket.emit("join_sleep_session", payload);
 }
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
 
-// إنشاء نقاط للشبكة
-const NET_POINTS = [];
-const NET_COUNT = 70;
+// 8) استقبال تحديث الخريطة من الـ backend
+socket.on("sleep_map_update", (sleepers) => {
+  console.log("Sleep map update:", sleepers);
 
-function initNetwork() {
-  NET_POINTS.length = 0;
-  for (let i = 0; i < NET_COUNT; i++) {
-    NET_POINTS.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.25,
-      vy: (Math.random() - 0.5) * 0.25,
-    });
+  // إزالة الماركرات القديمة
+  markers.forEach((m) => m.remove());
+  markers = [];
+
+  if (!Array.isArray(sleepers)) {
+    updateStatusCount(0);
+    return;
+  }
+
+  updateStatusCount(sleepers.length);
+
+  sleepers.forEach((sleeper) => {
+    const coords = geoToCoords(sleeper.geo);
+    if (!coords) return;
+
+    const mood = sleeper.mood || "Wave";
+    const color = moodToColor(mood);
+
+    const el = document.createElement("div");
+    el.className = "sleep-marker";
+    el.dataset.mood = mood;
+    el.style.backgroundColor = color;
+    el.style.boxShadow = `0 0 18px ${color}`;
+
+    const marker = new mapboxgl.Marker(el).setLngLat(coords).addTo(map);
+
+    markers.push(marker);
+  });
+});
+
+// 9) دوال مساعدة
+
+function updateStatusCount(count) {
+  statusEl.textContent = `أنت الآن في غرفة «${currentRoom}». عدد الأرواح النائمة معك الآن: ${count}.`;
+}
+
+function makeEphemeralId() {
+  return "EPH-" + Math.random().toString(36).substring(2, 8);
+}
+
+function randomMood() {
+  const moods = ["Wave", "Stone", "Cloud"];
+  const index = Math.floor(Math.random() * moods.length);
+  return moods[index];
+}
+
+// تحويل geoCell إلى إحداثيات [lng, lat]
+// يمكنك إضافة المزيد لاحقاً حسب الحاجة
+function geoToCoords(geoCell) {
+  if (!geoCell) return null;
+
+  const table = {
+    "SA-RIY": [46.6753, 24.7136], // الرياض
+    "SA-JED": [39.19797, 21.4858], // جدة
+    "MR-NKC": [-15.9785, 18.0858], // نواكشوط
+    "FR-PAR": [2.3522, 48.8566], // باريس
+    "US-NYC": [-74.006, 40.7128], // نيويورك
+    "GB-LON": [-0.1276, 51.5074] // لندن
+  };
+
+  if (table[geoCell]) return table[geoCell];
+
+  // fallback عشوائي على الكرة الأرضية
+  const lon = Math.random() * 360 - 180;
+  const lat = Math.random() * 140 - 70;
+  return [lon, lat];
+}
+
+function moodToColor(mood) {
+  switch (mood) {
+    case "Wave":
+      return "#4cc9f0";
+    case "Stone":
+      return "#6366f1";
+    case "Cloud":
+      return "#a855f7";
+    default:
+      return "#f97316";
   }
 }
 
-initNetwork();
+// 10) أحداث الاتصال
+socket.on("connect", () => {
+  console.log("Connected to SleepShare backend:", socket.id);
+});
 
-function drawNetwork() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // خطوط بين النقاط
-  for (let i = 0; i < NET_POINTS.length; i++) {
-    for (let j = i + 1; j < NET_POINTS.length; j++) {
-      const a = NET_POINTS[i];
-      const b = NET_POINTS[j];
-
-      const dx = a.x - b.x;
-      const dy = a.y - b.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-
-      if (dist < 170) {
-        const alpha = 1 - dist / 170;
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = `rgba(0, 200, 255, ${alpha * 0.25})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-    }
-  }
-
-  // النقاط نفسها
-  for (let p of NET_POINTS) {
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, 2.2, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(0, 200, 255, 0.9)";
-    ctx.shadowColor = "rgba(0, 200, 255, 1)";
-    ctx.shadowBlur = 9;
-    ctx.fill();
-
-    p.x += p.vx;
-    p.y += p.vy;
-
-    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-  }
-
-  requestAnimationFrame(drawNetwork);
-}
-
-drawNetwork();
+socket.on("disconnect", () => {
+  console.log("Disconnected from backend");
+});
