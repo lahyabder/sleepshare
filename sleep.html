@@ -5,17 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SleepShare | رحلة النوم الجماعي</title>
 
+  <!-- خط Tajawal -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Mapbox CSS -->
+  <link
+    href="https://api.mapbox.com/mapbox-gl-js/v2.16.1/mapbox-gl.css"
+    rel="stylesheet"
+  />
+
+  <!-- ملف التنسيق الخاص بنا -->
   <link rel="stylesheet" href="styles.css" />
-  <!-- Socket.io -->
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
 
 <body>
+  <div class="page-wrapper">
 
-  <main class="sleep-page">
     <header class="sleep-header">
       <h1 class="sleep-title">
-        رحلة النوم الجماعي في <span class="sleep-brand">SleepShare</span>
+        رحلة النوم الجماعي في
+        <span class="brand">SleepShare</span>
       </h1>
       <p class="sleep-desc">
         عند الضغط على الزر أدناه، ينضم ملفك الشعوري بشكل مجهول إلى خريطة السكون العالمية؛
@@ -23,46 +32,51 @@
       </p>
     </header>
 
-    <!-- زر الانضمام -->
-    <div class="sleep-join-wrapper">
-      <button id="join-sleep-btn" class="btn-primary">
-        الانضمام إلى خريطة السكون
+    <main class="sleep-main">
+
+      <!-- زر الانضمام -->
+      <button id="join-sleep-btn" class="primary-btn">
+        أُميتُ جلسة النوم الآن
       </button>
-      <p id="join-status" class="join-status-text"></p>
-    </div>
 
-    <!-- اختيار الغرفة -->
-    <div class="room-switcher">
-      <button class="room-btn active" data-room="Global">Global</button>
-      <button class="room-btn" data-room="Dreamers">Dreamers</button>
-      <button class="room-btn" data-room="Midnight Wave">Midnight Wave</button>
-      <button class="room-btn" data-room="Calm Souls">Calm Souls</button>
-    </div>
-
-    <!-- نص حالة الغرفة -->
-    <p class="sleep-room-status" id="sleep-room-status">
-      أنت الآن في غرفة «Global». عدد الأرواح النائمة معك الآن: 0.
-    </p>
-
-    <!-- خريطة السكون -->
-    <section class="sleep-map">
-      <div id="sleep-map">
-        <!-- صورة الخلفية من نفس المجلد -->
-        <img src="sleep-map-bg.jpg" alt="SleepShare World Map" class="map-image" />
-        <!-- Canvas للشبكة السايبرية -->
-        <canvas id="map-overlay"></canvas>
-        <!-- هنا تظهر نقاط النائمين -->
-        <div id="sleepers-layer"></div>
+      <!-- أزرار الغرف -->
+      <div class="room-switcher">
+        <button class="room-btn active" data-room="Global">Global</button>
+        <button class="room-btn" data-room="Dreamers">Dreamers</button>
+        <button class="room-btn" data-room="Midnight Wave">Midnight Wave</button>
+        <button class="room-btn" data-room="Calm Souls">Calm Souls</button>
       </div>
-    </section>
 
-    <!-- ملاحظة الخصوصية -->
-    <p class="privacy-note">
-      الخريطة لا تُظهر أي بيانات شخصية؛ فقط حالة شعورية عامة (Wave, Stone, Cloud)
-      ومنطقة جغرافية واسعة (مدينة أو بلد).
-    </p>
-  </main>
+      <!-- حالة الغرفة -->
+      <p id="sleep-room-status" class="sleep-room-status">
+        أنت الآن في غرفة «Global». عدد الأرواح النائمة معك الآن: 0.
+      </p>
 
+      <!-- حاوية الخريطة -->
+      <section class="sleep-map-wrapper">
+        <div id="sleep-map"></div>
+      </section>
+
+      <!-- ملاحظة الخصوصية -->
+      <p class="privacy-note">
+        الخريطة لا تُظهر أي بيانات شخصية: فقط حالة شعورية عامة (Wave, Stone, Cloud)
+        ومنطقة جغرافية واسعة تقريبية (مدينة أو بلد).
+      </p>
+
+    </main>
+  </div>
+
+  <!-- Mapbox JS -->
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.16.1/mapbox-gl.js"></script>
+
+  <!-- Socket.IO -->
+  <script
+    src="https://cdn.socket.io/4.7.2/socket.io.min.js"
+    integrity="sha384-Rlqj4aFf+zPsg1EJZqe+v3JkM0F0QfG6hJ0af43qL0OprtA+Tn9z7sS3FpcK8R1p"
+    crossorigin="anonymous"
+  ></script>
+
+  <!-- كود SleepShare Realtime -->
   <script src="realtime.js"></script>
 </body>
 </html>
