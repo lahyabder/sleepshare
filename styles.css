@@ -1,7 +1,6 @@
 /* ===========================================
-   SleepShare – خريطة السكون العالمية
-   ملف CSS كامل لصفحة sleep.html
-   =========================================== */
+   SleepShare – Global Styles
+=========================================== */
 
 :root {
   --bg-main: #02030a;
@@ -9,11 +8,7 @@
   --text-muted: #a2a7c8;
 
   --accent: #8b5cff;
-  --accent-soft: rgba(139, 92, 255, 0.3);
-
-  --mood-wave: #4cc9f0;
-  --mood-stone: #6366f1;
-  --mood-cloud: #a855f7;
+  --accent-soft: rgba(139, 92, 255, 0.25);
 }
 
 *,
@@ -25,81 +20,83 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Tajawal", system-ui, -apple-system, BlinkMacSystemFont,
-    sans-serif;
-  background: radial-gradient(circle at 0 0, #1e293b 0, transparent 45%),
-              radial-gradient(circle at 100% 100%, #020617 0, transparent 55%),
-              var(--bg-main);
+  font-family: "Tajawal", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: radial-gradient(circle at 0% 0%, #050816 0, #02030a 40%, #000 100%);
   color: var(--text-main);
 }
 
-/* =======================
-   الحاوية العامة
-   ======================= */
+/* صفحة النوم */
 
-.sleep-wrapper {
-  max-width: 1100px;
-  margin: 32px auto 48px;
-  padding: 0 16px 40px;
+.sleep-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
 }
 
 /* العنوان والوصف */
 
-.sleep-title {
+.sleep-header {
   text-align: center;
-  font-size: 28px;
-  margin: 0 0 12px;
+  margin-bottom: 18px;
 }
 
-.sleep-title span {
-  color: var(--accent);
+.sleep-title {
+  margin: 0 0 10px;
+  font-size: 28px;
+}
+
+.sleep-brand {
+  color: #a855f7;
 }
 
 .sleep-desc {
-  max-width: 760px;
-  margin: 0 auto 22px;
-  text-align: center;
-  color: var(--text-muted);
+  margin: 0 auto;
+  max-width: 720px;
   font-size: 15px;
+  color: var(--text-muted);
   line-height: 1.9;
 }
 
-/* =======================
-   زر الانضمام
-   ======================= */
+/* زر الانضمام */
 
-.sleep-btn {
-  display: block;
-  margin: 0 auto 16px;
-  padding: 12px 40px;
+.sleep-join-wrapper {
+  text-align: center;
+  margin: 20px 0 10px;
+}
+
+.btn-primary {
+  padding: 11px 34px;
   border-radius: 999px;
   border: none;
-  background: radial-gradient(circle at 50% 0, #f8f5ff, #8b5cff);
-  color: #050616;
+  cursor: pointer;
   font-size: 16px;
   font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 18px 40px rgba(139, 92, 255, 0.45);
-  transition: transform 0.18s ease, box-shadow 0.18s ease,
-    background 0.18s ease;
+  background: radial-gradient(circle at 50% 0%, #f8f5ff, #8b5cff);
+  color: #050616;
+  box-shadow: 0 18px 40px rgba(139, 92, 255, 0.5);
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, opacity 0.15s ease-out;
 }
 
-.sleep-btn:hover {
+.btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 22px 60px rgba(139, 92, 255, 0.65);
+  box-shadow: 0 22px 60px rgba(139, 92, 255, 0.7);
 }
 
-.sleep-btn.joined {
-  background: radial-gradient(circle at 50% 0, #bbf7d0, #22c55e);
-  box-shadow: 0 18px 40px rgba(34, 197, 94, 0.45);
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
 
-/* =======================
-   أزرار الغرف
-   ======================= */
+.join-status-text {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* اختيار الغرفة */
 
 .room-switcher {
-  margin-top: 10px;
+  margin-top: 12px;
   display: flex;
   justify-content: center;
   gap: 8px;
@@ -110,81 +107,97 @@ body {
   padding: 6px 14px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(15, 23, 42, 0.7);
   color: #fff;
   font-size: 12px;
   cursor: pointer;
-  transition: background 0.18s ease, transform 0.15s ease,
-    box-shadow 0.18s ease;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 
 .room-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(148, 163, 184, 0.35);
 }
 
 .room-btn.active {
-  background: linear-gradient(135deg, #a855f7, #ec4899);
-  box-shadow: 0 0 14px rgba(236, 72, 153, 0.5);
+  background: linear-gradient(135deg, #a855f7, #6366f1);
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.7);
   transform: translateY(-1px);
 }
 
 /* حالة الغرفة */
 
 .sleep-room-status {
-  text-align: center;
   margin-top: 10px;
   font-size: 13px;
-  color: var(--text-muted);
+  text-align: center;
+  opacity: 0.9;
 }
 
-/* =======================
-   الخريطة العالمية
-   ======================= */
+/* ======================================
+   خريطة السكون – الخلفية + الـ Canvas
+====================================== */
 
 .sleep-map {
-  margin: 22px auto 0;
+  margin-top: 24px;
   width: 100%;
-  max-width: 1050px;
-  height: 260px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 360px;
   border-radius: 32px;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(148, 163, 184, 0.45);
-  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.98);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.9);
   background: #020617;
 }
 
-/* الخلفية: صورة الخريطة الموجودة في نفس المجلد */
 #sleep-map {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 32px;
-  overflow: hidden;
-
-  background-image: url("./sleep-map-bg.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  filter: brightness(1.2) contrast(1.15) saturate(1.1);
 }
 
-/* ضباب/توّهج فوق الخريطة */
-#sleep-map::before {
+.map-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 32px;
+  display: block;
+}
+
+/* طبقة الكانفس فوق الصورة */
+
+#map-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* طبقة توهج ناعم فوق الخريطة */
+
+.sleep-map::after {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 15% 80%, rgba(56, 189, 248, 0.35) 0, transparent 55%),
-    radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.3) 0, transparent 60%);
+    radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.18) 0, transparent 55%),
+    radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.22) 0, transparent 60%);
   mix-blend-mode: screen;
   pointer-events: none;
 }
 
-/* =======================
-   نقاط السكون
-   ======================= */
+/* طبقة الديف التي تُرسم فيها نقاط النائمين */
+
+#sleepers-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* نقاط النائمين */
 
 .sleep-dot {
   position: absolute;
@@ -193,8 +206,8 @@ body {
   border-radius: 999px;
   transform: translate(-50%, -50%);
   opacity: 0.95;
-  box-shadow: 0 0 10px rgba(15, 23, 42, 0.9);
   transition: transform 0.3s ease, opacity 0.3s ease;
+  box-shadow: 0 0 14px rgba(15, 23, 42, 0.9);
 }
 
 .sleep-dot:hover {
@@ -205,34 +218,30 @@ body {
 /* ألوان حسب الـ Mood */
 
 .sleep-dot[data-mood="Wave"] {
-  background-color: var(--mood-wave);
-  box-shadow: 0 0 16px var(--mood-wave);
+  background-color: #4cc9f0;
+  box-shadow: 0 0 16px rgba(76, 201, 240, 0.9);
 }
 
 .sleep-dot[data-mood="Stone"] {
-  background-color: var(--mood-stone);
-  box-shadow: 0 0 16px var(--mood-stone);
+  background-color: #6366f1;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.9);
 }
 
 .sleep-dot[data-mood="Cloud"] {
-  background-color: var(--mood-cloud);
-  box-shadow: 0 0 16px var(--mood-cloud);
+  background-color: #a855f7;
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.9);
 }
 
-/* =======================
-   ملاحظة الخصوصية
-   ======================= */
+/* ملاحظة الخصوصية */
 
 .privacy-note {
-  margin-top: 18px;
   text-align: center;
+  margin-top: 18px;
   font-size: 13px;
   color: var(--text-muted);
 }
 
-/* =======================
-   موبايل
-   ======================= */
+/* استجابة */
 
 @media (max-width: 640px) {
   .sleep-title {
@@ -240,26 +249,6 @@ body {
   }
 
   .sleep-map {
-    height: 220px;
+    height: 260px;
   }
-}
-/* ================================
-   Cyber Network Animated Overlay
-================================ */
-
-#map-overlay {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-/* توهج لطيف فوق الخريطة */
-.sleep-map::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 30%, rgba(0, 200, 255, 0.10), transparent);
-  pointer-events: none;
 }
