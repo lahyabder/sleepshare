@@ -4,7 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SleepShare | رحلة النوم الجماعي</title>
+
+  <!-- ملف التنسيق -->
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Socket.IO -->
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
 
@@ -32,22 +36,17 @@
     </div>
 
     <!-- ⭐ عرض الغرفة الحالية وعدد الأرواح -->
-    <p class="sleep-room-status">
+    <p class="sleep-room-status" id="sleep-room-status">
       أنت الآن في غرفة
       «<span id="current-room-name">Global</span>».
       عدد الأرواح النائمة معك الآن:
       <span id="sleepers-count">0</span>.
     </p>
 
-    <!-- مساحة الخريطة -->
+    <!-- ⭐ مساحة الخريطة -->
     <div class="sleep-map">
-  <div id="sleep-map"></div>
-</div>
-
-<p class="sleep-room-status" id="sleep-room-status">
-  أنت الآن في غرفة «Global». عدد الأرواح النائمة معك الآن: 0.
-</p>
-
+      <div id="sleep-map"></div>
+    </div>
 
     <p class="privacy-note">
       الخريطة لا تُظهر أي بيانات شخصية: فقط حالة شعورية عامة (Wave, Stone, Cloud)
@@ -56,6 +55,7 @@
 
   </section>
 
+  <!-- كود الخريطة اللحظية -->
   <script src="realtime.js"></script>
 </body>
 </html>
