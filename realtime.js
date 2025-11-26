@@ -20,6 +20,21 @@ const MOOD_COLORS = {
   Ease: "#8b5cff",
   Unknown: "#999999"
 };
+// التعامل مع اختيار الغرفة من الواجهة
+const roomButtons = document.querySelectorAll(".room-btn");
+
+roomButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    // حدّث الغرفة الحالية
+    currentRoom = btn.getAttribute("data-room");
+
+    // حدّث الشكل البصري للأزرار
+    roomButtons.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    console.log("Current room:", currentRoom);
+  });
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.getElementById("start-sleep-btn");
