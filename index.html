@@ -1,66 +1,55 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>SleepShare | العالم يهدأ معًا</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SleepShare | رحلة النوم الجماعي</title>
 
-  <!-- توجيه أوتوماتيكي إلى الصفحة الرئيسية الجديدة -->
-  <meta http-equiv="refresh" content="0; url=home.html">
+  <!-- ملف التنسيق -->
+  <link rel="stylesheet" href="styles.css" />
 
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Tajawal", sans-serif;
-      background: #02030a;
-      color: #f9fafb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-    .wrap {
-      max-width: 480px;
-      padding: 24px;
-    }
-    h1 {
-      margin-bottom: 8px;
-      font-size: 24px;
-      letter-spacing: 0.18em;
-    }
-    p {
-      margin: 0 0 12px;
-      font-size: 14px;
-      opacity: 0.8;
-    }
-    a {
-      color: #8b5cff;
-      text-decoration: none;
-    }
-  </style>
-
-  <script>
-    // للأمان: لو الـ meta ما اشتغلت، نعيد التوجيه بالجافاسكربت بعد لحظات
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        if (!location.href.endsWith('home.html')) {
-          window.location.href = 'home.html';
-        }
-      }, 300);
-    });
-  </script>
+  <!-- Socket.IO من الـ CDN -->
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
-
 <body>
-  <div class="wrap">
-    <h1>SLEEPSHARE</h1>
-    <p>جاري نقلك إلى التجربة الرئيسية الهادئة…</p>
-    <p>
-      إن لم يتم نقلك تلقائيًا،
-      <a href="home.html">اضغط هنا للدخول إلى SleepShare</a>.
+
+  <section class="sleep-container">
+    <h2 class="title">رحلة النوم الجماعي في SleepShare</h2>
+
+    <p class="desc">
+      عند الضغط على الزر أدناه، ينضم ملفك الشعوري بشكل مجهول إلى خريطة السكون العالمية.
+      تُضاف نقطة ضوء صغيرة تمثّلك، وتتنفّس مع مئات النقاط الأخرى في اللحظة نفسها.
     </p>
-  </div>
+
+    <button id="join-sleep-btn" class="btn-primary">
+      أُميتُ جلسة النوم الآن
+    </button>
+
+    <!-- اختيار الغرف -->
+    <div class="room-switcher">
+      <button class="room-btn active" data-room="Global">Global</button>
+      <button class="room-btn" data-room="Dreamers">Dreamers</button>
+      <button class="room-btn" data-room="Calm Souls">Calm Souls</button>
+      <button class="room-btn" data-room="Midnight Wave">Midnight Wave</button>
+    </div>
+
+    <!-- حالة الغرفة -->
+    <p class="sleep-room-status" id="sleep-room-status">
+      أنت الآن في غرفة «Global». عدد الأرواح النائمة معك الآن: 0.
+    </p>
+
+    <!-- الخريطة + النقاط -->
+    <div class="sleep-map">
+      <div id="sleep-map"></div>
+    </div>
+
+    <p class="privacy-note">
+      الخريطة لا تُظهر أي بيانات شخصية: فقط حالة شعورية عامة (Wave, Stone, Cloud)
+      ومنطقة واسعة (مدينة أو بلد).
+    </p>
+  </section>
+
+  <!-- سكربت الخريطة اللحظية (الذي يرسم النقاط) -->
+  <script src="realtime.js"></script>
 </body>
 </html>
-Redirect root to home.html
