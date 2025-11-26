@@ -5,56 +5,64 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SleepShare | رحلة النوم الجماعي</title>
 
-  <!-- ملف التنسيق -->
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- Socket.IO من CDN -->
+  <!-- Socket.io -->
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
 
 <body>
-  <section class="sleep-wrapper">
-    <h1 class="sleep-title">رحلة النوم الجماعي في <span>SleepShare</span></h1>
 
-    <p class="sleep-desc">
-      عند الضغط على الزر أدناه، ينضم ملفك الشعوري بشكل مجهول إلى خريطة السكون العالمية؛
-      تُضاف نقطة ضوء صغيرة تمثّلك، وتتنسق مع مئات النقاط الأخرى في اللحظة نفسها.
-    </p>
+  <main class="sleep-page">
+    <header class="sleep-header">
+      <h1 class="sleep-title">
+        رحلة النوم الجماعي في <span class="sleep-brand">SleepShare</span>
+      </h1>
+      <p class="sleep-desc">
+        عند الضغط على الزر أدناه، ينضم ملفك الشعوري بشكل مجهول إلى خريطة السكون العالمية؛
+        تُضاف نقطة ضوء صغيرة تمثّلك، وتتنفّس مع مئات النقاط الأخرى في اللحظة نفسها.
+      </p>
+    </header>
 
     <!-- زر الانضمام -->
-    <button id="join-sleep-btn" class="sleep-btn">
-      أُميتُ جلسة النوم الآن
-    </button>
+    <div class="sleep-join-wrapper">
+      <button id="join-sleep-btn" class="btn-primary">
+        الانضمام إلى خريطة السكون
+      </button>
+      <p id="join-status" class="join-status-text"></p>
+    </div>
 
     <!-- اختيار الغرفة -->
     <div class="room-switcher">
-      <button class="room-btn active" data-room="Calm Souls">Calm Souls</button>
-      <button class="room-btn" data-room="Midnight Wave">Midnight Wave</button>
+      <button class="room-btn active" data-room="Global">Global</button>
       <button class="room-btn" data-room="Dreamers">Dreamers</button>
-      <button class="room-btn" data-room="Global">Global</button>
+      <button class="room-btn" data-room="Midnight Wave">Midnight Wave</button>
+      <button class="room-btn" data-room="Calm Souls">Calm Souls</button>
     </div>
 
-    <!-- حالة الغرفة وعدد الأرواح -->
-    <p id="sleep-room-status" class="sleep-room-status">
-      أنت الآن في غرفة «Calm Souls». عدد الأرواح النائمة معك الآن: 0.
+    <!-- نص حالة الغرفة -->
+    <p class="sleep-room-status" id="sleep-room-status">
+      أنت الآن في غرفة «Global». عدد الأرواح النائمة معك الآن: 0.
     </p>
 
-  <!-- مساحة الخريطة -->
-<div class="sleep-map">
-  <div id="sleep-map">
-    <canvas id="map-overlay"></canvas>
-  </div>
-</div>
-
+    <!-- خريطة السكون -->
+    <section class="sleep-map">
+      <div id="sleep-map">
+        <!-- صورة الخلفية من نفس المجلد -->
+        <img src="sleep-map-bg.jpg" alt="SleepShare World Map" class="map-image" />
+        <!-- Canvas للشبكة السايبرية -->
+        <canvas id="map-overlay"></canvas>
+        <!-- هنا تظهر نقاط النائمين -->
+        <div id="sleepers-layer"></div>
+      </div>
+    </section>
 
     <!-- ملاحظة الخصوصية -->
     <p class="privacy-note">
-      الخريطة لا تُظهر أي بيانات شخصية: فقط حالة شعورية عامة (Wave, Stone, Cloud)
+      الخريطة لا تُظهر أي بيانات شخصية؛ فقط حالة شعورية عامة (Wave, Stone, Cloud)
       ومنطقة جغرافية واسعة (مدينة أو بلد).
     </p>
-  </section>
+  </main>
 
-  <!-- سكربت التحديث اللحظي للخريطة -->
   <script src="realtime.js"></script>
 </body>
 </html>
