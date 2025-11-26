@@ -1,161 +1,170 @@
-// realtime.js – SleepShare live map
+// ===============================
+// SleepShare Realtime Frontend
+// رسم النقاط فوق خريطة العالم
+// ===============================
 
-(() => {
-  // عنوان السيرفر على Render (عدّله إذا تغير)
-  const SOCKET_URL = "wss://sleepshare-backend.onrender.com";
+// عنوان السيرفر في Render
+const SOCKET_URL = "https://sleepshare-backend.onrender.com";
 
-  const socket = io(SOCKET_URL, {
-    transports: ["websocket"],
-    timeout: 10000,
-  });
+// عناصر من الصفحة
+const joinBtn = document.getElementById("join-sleep-btn");
+const roomButtons = document.querySelectorAll(".room-btn");
+const statusEl = document.getElementById("sleep-room-status");
+const mapEl = document.getElementById("sleep-map");
 
-  const joinBtn = document.getElementById("join-sleep-btn");
-  const roomButtons = document.querySelectorAll(".room-btn");
-  const roomStatusEl = document.getElementById("sleep-room-status");
-  const sleepMapEl = document.getElementById("sleep-map");
+// الحالة الحالية
+let socket = null;
+let currentRoom = "Calm Souls";
+let joined = false;
 
-  let currentRoom = "Global";
-  let localMood = randomMood();
-  let localGeoCell = "SA-RIY"; // افتراضياً: الرياض
+// اتصال Socket.IO
+socket = io(SOCKET_URL, {
+  transports: ["websocket"],
+});
 
-  let latestSleepers = [];
+// عند الاتصال
+socket.on("connect", () => {
+  console.log("Connected to SleepShare backend:", socket.id);
+});
 
-  // مزاج عشوائي
-  function randomMood() {
-    const moods = ["Wave", "Stone", "Cloud"];
-    const idx = Math.floor(Math.random() * moods.length);
-    return moods[idx];
+// تحديث النقاط عند استقبال بيانات من السيرفر
+socket.on("sleep_map_update", (sleepers) => {
+  console.log("Sleep map update:", sleepers);
+  renderDots(sleepers);
+  updateCountText(sleepers.length);
+});
+
+// زر الانضمام
+joinBtn.addEventListener("click", () => {
+  if (!socket || !socket.connected) {
+    console.warn("Socket not connected yet");
+    return;
   }
 
-  // تغيير الغرفة من الأزرار
-  roomButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      roomButtons.forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      currentRoom = btn.dataset.room || "Global";
-      updateRoomStatus(latestSleepers.length);
-      // نطلب من السيرفر أن يعيد إرسال الحالة لهذه الغرفة
-      socket.emit("join_sleep_session", {
-        ephemeralId: createEphemeralId(),
-        geoCell: localGeoCell,
-        chosenRoom: currentRoom,
-        moodSymbol: localMood,
-      });
-    });
-  });
+  if (!joined) {
+    joined = true;
+    joinBtn.classList.add("joined");
+    joinBtn.textContent = "✔ تم الانضمام إلى خريطة السكون";
 
-  // الضغط على زر "أميت جلسة النوم الآن"
-  joinBtn.addEventListener("click", () => {
-    localMood = randomMood();
-
-    socket.emit("join_sleep_session", {
-      ephemeralId: createEphemeralId(),
-      geoCell: localGeoCell,
+    const payload = {
+      ephemeralId: generateEphemeralId(),
+      geoCell: "SA-RIY", // مثال ثابت (يمكن تغييره لاحقًا)
       chosenRoom: currentRoom,
-      moodSymbol: localMood,
-    });
-
-    joinBtn.disabled = true;
-    joinBtn.textContent = "تم الانضمام إلى خريطة السكون ✔";
-  });
-
-  // استقبال تحديث الخريطة من السيرفر
-  socket.on("sleep_map_update", (sleepers) => {
-    latestSleepers = sleepers || [];
-    renderSleepDots(latestSleepers);
-    updateRoomStatus(latestSleepers.length);
-  });
-
-  // فقط للمتابعة في الكونسول
-  socket.on("connect", () => {
-    console.log("Connected to SleepShare backend:", socket.id);
-  });
-
-  socket.on("connect_error", (err) => {
-    console.warn("SleepShare socket error:", err.message);
-  });
-
-  /* =============================
-       رسم النقاط على الخريطة
-     ============================= */
-
-  function renderSleepDots(sleepers) {
-    if (!sleepMapEl) return;
-
-    // إزالة النقاط السابقة
-    const oldDots = sleepMapEl.querySelectorAll(".sleep-dot");
-    oldDots.forEach((dot) => dot.remove());
-
-    sleepers.forEach((sleeper) => {
-      const geoCode = (sleeper.geo || "SA-RIY").split("-")[0]; // الدولة
-      const mood = sleeper.mood || "Wave";
-
-      const { x, y } = geoCodeToXY(geoCode);
-
-      const dot = document.createElement("div");
-      dot.className = "sleep-dot";
-      dot.dataset.mood = mood;
-      dot.style.left = `${x}%`;
-      dot.style.top = `${y}%`;
-
-      sleepMapEl.appendChild(dot);
-    });
-  }
-
-  // تحويل كود الدولة إلى إحداثيات تقريبية على الخريطة
-  function geoCodeToXY(code) {
-    const map = {
-      US: { lat: 38, lon: -97 },
-      CA: { lat: 56, lon: -96 },
-      BR: { lat: -14, lon: -52 },
-      GB: { lat: 54, lon: -2 },
-      FR: { lat: 47, lon: 2 },
-      DE: { lat: 51, lon: 9 },
-      ES: { lat: 40, lon: -4 },
-      IT: { lat: 42.5, lon: 12.5 },
-      MA: { lat: 31.7, lon: -7.1 },
-      DZ: { lat: 28, lon: 3 },
-      TN: { lat: 34, lon: 9 },
-      EG: { lat: 27, lon: 30 },
-      SA: { lat: 24, lon: 45 },
-      AE: { lat: 24, lon: 54 },
-      QA: { lat: 25.3, lon: 51.2 },
-      OM: { lat: 21, lon: 57 },
-      KW: { lat: 29.3, lon: 47.5 },
-      MR: { lat: 21, lon: -10 },
-      SN: { lat: 14.5, lon: -14 },
-      NG: { lat: 9, lon: 8 },
-      IN: { lat: 21, lon: 78 },
-      PK: { lat: 30, lon: 69 },
-      CN: { lat: 35, lon: 103 },
-      JP: { lat: 36, lon: 138 },
-      AU: { lat: -25, lon: 133 },
-      RU: { lat: 60, lon: 90 },
+      moodSymbol: randomMood(),
     };
 
-    const upper = code.toUpperCase();
-    const ref = map[upper] || { lat: 20 + Math.random() * 20, lon: 0 + Math.random() * 40 - 20 };
+    console.log("Joining sleep session:", payload);
+    socket.emit("join_sleep_session", payload);
+  }
+});
 
-    // تحويل lat/lon إلى نسبة مئوية (خريطة إسقاط بسيط)
-    const x = ((ref.lon + 180) / 360) * 100;
-    const y = ((90 - ref.lat) / 180) * 100;
+// تغيير الغرفة
+roomButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const room = btn.dataset.room;
+    if (!room) return;
 
-    // نقيّد داخل الحواف
-    return {
-      x: Math.max(2, Math.min(98, x)),
-      y: Math.max(5, Math.min(95, y)),
-    };
+    roomButtons.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    currentRoom = room;
+    updateRoomText(room);
+  });
+});
+
+// ===============================
+// دوال مساعدة
+// ===============================
+
+function updateRoomText(room) {
+  const text = `أنت الآن في غرفة «${room}». عدد الأرواح النائمة معك الآن: 0.`;
+  statusEl.textContent = text;
+}
+
+function updateCountText(count) {
+  const text = `أنت الآن في غرفة «${currentRoom}». عدد الأرواح النائمة معك الآن: ${count}.`;
+  statusEl.textContent = text;
+}
+
+function generateEphemeralId() {
+  return (
+    "EPH-" +
+    Math.random().toString(36).substring(2, 8) +
+    "-" +
+    Date.now().toString(36).slice(-4)
+  );
+}
+
+function randomMood() {
+  const moods = ["Wave", "Stone", "Cloud"];
+  return moods[Math.floor(Math.random() * moods.length)];
+}
+
+/**
+ * تحويل geo string إلى إحداثيات على الخريطة
+ * (إسقاط تقريبي/رمزي – الهدف شكل جميل وليس دقة جغرافية كاملة)
+ */
+function geoToXY(geoString) {
+  if (!geoString) {
+    return { x: Math.random(), y: Math.random() };
   }
 
-  // معرّف مؤقت للمستخدم
-  function createEphemeralId() {
-    return "EPH-" + Math.random().toString(36).slice(2, 10);
-  }
+  // خريطة تقريبة لبعض المناطق (يمكن توسيعها لاحقًا)
+  const presets = {
+    "SA-RIY": { x: 0.57, y: 0.55 }, // الرياض
+    "FR-PAR": { x: 0.48, y: 0.40 }, // باريس
+    "US-NYC": { x: 0.28, y: 0.42 }, // نيويورك
+    "JP-TKO": { x: 0.80, y: 0.50 }, // طوكيو
+    "BR-RIO": { x: 0.34, y: 0.70 }, // ريو
+  };
 
-  // تحديث النص أسفل أزرار الغرفة
-  function updateRoomStatus(count) {
-    if (!roomStatusEl) return;
-    roomStatusEl.textContent =
-      `أنت الآن في غرفة «${currentRoom}». عدد الأرواح النائمة معك الآن: ${count}.`;
+  if (presets[geoString]) return presets[geoString];
+
+  // إذا غير موجود: موقع عشوائي ثابت بناءً على النص
+  const hash = hashString(geoString);
+  const x = (hash % 1000) / 1000; // بين 0 و 1
+  const y = ((Math.floor(hash / 1000) % 1000) / 1000) * 0.5 + 0.25; // وسط الخريطة
+  return { x, y };
+}
+
+function hashString(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
   }
-})();
+  return hash;
+}
+
+/**
+ * رسم النقاط فوق الخريطة
+ * sleepers: [{ geo: "SA-RIY", mood: "Wave" }, ...]
+ */
+function renderDots(sleepers) {
+  if (!mapEl) return;
+
+  // إزالة النقاط القديمة
+  const oldDots = mapEl.querySelectorAll(".sleep-dot");
+  oldDots.forEach((d) => d.remove());
+
+  const rect = mapEl.getBoundingClientRect();
+
+  sleepers.forEach((sleeper) => {
+    const { geo, mood } = sleeper;
+
+    const { x, y } = geoToXY(geo || "GLOBAL");
+    const jitterX = (Math.random() - 0.5) * 0.04;
+    const jitterY = (Math.random() - 0.5) * 0.04;
+
+    const dot = document.createElement("div");
+    dot.className = "sleep-dot";
+    dot.dataset.mood = mood || "Wave";
+
+    const px = (x + jitterX) * rect.width;
+    const py = (y + jitterY) * rect.height;
+
+    dot.style.left = `${px}px`;
+    dot.style.top = `${py}px`;
+
+    mapEl.appendChild(dot);
+  });
+}
